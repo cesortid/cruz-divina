@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?wg8lld');
+  src:  url('fonts/icomoon.eot?wg8lld#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?wg8lld') format('truetype'),
+    url('fonts/icomoon.woff?wg8lld') format('woff'),
+    url('fonts/icomoon.svg?wg8lld#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-sol:before {
+  content: "\e90f";
+}
+.icon-tranf-solicitud:before {
+  content: "\e90d";
+}
+.icon-tranf-registro:before {
+  content: "\e90e";
+}
+.icon-form-paquete:before {
+  content: "\e90b";
+}
+.icon-asig-responsable:before {
+  content: "\e90c";
+}
+.icon-dashboard:before {
+  content: "\e909";
+}
+.icon-clipboard-check:before {
+  content: "\e906";
+}
+.icon-file-search:before {
+  content: "\e907";
+}
+.icon-doc-search:before {
+  content: "\e908";
+}
+.icon-ubigeo:before {
+  content: "\e90a";
+}
+.icon-stock:before {
+  content: "\e905";
+}
+.icon-planning:before {
+  content: "\e900";
+}
+.icon-light-bulb:before {
+  content: "\e901";
+}
+.icon-blogger:before {
+  content: "\e902";
+}
+.icon-costs:before {
+  content: "\e903";
+}
+.icon-business-plan:before {
+  content: "\e904";
+}
+.icon-transfer:before {
+  content: "\e919";
+}
+.icon-checklist:before {
+  content: "\e911";
+}
+.icon-icon-estado:before {
+  content: "\65";
+}

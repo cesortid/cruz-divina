@@ -1,0 +1,100 @@
+
+            <div class="container-fluid">
+                <div class="d-inline-block mb-4">
+                    <h1 class="font-weight-normal">Perfiles</h1>
+                    <div class="line mt-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="card mb-4">
+                            <div class="card-body pt-4">
+                                <div class="form-group row g-3">
+                                    <div class="col-lg-2">
+                                        <label class="col-form-label">PERFIL</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input dTextBox class="form-control" type='text' name="txtN" id="txtPerfil" placeholder="Ingrese el nombre del Perfil" maxlength="250" [(ngModel)]="campoBusqueda" #txtPerfil="ngModel" />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="pull-right">
+                                            <button type="button" id="btnBuscar" class="btn btn-primary" (click)="buscarConsultaPrincipal()">
+                                                <i class="bi bi-search"></i> Buscar
+                                            </button>
+                                            <button type="button" id="btnNuevoRegistro" class="btn ml-1 ms-1 btn-secondary" (click)="modalAgregarPerfil()">
+                                                <i class="bi bi-plus-lg"></i> Nuevo Perfil
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card card-auto bg-plomo">
+                            <div class="card-body">
+                                <div class="position-absolute icon-card-title">
+                                    <i class="icon icon-dashboard"></i>
+                                </div>
+                                <div class="div-centrado text-center">
+                                    <div>
+                                        <b style="font-size:3.5rem; font-weight: 500;">
+                                            {{totalPerfiles}}</b>
+                                    </div>
+                                    <div class="c-ContRegistros">Perfiles</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card xs-hidden p-3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>NOMBRE</th>
+                                        <th>ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <tr *ngFor="let campos of arregloPerfil;index as i">
+                                        <td class="td-l">{{campos.descripcion}}</td>
+                                        <td  class="pre-wrap">
+                                            <div class="xs-hidden">
+                                                <span class="btn btn-sm btn-opt btn-icon" title="Asignar Menu" (click)="modalAsignacionMenu(campos.id_perfil)">
+                                                    <i class="bi bi-list-task"></i>
+                                                </span>
+
+                                                <span class="btn btn-sm btn-opt btn-icon" title="Asignar Componente" (click)="modalAsignacionComponente(campos.id_perfil)">
+                                                    <i class="bi bi-grid-1x2"></i>
+                                                </span>
+
+                                                <span class="btn btn-sm btn-opt btn-icon" (click)="modalEditarPerfil(campos)">
+                                                    <i class="bi bi-pencil-fill"></i></span>
+
+                                                <span class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(campos.id_perfil)"><i
+                                                        class="bi bi-trash-fill"></i></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="form-group row">
+                    <div class="col-12">
+                        <div class="clearfix bg-white pt-3">
+                            <div class="float-right">
+                                <pagination [totalItems]="totalComponentes" [boundaryLinks]="true"
+                                    previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;"
+                                    lastText="&raquo;" [maxSize]="5" [(ngModel)]="paginaActual"
+                                    (pageChanged)="cambiarPagina($event)">
+                                </pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>

@@ -1,0 +1,51 @@
+<div class="bg"> 
+</div>
+<div class="header-top">
+    <div class="container h-100">
+        <div class="d-flex justify-content-between align-items-center h-100">
+            <div><img src="assets/img/logo-app.png"></div>
+            <div><div class="fw-bold">Postulantes a Licencias de Conducir</div></div>
+        </div>
+    </div>
+</div>
+<form [formGroup]="formUsu" class="form-container-login">
+    <!-- <div class="form-container-login"> -->
+    <div class="form-login">
+        <div class="icon"><img src="assets/img/logo-img.jpg"> </div>
+        <h1>
+            Iniciar sesión
+        </h1>
+        <div class="row g-3">
+            <div class="col-12">
+                <label>Usuario:</label>
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control" formControlName="usuario">
+                <div class="invalid-feedback">
+                    {{ getError('usuario')}}
+                </div>
+            </div>
+            <div class="col-12">
+                <label>Contraseña:</label>
+            </div>
+            <div class="col-12">
+                <input type="password" class="form-control" formControlName="password">
+                <div class="invalid-feedback">
+                    {{ getError('password')}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-message text-center" id="form-login-message">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <button class="btn btn-primary" (click)="ValidarFormulario()">Iniciar</button>
+            </div>
+        </div>
+    </div>  
+</form>

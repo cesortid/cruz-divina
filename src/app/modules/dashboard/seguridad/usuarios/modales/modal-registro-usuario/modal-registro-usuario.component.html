@@ -1,0 +1,220 @@
+<div class="modal-header">
+    <h4 class="modal-title" [hidden]="!bRegistro">Registro de Usuarios</h4>
+    <h4 class="modal-title" [hidden]="bRegistro">Edición de Usuarios</h4>
+    <p class="pl-4 pr-4" [hidden]="!bRegistro">Registro de Personal para el uso del Sistema.</p>
+    <p class="pl-4 pr-4" [hidden]="bRegistro">Edición de Personal para el uso del Sistema.</p>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="formUsuario" (ngSubmit)="guardar()" autocomplete="off" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="form-group row g-3">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Seleccione un Perfil:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <!-- <select [ngClass]="{'is-invalid': (formUsuario.get('id_perfil')!.touched || formUsuario.get('id_perfil')!.dirty) && !formUsuario.get('id_perfil')!.valid }" formControlName="id_perfil" class="form-control" (change)="setPerfil()">
+                                    <option [ngValue]=null disabled>Seleccione Perfil</option>
+                                    <option *ngFor="let perfil of lstPerfiles" [ngValue]="perfil.id_perfil">
+                                        {{perfil.perfil}}</option>
+                                </select> -->
+                                <!-- [(ngModel)]="objFM.id_tipo_documento" -->
+                                
+                                <!-- (change)="setPerfil()" -->
+                                <ng-select [items]="lstPerfiles"
+                                placeholder="Seleccione"
+                                bindLabel="perfil"
+                                bindValue="id_perfil"
+
+                                [multiple]="true"
+                                notFoundText="no se ha encontrado ningún item" 
+                                class="fomr-control" 
+                                [(ngModel)]="MultiplePerfiles"
+                                [ngModelOptions]="{standalone: true}"
+                                [clearable]="false">
+                              </ng-select>
+
+                                <span class="invalid-feedback">
+                                    <span *ngIf="formUsuario.get('id_perfil')!.errors?.required">
+                                        El Campo Perfil es obligatorio.
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-9">
+                        <div class="row form-group g-2">
+                            <div class="col-sm-12">
+                                <div class="inner-addon right-addon">
+                                    <label class="btn mb-0 rounded-left" title="Validar con RENIEC" (click)="ValidarInformacionReniec()"><i class="mdi mdi-magnify"></i></label>
+                                    <input [ngClass]="{'is-invalid': (formUsuario.get('dni')!.touched || formUsuario.get('dni')!.dirty) && !formUsuario.get('dni')!.valid }" formControlName="dni" id="dni" placeholder="Número de DNI" type="text" maxlength="8" class="form-control"
+                                        OnlyNumber="true" (ngModelChange)="validarDNI()" [readonly]=!bRegistro />
+                                </div>
+                                <span class="invalid-feedback">
+                                    <span *ngIf="formUsuario.get('dni')!.errors?.required">
+                                        El Campo DNI es obligatorio.
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-sm-12">
+                                <input [ngClass]="{'is-invalid': (formUsuario.get('apellido_paterno')!.touched || formUsuario.get('apellido_paterno')!.dirty) && !formUsuario.get('apellido_paterno')!.valid }" formControlName="apellido_paterno" type="text" placeholder="Apellido Paterno"
+                                    class="form-control" id="ru_apaterno" />
+                                <span class="invalid-feedback">
+                                    <span *ngIf="formUsuario.get('apellido_paterno')!.errors?.required">
+                                        El Campo Apellido Paterno es obligatorio.
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-sm-12">
+                                <input [ngClass]="{'is-invalid': (formUsuario.get('apellido_materno')!.touched || formUsuario.get('apellido_materno')!.dirty) && !formUsuario.get('apellido_materno')!.valid }" formControlName="apellido_materno" type="text" placeholder="Apellido Materno"
+                                    class="form-control" id="ru_amaterno" />
+                                <span class="invalid-feedback">
+                                    <span *ngIf="formUsuario.get('apellido_materno')!.errors?.required">
+                                        El Campo ApeMaterno es obligatorio.
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-sm-12">
+                                <input [ngClass]="{'is-invalid': (formUsuario.get('nombre')!.touched || formUsuario.get('nombre')!.dirty) && !formUsuario.get('nombre')!.valid }" formControlName="nombre" type="text" placeholder="Nombres" class="form-control"  id="ru_nombre" />
+                                <span class="invalid-feedback">
+                                    <span *ngIf="formUsuario.get('nombre')!.errors?.required">
+                                        El Campo Nombres es obligatorio.
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div style="height: 100%;width:163.43px;border:1px solid rgba(0, 0, 0, 0.2)">
+                            <img id="imgFoto" name="imgFoto" />
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-9">
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Correo Electónico:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" maxlength="500" formControlName="valCorreo" id="txtCorreo" class="form-control" placeholder="ejemplo@web.com" [ngClass]="{'is-invalid': (formUsuario.get('valCorreo')!.touched || formUsuario.get('valCorreo')!.dirty) && !formUsuario.get('valCorreo')!.valid }"
+                                />
+                                <span class="invalid-feedback" style="width: 400px;">
+                                    <span *ngIf="formUsuario.get('valCorreo')!.errors?.email">
+                                        Ingrese un correo electrónico válido.
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-md-2" style="margin-left: -29px">
+                                <button class="btn pull-left btn-secondary btn-sm" type="button" [disabled]="!formUsuario.get('valCorreo')!.valid" id="btnAgregarCorreo" (click)="agregarCorreo()">
+                                    +</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="margin-left: 148px; margin-top: -10px">
+                        <ul class="correos">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr *ngFor="let item of lstCorreos;index as s">
+                                        <td>{{s +1}}</td>
+                                        <td>{{ item }}</td>
+                                        <td>
+                                            <a style="cursor: pointer;" (click)="eliminarCorreo(s)">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+                <div class="row">
+                    <div class="col-9">
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <label class="col-form-label">Teléfono:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="number" maxlength="10" formControlName="valTelefono" id="txtTelefono" class="form-control" placeholder="Número de teléfono" [ngClass]="{'is-invalid': (formUsuario.get('valTelefono')!.touched || formUsuario.get('valTelefono')!.dirty) && !formUsuario.get('valTelefono')!.valid }"
+                                />
+                                <span class="invalid-feedback" style="width: 400px;">
+                                    <span *ngIf="formUsuario.get('valTelefono')!.errors?.minlength">
+                                        Ingrese un Nro de teléfono como mínimo de 7 dígitos.
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-md-2" style="margin-left: -29px">
+                                <button class="btn pull-left btn-secondary btn-sm" type="button" [disabled]="!formUsuario.get('valTelefono')!.valid" id="btnAgregarTelefono" (click)="agregarTelefono()">
+                                    +</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5" style="margin-left: 148px; margin-top: -10px">
+                        <ul class="telefonos">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr *ngFor="let item of lstTelefonos;index as i">
+                                        <td>{{ i+1}}</td>
+                                        <td>{{ item }}</td>
+                                        <td>
+                                            <a style="cursor: pointer;" (click)="eliminarTelefono(i)">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+                <div *ngIf="bMostrarDepartamento">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <label class="col-form-label">Departamento:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <ng-select [items]="departamento" [multiple]="true" placeholder="Seleccione Departamento" bindLabel="departamento" bindValue="coddepa" notFoundText="no se ha encontrado ningún item" [(ngModel)]="lstDep" formControlName="departamento" name="idRegion" [closeOnSelect]="false">
+                                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                                            <input id="item-{{index}}" type="checkbox" [checked]="lstDep.indexOf(item) > -1" [ngModel]="item$.selected" [ngModelOptions]="{standalone: true}" /> {{item.departamento}}
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="submit" id="btnTraGuardar" [hidden]=bMostrar><i class="bi bi-save2-fill"></i>
+                        Guardar</button>
+                    <button class="btn btn-danger" type="button" [hidden]=!bMostrar>
+                                <i class="fa fa-save"></i> ....Procesando</button>
+                    <button class="btn btn-primary ms-1" id="btnTraCancelar" type="button" (click)="closeModal()">
+                            <i class="bi bi-x-lg"></i> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

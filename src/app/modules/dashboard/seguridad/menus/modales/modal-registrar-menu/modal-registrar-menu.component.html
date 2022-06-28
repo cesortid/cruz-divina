@@ -1,0 +1,137 @@
+<div class="modal-header">
+    <h4 class="modal-title" [hidden]="!cambiarEditar">Nuevo Menu</h4>
+    <h4 class="modal-title" [hidden]="cambiarEditar">Editar Menu</h4>
+    <p class="pl-4 pr-4" [hidden]="!cambiarEditar">Formulario para el registro de menu</p>
+    <p class="pl-4 pr-4" [hidden]="cambiarEditar">Formulario para la edición de menu</p>
+</div>
+<div class="modal-body">
+    <form (ngSubmit)="administrarMenu();" #MenuGrabarForm="ngForm" [hidden]="!cambiarEditar">
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Nombre Menu:</label>
+            <div class="col-md-10">
+                <input dTextBox class="form-control" type='text' #nombre_menu="ngModel" required name="nombre_menu" placeholder="Ingrese el nombre de menu" [(ngModel)]="entidadModal.nombre_menu" />
+                <div [hidden]="nombre_menu.valid || nombre_menu.pristine" class="alert alert-danger">
+                    El nombre de menu es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label dlabels class="control-label">Url</label>
+            </div>
+            <div class="col-md-10">
+                <input dTextBox class="form-control" type='text' required #url="ngModel" name="url" placeholder="Ingrese url del menu" [(ngModel)]="entidadModal.url" />
+                <div [hidden]="url.valid || url.pristine" class="alert alert-danger">
+                    El url es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label dlabels class="control-label">Icono</label>
+            </div>
+            <div class="col-md-10">
+                <input dTextBox class="form-control" type='text' required #icono="ngModel" name="icono" placeholder="Ingrese icono del menu" [(ngModel)]="entidadModal.icono" />
+                <div [hidden]="icono.valid || icono.pristine" class="alert alert-danger">
+                    El icono es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label dlabels class="control-label">Nivel</label>
+            </div>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [disabled]="desOrden" type='number' #nivel="ngModel" required id="nivel" name="nivel" placeholder="Ingrese Nivel" [(ngModel)]="entidadModal.nivel" />
+                <div [hidden]="nivel.valid || nivel.pristine" class="alert alert-danger">
+                    El Nivel es obligatorio
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label dlabels class="control-label">Orden</label>
+            </div>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='number' #orden="ngModel" required name="orden" placeholder="Ingrese orden" [(ngModel)]="entidadModal.orden" />
+                <div [hidden]="orden.valid || orden.pristine" class="alert alert-danger">
+                    El orden es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" type="submit" id="btnGuardar" [disabled]="!MenuGrabarForm.form.valid"><i class="bi bi-save2-fill"></i> Guardar</button>
+            <button class="btn btn-secondary btn-sm" id="btnCancelar" type="button" (click)="closeModal()"><i
+                    class="mdi mdi-close"></i>&nbsp;Cerrar</button>
+        </div>
+    </form>
+    <form (ngSubmit)="administrarMenu();" #MenuEditarForm="ngForm" [hidden]="cambiarEditar">
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Nombre Menu:</label>
+            <div class="col-md-10">
+                <input dTextBox class="form-control" type='text' #nombre_menu="ngModel" required name="nombre_menu" placeholder="Ingrese el nombre de menu" [(ngModel)]="entidadModal.nombre_menu" />
+                <div [hidden]="nombre_menu.valid || nombre_menu.pristine" class="alert alert-danger">
+                    El nombre de menu es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label dlabels class="control-label">Url</label>
+            </div>
+            <div class="col-md-10">
+                <input dTextBox class="form-control" type='text' required #url="ngModel" name="url" placeholder="Ingrese url del menu" [(ngModel)]="entidadModal.url" />
+                <div [hidden]="url.valid || url.pristine" class="alert alert-danger">
+                    El url es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label dlabels class="control-label">Icono</label>
+            </div>
+            <div class="col-md-10">
+                <input dTextBox class="form-control" type='text' required #icono="ngModel" name="icono" placeholder="Ingrese icono del menu" [(ngModel)]="entidadModal.icono" />
+                <div [hidden]="icono.valid || icono.pristine" class="alert alert-danger">
+                    El icono es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label dlabels class="control-label">Nivel</label>
+            </div>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='number' #nivelEdicion="ngModel" required id="nivelEdicion" name="nivelEdicion"  placeholder="Ingrese Nivel" [(ngModel)]="entidadModal.nivel" />
+                <div [hidden]="nivelEdicion.valid || nivelEdicion.pristine" class="alert alert-danger">
+                    El Nivel es obligatorio
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label dlabels class="control-label">Orden</label>
+            </div>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='number' #orden="ngModel" required name="orden" placeholder="Ingrese orden" [(ngModel)]="entidadModal.orden" />
+                <div [hidden]="orden.valid || orden.pristine" class="alert alert-danger">
+                    El orden es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label dlabels class="control-label">Estado</label>
+            </div>
+            <div class="col-md-4">
+                <ng-select required [items]="arregloEstado" placeholder="Seleccione un Estado" bindLabel="nom_estado" bindValue="estado" [(ngModel)]="entidadModal.activo" #estado="ngModel" name="estado">
+                </ng-select>
+                <div [hidden]="estado.valid || estado.valid" class="alert alert-danger">
+                    El estado es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" type="submit" id="btnGuardar" [disabled]="!MenuEditarForm.form.valid">
+                <i class="bi bi-save2-fill"></i> Guardar</button>
+            <button class="btn btn-secondary btn-sm" id="btnCancelar" type="button" (click)="closeModal()">
+                <i class="mdi mdi-close"></i>&nbsp;Cancelar</button>
+        </div>
+    </form>
+</div>

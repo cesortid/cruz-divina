@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title">Asignar Componente</h4>
+    <p class="pl-4 pr-4">Formulario para el asignación del componente</p>
+</div>
+<div class="modal-body mr-5 ml-5">
+    <form style="height: 500px;overflow-x: hidden">
+        <div class="row form-group">
+            <label dlabels class="col-sm-2 control-label">Componentes: </label>
+            <div class="col-sm-8">
+                <input dTextBox class="form-control" type='text' placeholder="Ingrese nombre del componente" name="campoBusqueda" [(ngModel)]="campoBusqueda" />
+            </div>
+            <div class="col-sm-2">
+                <div class=" pull-right">
+                    <button type="button" id="btnBuscar" class="btn pull-left btn-secondary btn-sm" (click)="busqueda()"><i class="mdi mdi-magnify"></i> Buscar</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+
+
+            <div class="row">
+                <div class="col-12 row-treeview2">
+                    <input type="checkbox" class="col-1" (change)="ComponentesTodo()" value="todos" name="todos" [(ngModel)]="todos" id="TodosCmoponentes" />
+                    <label class="control-label col-11" style="font-size: 11px;" for="TodosCmoponentes">Todos</label>
+                </div>
+                <div class="col-12" *ngFor="let campos of arregloDetalleComponente, index as i">
+                    <div class="row">
+                        <div class="col-9 row-treeview2">
+                            <input type="checkbox" name="componente" (click)="asignarComponente(campos.id_componente,'visible' + i)" id="asd{{i}}" />
+                            <label class="control-label col-12" style="font-size: 11px;" for="asd{{i}}">{{campos.nombre_componente}}</label>
+                        </div>
+                        <div class="col-3 row-treeview2">
+                            <input type="checkbox" class="ckbtodo" checked="true" id="cv{{i}}" style="display: none" name="{{'visible' + i}}" (click)="asignarVisible(campos.id_componente,'visible' + i)" />
+                            <label class="control-label ckbtodo col-12" for="cv{{i}}" id="{{'visible' + i}}" style="display: none">visible</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" type="button" id="btnGuardar" [hidden]="ocultarRegistrar" (click)="guardarAsignacionComponente()"><i class="mdi mdi-content-save"></i> Guardar</button>
+        <button class="btn btn-secondary btn-sm" id="btnCancelar" type="button" (click)="closeModal()"><i class="mdi mdi-close"></i> Cancelar</button>
+    </div>
+</div>

@@ -1,0 +1,235 @@
+<div class="p-hidde" *ngIf="OBJ_FICHA_MEDICA!=null">
+    <div class="d-flex align-items-center d-info-postulante">
+      <div>
+        <i class="bi bi-person-rolodex"></i>
+      </div>
+      <div class="ps-2">
+        <div><b>{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</b></div>
+        <div>
+          <span class="badge bg-info">
+            <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==1">No Profesional</ng-container>
+            <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==2">Profesional</ng-container>              
+          </span>
+  
+        </div>
+      </div>
+      &nbsp;<br>
+  
+    </div>
+  <hr>
+  </div>
+<section class="formulario formulario-auditivo">
+    <div class="p-show position-fixed p-pie" *ngIf="OBJ_FICHA_MEDICA!=null">
+        <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 5 de 9
+      </div>
+    <div class="mb-3 row p-hidde">
+        <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+        <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion" (blur)="VerificarInicio()"></div>
+        <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+        <div class="col-2 col-form-label text-star"><input type="time" class="form-control p-hidde"
+                [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion"><input type="text" class="form-control p-show"></div>
+    </div>
+    <div [ngClass]="PUEDE_REGISTRAR ? 'd-block' : 'd-none'">
+        <div [ngClass]="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!='' ? 'd-block' : 'd-none'">
+            <!-- -->
+            <h1>IV: EVALUACIÓN AUDITIVA</h1>
+
+            <div class="d-flex justify-content-between">
+                <h2>1: Otoscopia</h2>
+                <div class="d-flex justify-content-between gap-4">
+                    <div>(+)</div>
+                    <div>(-)</div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <!-- [(ngModel)]="this.objFM.hora_inicio_evaluacion:null,
+        [(ngModel)]="this.objFM.hora_termino_evaluacion:null,
+        
+        [(ngModel)]="this.objFM.oido_derecho"
+        [(ngModel)]="this.objFM.oido_izquierdo"
+        [(ngModel)]="this.objFM.ambos_oidos"
+        [(ngModel)]="this.objFM.id_resultado_observacion_evalauditiva"
+        [(ngModel)]="this.objFM.observacion" -->
+                    <div class="col-12">
+                                        <textarea class="form-control text-center" [(ngModel)]="objFM.otoscopia"></textarea>
+
+                    </div>
+            </div>
+            <h2>2. Examen Auditivo</h2>
+            <div class="row mb-3">
+                <div class="col-8 offset-2">
+                    <table class="w-100">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="border border-secondary text-center">250</th>
+                                <th class="border border-secondary text-center">500</th>
+                                <th class="border border-secondary text-center">1000</th>
+                                <th class="border border-secondary text-center">2000</th>
+                                <th class="border border-secondary text-center">4000</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>OD</td>
+                                <td class="border border-secondary"><input type="text" class="form-control" readonly>
+                                </td>
+                                <td class="border border-secondary"><input type="number" max="90" class="form-control"
+                                        [(ngModel)]="objFM.examen_auditivo_od_500" id="objFM.examen_auditivo_od_500"
+                                        (ngModelChange)="ExmamenAuditivoOD($event)"
+                                        (blur)="ValidarRangoExmaneAuditivoOD()" step="5"></td>
+                                <td class="border border-secondary"><input type="text" class="form-control"
+                                        [(ngModel)]="objFM.examen_auditivo_od_1000" readonly></td>
+                                <td class="border border-secondary"><input type="text" class="form-control"
+                                        [(ngModel)]="objFM.examen_auditivo_od_2000" readonly></td>
+                                <td class="border border-secondary">
+                                    <ng-container *ngIf="objFM.id_condicion==1">
+                                        <input type="text" class="form-control" readonly>
+                                    </ng-container>
+                                    <ng-container *ngIf="objFM.id_condicion==2">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="objFM.examen_auditivo_od_4000" readonly>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>OI</td>
+                                <td class="border border-secondary"><input type="text" class="form-control" readonly>
+                                </td>
+                                <td class="border border-secondary"><input type="number" max="90" class="form-control"
+                                        [(ngModel)]="objFM.examen_auditivo_oi_500" id="objFM.examen_auditivo_oi_500"
+                                        (ngModelChange)="ExmamenAuditivoOI($event)"
+                                        (blur)="ValidarRangoExmaneAuditivoOI()" step="5"></td>
+                                <td class="border border-secondary"><input type="text" class="form-control"
+                                        [(ngModel)]="objFM.examen_auditivo_oi_1000" readonly></td>
+                                <td class="border border-secondary"><input type="text" class="form-control"
+                                        [(ngModel)]="objFM.examen_auditivo_oi_2000" readonly></td>
+                                <td class="border border-secondary">
+                                    <ng-container *ngIf="objFM.id_condicion==1">
+                                        <input type="text" class="form-control" readonly>
+                                    </ng-container>
+                                    <ng-container *ngIf="objFM.id_condicion==2">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="objFM.examen_auditivo_oi_4000" readonly>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <canvas id="myChart" width="300" height="300"></canvas>
+            </div>
+            <div>Valores:</div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <table class="w-100">
+                        <tr>
+                            <td class="text-center">(+)</td>
+                            <td class="text-center">(-)</td>
+                            <td class="border border-secondary">OIDO DERECHO</td>
+                            <td class="border border-secondary w-10">
+                                <input type="text" class="form-control" [(ngModel)]="objFM.oido_derecho" readonly>
+                            </td>
+                            <td class="text-center w-25">Pérdida</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">(+)</td>
+                            <td class="text-center">(-)</td>
+                            <td class="border border-secondary">OIDO IZQUIERDO</td>
+                            <td class="border border-secondary w-10">
+                                <input type="text" class="form-control" [(ngModel)]="objFM.oido_izquierdo" readonly>
+                            </td>
+                            <td class="text-center w-25">Pérdida</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">(+)</td>
+                            <td class="text-center">(-)</td>
+                            <td class="border border-secondary">AMBOS OIDOS</td>
+                            <td class="border border-secondary w-10">
+                                <input type="text" class="form-control" [(ngModel)]="objFM.ambos_oidos" readonly>
+                            </td>
+                            <td class="text-center w-25">(dB)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="mb-3 row g-3">
+                <div class="col-12 offset-1 col-form-label text-star">Resultado Final de la Evaluación Auditiva</div>
+
+                <div class="col-3 text-center col-form-label">APTO</div>
+                <div class="col-3 text-center">
+                    <div class="form-control h-100">
+                        <ng-container *ngIf="objFM.resultado_prueba">
+                            <b>X</b>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-3 text-center col-form-label">NO APTO</div>
+                <div class="col-3 text-center">
+                    <div class="form-control  h-100">
+                        <ng-container *ngIf="!objFM.resultado_prueba">
+                            <b>X</b>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row g-3">
+                <div class="col-3 col-form-label text-star">Observaciones</div>
+
+                <div class="col-9 text-center col-form-label">
+                    <!-- <textarea class="form-control" [(ngModel)]="objFM.observacion"></textarea> -->
+
+                    <ng-select [items]="cboObservaciones" placeholder="Seleccione" bindLabel="descripcion"
+                        bindValue="id_resultado_observacion_evaluacion_auditiva"
+                        [(ngModel)]="objFM.id_resultado_observacion_evalauditiva" [clearable]="false"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control">
+                    </ng-select>
+
+
+
+                </div>
+            </div>
+
+            <div class="mb-3 row g-3 p-hidde">
+                <div class="col-12 text-center">
+                    <ng-container *hasClaim="'btn_guardar_auditivo'">
+                        <button class="btn btn-primary" (click)="Guardar()"><i class="bi bi-save2-fill"></i> Guardar</button>
+                    </ng-container>
+                    <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+                        <button class="btn btn-secondary ms-1" (click)="Imprimir()"><i class="bi bi-printer-fill"></i> Imprimir</button>
+                    </ng-container>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="mb-3 row g-3 firma">
+                <div class="col-5 offset-1 col-form-label text-center">
+                    <hr> Firma , sello y huella digital <br>
+                    Responsable de la Evaluación Auditiva
+                </div>
+
+                <div class="col-5 offset-1 text-center col-form-label">
+                    <hr>
+                    Firma y huella digital<br>postulante
+                </div>
+            </div>
+
+            <div class="mb-3 row mt-4 p-show p-d-flex">
+
+
+                <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+                <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                        [(ngModel)]="objFM.hora_inicio_evaluacion"></div>
+                <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+                <div class="col-2 col-form-label text-star"><input type="text" class="form-control p-show"></div>
+            </div>
+        </div>
+    </div>
+</section>

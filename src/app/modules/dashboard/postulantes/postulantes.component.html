@@ -1,0 +1,95 @@
+<div class="container-fluid ps-5 pe-5">
+    <h1 class="mt-4 mb-4">Postulantes</h1>
+    <div class="row g-3">
+
+
+        <div class="col-md-2">Tipo de Documento</div>
+        <div class="col-md-2">
+            <ng-select [items]="cboTipoDocumento"
+            placeholder="Seleccione"
+            bindLabel="descripcion"
+            bindValue="id_tipo_documento"
+            [(ngModel)]="filtro.id_tipo_documento"
+            notFoundText="no se ha encontrado ningún item" class="fomr-control">
+          </ng-select>
+        </div>
+        <div class="col-md-2">N° de Documento</div>
+        <div class="col-md-2"><input type="text" class="form-control" [(ngModel)]="filtro.numero_documento"></div>
+        <div class="col-md-2">N° de Informe</div>
+        <div class="col-md-2"><input type="text" class="form-control" [(ngModel)]="filtro.numero_informe"></div>
+
+        <div class="col-md-2">Apellido Paterno</div>
+        <div class="col-md-2"><input type="text" class="form-control" [(ngModel)]="filtro.apellido_paterno"></div>
+
+        <div class="col-md-2">Apellido Materno </div>
+        <div class="col-md-2"><input type="text" class="form-control" [(ngModel)]="filtro.apellido_materno"></div>
+
+        <div class="col-md-2">Nombres</div>
+        <div class="col-md-2"><input type="text" class="form-control" [(ngModel)]="filtro.nombres"></div>
+
+
+        <!-- {"id_ficha_medica_snc":0,"id_tipo_documento":0,"numero_informe":"","numero_documento":"","apellido_paterno":"","apellido_materno":"","nombres":"","skip":0,"take":10} -->
+        <div class="col-12 text-end">
+            <button class="btn btn-primary" (click)="Busqueda()"><i class="bi bi-search "></i> Buscar</button>
+            <ng-container *hasClaim="'btn_nuevo_anexo01'">
+                <button class="btn btn-secondary ms-1" (click)="Abriranexo01()"><i class="bi bi-plus-lg"></i> Nuevo</button>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="mt-4 p-hidde">
+        <div class="scroll">
+
+        <table  class="table app-table">
+            <thead>
+                <tr class="text-center">
+                    <th>Fecha</th>
+                    <th>Nombre</th>
+                    <th>Paterno</th>
+                    <th>Materno</th>
+                    <th>Tipo Doc.</th>
+                    <th>N° Doc.</th>
+                    <th>Trámite</th>
+                    <th>Categoría</th>
+                    <th>Clase</th>
+                    <th>Teléfono</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of lstPostulantes">
+                    <tr>
+                        <td>{{item.fecha_informe}}</td>
+                        <td>{{item.nombres}}</td>
+                        <td>{{item.apellido_paterno}}</td>
+                        <td>{{item.apellido_materno}}</td>
+                        <td>{{item.tipo_documento}}</td>
+                        <td>{{item.numero_documento}}</td>
+                        <td>{{item.clase}}</td>
+                        <td>{{item.categoria}}</td>
+                        <td>{{item.condicion}}</td>
+                        <td>{{item.telefono}}</td>
+                        <td>
+                            <ng-container *hasClaim="'btn_guardar_anexo_01'">
+                                <button class="btn btn-sm btn-outlinet-secondary" (click)="Editar(item)"><i class="bi bi-pencil-fill"></i> Editar</button>
+                            </ng-container>
+                        </td>
+
+                        <td><button class="btn btn-sm btn-outlinet-secondary" (click)="EvaluarPostulante(item.id_ficha_medica_snc)"><i class="bi bi-card-checklist"></i> Evaluar</button></td>
+                    </tr>
+                </ng-container>
+
+            </tbody>
+        </table>
+    </div>
+
+        <div class="col-12 p-hidde">
+            <nav class="pt-4 pl-3 float-end">
+              <pagination [totalItems]="totalRegistros" [itemsPerPage]="itemxPagina" [boundaryLinks]="true" previousText="&lsaquo;"
+                nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" (pageChanged)="cambiarPagina($event)">
+              </pagination>
+            </nav>
+          </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h4 class="modal-title" [hidden]="!cambiarEditar">Nuevo Perfil</h4>
+    <h4 class="modal-title" [hidden]="cambiarEditar">Editar Perfil</h4>
+    <p class="pl-4 pr-4" [hidden]="!cambiarEditar">Formulario para el registro de perfil</p>
+    <p class="pl-4 pr-4" [hidden]="cambiarEditar">Formulario para la edición de perfil</p>
+</div>
+<div class="modal-body">
+    <form (ngSubmit)="administrarPerfil();" #PerfilGrabarForm="ngForm">
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Nombre Perfil:</label>
+            <div class="col-md-10">
+                <input dTextBox class="form-control" type='text' #descripcion="ngModel" required name="descripcion" placeholder="Ingrese el nombre del perfil" [(ngModel)]="entidadModal.descripcion" />
+                <div [hidden]="descripcion.valid || descripcion.pristine" class="alert alert-danger">
+                    El nombre del perfil es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" type="submit" id="btnGuardar" [disabled]="!PerfilGrabarForm.form.valid"><i class="mdi mdi-content-save"></i> Guardar</button>
+            <button class="btn btn-secondary btn-sm" id="btnCancelar" type="button" (click)="closeModal()"><i class="mdi mdi-close"></i> Cancelar</button>
+        </div>
+    </form>
+</div>

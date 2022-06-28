@@ -1,0 +1,564 @@
+<div class="p-hidde" *ngIf="OBJ_FICHA_MEDICA!=null">
+    <div class="d-flex align-items-center d-info-postulante">
+        <div>
+            <i class="bi bi-person-rolodex"></i>
+        </div>
+        <div class="ps-2">
+            <div><b>{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}}
+                    {{OBJ_FICHA_MEDICA.nombres}}</b></div>
+            <div>
+                <span class="badge bg-info">
+                    <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==1">No Profesional</ng-container>
+                    <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==2">Profesional</ng-container>
+                </span>
+
+            </div>
+        </div>
+        &nbsp;<br>
+
+    </div>
+    <hr>
+</div>
+<tabset class="tabs_eva_clinica">
+    <tab heading="EVALUACIÓN CLÍNICA I" id="tab1">
+
+        <section class="formulario formulario-evaluacion-clinica-i">
+            <div class="p-pie-ac-0" *ngIf="OBJ_FICHA_MEDICA!=null">
+                <div class="p-pie-ac-2">
+                    <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 6 de 9
+                </div>
+            </div>
+            <div class="mb-3 row p-hidde">
+
+
+                <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+                <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                        [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion"
+                        (blur)="VerificarInicio()"></div>
+                <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+                <div class="col-2 col-form-label text-star"><input type="time" class="form-control p-hidde"
+                        [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion"
+                        (blur)="SetearHoraECIIyIII()"><input type="text" class="form-control p-show"></div>
+            </div>
+            <ng-container *ngIf="PUEDE_REGISTRAR">
+                <ng-container>
+                    <h1>V: EVALUACIÓN CLÍNICA</h1>
+                    <h2>1: ANAMNESIS</h2>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <textarea class="form-control text-center" [(ngModel)]="objFM.anaminesis"></textarea>
+                        </div>
+                    </div>
+                    <h2>2: ANTECEDENTES PERSONALE</h2>
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="tabla-bordes cuadro">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>SI</th>
+                                        <th>NO</th>
+                                        <th>OBSERVACIÓN</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of lstAntecedentes">
+
+                                        <tr *ngIf="item.id_padre==0">
+                                            <td colspan="4" class="fw-bolder">{{item.descripcion}}</td>
+                                        </tr>
+                                        <tr *ngIf="item.id_padre>0 && item.flag_control">
+                                            <td>{{item.descripcion}}</td>
+                                            <td>
+                                                <label class="content-input">
+                                                    <input type="radio"
+                                                        [name]="'optAntecedente_'+item.id_resultado_antecedentes_personales"
+                                                        [value]="true" [(ngModel)]="item.respuesta"
+                                                        (change)="ValidarNegocio()">
+                                                    <i></i>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="content-input">
+                                                    <input type="radio"
+                                                        [name]="'optAntecedente_'+item.id_resultado_antecedentes_personales"
+                                                        [value]="false" [(ngModel)]="item.respuesta"
+                                                        (change)="ValidarNegocio()">
+                                                    <i></i>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" [(ngModel)]="item.observacion">
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="item.id_padre>0 && !item.flag_control">
+                                            <td colspan="4" class="fw-bolder ps-3">{{item.descripcion}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mb-3 mt-3 p-hidde">
+                        <div class="col-12 text-center">
+                            <ng-container *hasClaim="'btn_guardar_eval_clinicaI'">
+                                <button class="btn btn-primary" (click)="GuardarEvaliacionclinicaI()" type="submit"><i
+                                        class="bi bi-save2-fill"></i> Guardar</button>
+                            </ng-container>
+                            <ng-container
+                                *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+
+                                <button class="btn btn-secondary ms-1" (click)="Imprimir()"><i
+                                        class="bi bi-printer-fill"></i> Imprimir</button>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </section>
+
+    </tab>
+    <tab heading="EVALUACIÓN CLÍNICA II Y III" id="tab1">
+
+
+
+        <section class="formulario formulario-evaluacion-clinica-ii">
+            <div class="p-pie-ac" *ngIf="OBJ_FICHA_MEDICA!=null">
+                <div class="p-pie-ac-2">
+                    <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 7 de 9
+                </div>
+            </div>
+            <ng-container *ngIf="PUEDE_REGISTRAR">
+                <ng-container *ngIf="objFM.id_evaluacion_clinica > 0">
+                    <div class="break"></div>
+                    <div class="pmt"></div>
+
+                    <h2>3: EXAMEN FISICO</h2>
+                    <h2>4: ANTROPOMETRIA</h2>
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-1">Peso</div>
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input type="number" class="form-control" [(ngModel)]="objAntro.antropometria_peso"
+                                    (change)="CalcularIMC()">
+                                <span class="input-group-text" id="basic-addon2">Kg.</span>
+                            </div>
+                        </div>
+                        <div class="col-1">Talla</div>
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input type="number" class="form-control" [(ngModel)]="objAntro.antropometria_talla"
+                                    (change)="CalcularIMC()">
+                                <span class="input-group-text" id="basic-addon2">cm.</span>
+                            </div>
+                        </div>
+                        <div class="col-1">IMC</div>
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input type="number" class="form-control" [(ngModel)]="objAntro.antropometria_imc">
+                                <span class="input-group-text" id="basic-addon2">Kg/m<sup>2</sup></span>
+                            </div>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.antropometria_peso">El peso
+                            no se encuentra en el rango 42 y 150</div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.antropometria_talla">La
+                            talla del postulante debe ser mayor a 149cm</div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.antropometria_imc">IMC debe
+                            ser mayor a 18 y menor a 30</div>
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12 fw-bolder">&raquo; Sistema Cardio-respiratorio</div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Presión Arterial Sistólica</div>
+                        <div class="col-4">
+                            <input type="number" class="form-control" [(ngModel)]="objAntro.presion_arterial_sistolica"
+                                (blur)="ValidarNegocio()">
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.presion_arterial_sistolica">
+                            La presión arterial sistólica debe ser mayor a 105 y no mayor a 160</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Presión Arterial Diastólica</div>
+                        <div class="col-4">
+                            <input type="number" class="form-control" [(ngModel)]="objAntro.presion_arterial_diastolica"
+                                (blur)="ValidarNegocio()">
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none"
+                            id="objAntro.presion_arterial_diastolica">La presión arterial diastólica debe ser mayor a 55
+                            y no mayor a 100</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Frecuencia Respiratoria en Reposo</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboFRespiratorio" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_frec_respira_reposo"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_frecuencia_respiratoria_reposo" [clearable]="false"
+                                (change)="ValidarNegocio()">
+                                <!-- [(ngModel)]="objFM.id_tipo_documento" -->
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none"
+                            id="objAntro.frecuencia_respiratoria_reposo">La frecuencia Respiratoria debe ser mayor a 15
+                            y menor a 20</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Frecuencia de Pulso en Reposo</div>
+                        <div class="col-4">
+                            <input type="number" class="form-control" [(ngModel)]="objAntro.frecuencia_pulso_reposo"
+                                (blur)="ValidarNegocio()">
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.frecuencia_pulso_reposo">La
+                            frecuencia debe ser mayor a 59 y no mayor a 100</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Pulsoximetria</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboPulsoximetro" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_pulsoximetria" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_pulsoximetria" [clearable]="false"
+                                (change)="ValidarNegocio()">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.pulsoximetria">Pulso debe
+                            ser mayor 94</div>
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Capacidad Ventilatoria</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboCVentolatoria" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_capacidad_ventilatoria"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_capacidad_ventilatoria" (change)="ValidarNegocio()"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.capacidad_ventilatoria">
+                            Capacidad ventilatoria debe ser conservada</div>
+                    </div>
+                    <h2>5: APARATO LOCOMOTOR</h2>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Fuerza Muscular</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboFMuscular" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_fuerza_muscular" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_resultado_fuerza_muscular"
+                                (change)="ValidarNegocio()" [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.fuerza_muscular">Fuerza
+                            muscular no conservada</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Ausencias o Desviaciones</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboLocomotor" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_lesiones_aparatolocom"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_ausencia" (change)="ValidarNegocio()"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.ausencias_desviaciones">
+                            Ausencias o Desviaciones presentes</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Rango de Movimiento articular limitado</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboLocomotor" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_lesiones_aparatolocom"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_rango" (change)="ValidarNegocio()"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.rango_mov">Rango de
+                            movimiento articular limitado presente</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Lesiones Deformantes en Columna Vertebral</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboLocomotor" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_lesiones_aparatolocom"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_les_vertebra" (change)="ValidarNegocio()"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.lesiones_columna">Lesiones
+                            deformantes en columna vertebral presentes</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Lesiones Deformantes en Extremidades</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboLocomotor" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_lesiones_aparatolocom"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_les_extremidades" (change)="ValidarNegocio()"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.lesiones_extremidades">
+                            Lesiones deformantes en extremidades presentes</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12 fw-bolder">&raquo; Sistema Neurológico</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Prueba Indice - Indice</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboPIndice" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_prueba_indice" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_resultado_prueba_indice"
+                                (change)="ValidarNegocio()" [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.prueba_indice">Prueba indice
+                            - indice "Asinergia"</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Romber: Prueba Indice - Nariz </div>
+                        <div class="col-4">
+                            <ng-select [items]="cboPIndice" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_prueba_indice" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_resultado_romber_prueba_na"
+                                (change)="ValidarNegocio()" [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.romber">Prueba Romber:
+                            Prueba Indice - Nariz "Asinergia"</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Romberg</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboRomberg" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_romberg" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_resultado_romberg"
+                                (change)="ValidarNegocio()" [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.romberg">Romberg "Pérdida de
+                            equilibrio"</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Movimientos Involuntarios</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboMovReflejos" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_movimientos_reflejos"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_movimientos_reflejos" (change)="ValidarNegocio()"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.movimientos_reflejos">
+                            Movimientos involuntarios presentes</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Tono Muscular</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboTMuscular" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_tono_muscular" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_resultado_tono_muscular"
+                                (change)="ValidarNegocio()" [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.tono_muscular">Tono muscular
+                            afectado</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Nociones Temporoespaciales</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboNociones" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_nociones_temporoespaciales"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_nociones_temporoespaciales"
+                                (change)="ValidarNegocio()" [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.nociones_temporoespaciales">
+                            Nociones temporoespaciales alteradas</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Reflejos Osteotendinosos</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboMovReflejos" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_movimientos_reflejos"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_ref_osteo" (change)="ValidarNegocio()"
+                                [clearable]="false">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.ref_osteo">Reflejos
+                            osteotendinosos ausentes</div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </section>
+        <div class="break"></div>
+        <section class="formulario formulario-evaluacion-clinica-ii">
+            <div class="p-pie-ac" *ngIf="OBJ_FICHA_MEDICA!=null">
+                <div class="p-pie-ac-2">
+                    <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 8 de 9
+                </div>
+            </div>
+            <div class="pmt"></div>
+            <ng-container *ngIf="PUEDE_REGISTRAR">
+                <ng-container>
+                    <div class="row mb-3">
+                        <div class="col-12 fw-bolder">&raquo; Indice de Monitoreo de Somnolencia (Postulantes
+                            Profesionales)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Indice de Masa Corporal</div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" [(ngModel)]="objAntro.indice_masa_corporal"
+                                [disabled]="true">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Presión Arterial Sistólica o Diastólica</div>
+                        <div class="col-4">
+                            <input type="text" class="form-control"
+                                [(ngModel)]="objAntro.presion_arterial_sistolica_diastolica" [disabled]="true">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Orofaringe con clasificación de Mallampati</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboOrofaringe" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_orofaringe_clasificacion"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_orofaringe_clasificacion" [clearable]="false"
+                                [disabled]="OBJ_FICHA_MEDICA?.id_condicion==1?true:false" (change)="ValidarNegocio()">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.orofaringe">Orofaringe con
+                            clasificación de mallampati mayor a II</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Perimetro del cuello en Centimetros</div>
+                        <div class="col-4">
+                            <ng-select [items]="cboPerimetro" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_perimetro_cuello" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_resultado_perimetro_cuello"
+                                [clearable]="false" [disabled]="OBJ_FICHA_MEDICA?.id_condicion==1?true:false"
+                                (change)="ValidarNegocio()">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.perimetro_cuello">Perimetro
+                            del cuello en centimetros fuera del rango (Hombres: hasta 46, Mujeres: hasta 38)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Escala de somnolencia Epworth<br>(Versión peruana modificada)
+                        </div>
+                        <div class="col-4">
+                            <ng-select [items]="cboEscala" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_escala_somnolencia"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                [(ngModel)]="objAntro.id_resultado_escala_somnolencia" [clearable]="false"
+                                [disabled]="OBJ_FICHA_MEDICA?.id_condicion==1?true:false" (change)="ValidarNegocio()">
+                            </ng-select>
+                        </div>
+                        <div class="col-12 p-hidde text-danger fw-bold d-none" id="objAntro.escala_somnolencia">Escala
+                            de somnolencia Epworth fuera de rango (Valor debe ser menor a 12)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-5 ps-4">&#8226; Ronquido intenso (atestiguado por la pareja o familiares)</div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" [(ngModel)]="objAntro.ronquido_intenso"
+                                [disabled]="true">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3 ps-4">Resultado</div>
+                        <div class="col-3">
+                            <!-- <input type="text" class="form-control" [(ngModel)]="objAntro.resultado_mon"> -->
+                            <div class="form-control">{{objAntro.resultado_mon}}</div>
+                        </div>
+                        <div class="col-2 text-end">Valor (+)</div>
+                        <div class="col-1">(-)</div>
+                    </div>
+                    <div class="mb-3 row g-3">
+                        <div class="col-12 offset-1 col-form-label text-star">Resultado Final de la Evaluación Clínica
+                        </div>
+
+                        <div class="col-3 text-center col-form-label">APTO</div>
+                        <div class="col-3 text-center">
+                            <div class="form-control h-100">
+                                <ng-container *ngIf="objAntro.resultado_evaluacion_clinica">
+                                    <b>X</b>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="col-3 text-center col-form-label">NO APTO</div>
+                        <div class="col-3 text-center">
+                            <div class="form-control  h-100">
+                                <ng-container *ngIf="!objAntro.resultado_evaluacion_clinica">
+                                    <b>X</b>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row g-3">
+                        <div class="col-3 col-form-label text-star">Observaciones</div>
+
+                        <div class="col-9 text-center col-form-label">
+                            <ng-select [items]="cboObservaciones" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_observacion_clinica" notFoundText="no se ha encontrado ningún item"
+                                class="fomr-control" [(ngModel)]="objAntro.id_observacion_clinica">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="row mb-3 mt-3 p-hidde">
+                        <div class="col-12 text-center">
+                            <ng-container *hasClaim="'btn_guardar_eval_clinicaI'">
+                                <button class="btn btn-primary" (click)="GuardarEvaliacionclinicaIIyIII()"
+                                    type="submit"><i class="bi bi-save2-fill"></i> Guardar</button>
+                            </ng-container>
+
+                            <ng-container
+                                *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+
+                                <button class="btn btn-secondary ms-1" (click)="Imprimir()"><i
+                                        class="bi bi-printer-fill"></i> Imprimir</button>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="mb-3 row g-3 firma">
+                        <div class="col-5 offset-1 col-form-label text-center">
+                            <hr> Firma , sello y huella digital <br>
+                            Responsable de la Evaluación Clínica
+                        </div>
+
+                        <div class="col-5 offset-1 text-center col-form-label">
+                            <hr>
+                            Firma y huella digital<br>postulante
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row mt-4 p-show p-d-flex">
+
+
+                        <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+                        <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                                [(ngModel)]="objFM.hora_inicio_evaluacion"></div>
+                        <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+                        <div class="col-2 col-form-label text-star"><input type="text" class="form-control p-show">
+                        </div>
+                    </div>
+
+
+                </ng-container>
+            </ng-container>
+        </section>
+
+    </tab>
+</tabset>

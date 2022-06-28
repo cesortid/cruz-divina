@@ -1,0 +1,431 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left"></h4>
+    <button type="button" class="close btn-close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+
+<div class="container mt-4 mb-4 container-anexo01">
+    <div class="modal-body">
+        <section class="formulario w-100 formulario-anexo01">
+            <div class="p-show position-fixed p-pie">
+                <span class="text-uppercase">{{objFM.apellido_paterno}} {{objFM.apellido_materno}} {{objFM.nombres}}</span> - Hoja 1 de 9
+              </div>
+            <h1 class="text-center">FICHA DE EVALUACIONES MEDICAS Y PSICOLOGICAS PARA POSTULANTES A LICENCIAS DE
+                CONDUCIR</h1>
+            <div class="mb-3 row">
+                <div class="col-3 offset-6 col-form-label text-star">Código Interno</div>
+                <div class="col-3 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.numero_snc" [ngModelOptions]="{standalone: true}"></div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">N° de Informe</div>
+                <div class="col-3 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.numero_informe" id="objFM.numero_informe"
+                        [ngModelOptions]="{standalone: true}"></div>
+                <div class="col-3 col-form-label text-star">Fecha de Informe</div>
+                <div class="col-3 col-form-label text-star"><input type="date" class="form-control"
+                        [(ngModel)]="objFM.fecha_informe" id="objFM.fecha_informe" [ngModelOptions]="{standalone: true}"
+                        disabled></div>
+            </div>
+            <h2>EVALUACION MEDICA</h2>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Fecha de Inicio</div>
+                <div class="col-3 col-form-label text-star"><input type="date" class="form-control"
+                        [(ngModel)]="objFM.fecha_inicio_evaluacion" id="objFM.fecha_inicio_evaluacion"
+                        [ngModelOptions]="{standalone: true}" (ngModelChange)="FechaInicioSeleccionada()"></div>
+                <div class="col-3 col-form-label text-star ">Fecha de Término</div>
+                <div class="col-3 col-form-label text-star"><input type="date" class="form-control"
+                        [(ngModel)]="objFM.fecha_termino_evaluacion" id="objFM.fecha_termino_evaluacion"
+                        [ngModelOptions]="{standalone: true}" disabled></div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Hora de Inicio</div>
+                <div class="col-3 col-form-label text-star"><input type="time" class="form-control p-hidde"
+                        [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion"
+                        [ngModelOptions]="{standalone: true}">
+                        <input type="text" class="form-control p-show">
+                    </div>
+                <div class="col-3 col-form-label text-star">Hora de Término</div>
+                <div class="col-3 col-form-label text-star"><input type="time" class="form-control p-hidde"
+                        [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion"
+                        [ngModelOptions]="{standalone: true}" [disabled]="FORMULARIOS_INCOMPLETOS"><input type="text" class="form-control p-show"></div>
+            </div>
+            <h2>DATOS DEL POSTULANTE</h2>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Tipo de Documento</div>
+                <div class="col-3 col-form-label text-star">
+                    <ng-select [items]="cboTipoDocumento" placeholder="Seleccione" bindLabel="descripcion"
+                        bindValue="id_tipo_documento" [(ngModel)]="objFM.id_tipo_documento"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control" #ddlTipoDocumento
+                        [ngModelOptions]="{standalone: true}" [clearable]="false">
+                    </ng-select>
+
+                </div>
+                <div class="col-3 col-form-label text-star">N° de Documento</div>
+                <div class="col-3 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.numero_documento" id="objFM.numero_documento"
+                        [ngModelOptions]="{standalone: true}"></div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Apellido Paterno</div>
+                <div class="col-3 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.apellido_paterno" id="objFM.apellido_paterno"
+                        [ngModelOptions]="{standalone: true}"></div>
+                <div class="col-3 col-form-label text-star">Apellido Materno</div>
+                <div class="col-3 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.apellido_materno" id="objFM.apellido_materno"
+                        [ngModelOptions]="{standalone: true}"></div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Nombres</div>
+                <div class="col-9 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.nombres" id="objFM.nombres" [ngModelOptions]="{standalone: true}"></div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Fecha de Nacimiento</div>
+                <div class="col-2 col-form-label text-star"><input type="date" class="form-control"
+                        [(ngModel)]="objFM.fecha_nacimiento" id="objFM.fecha_nacimiento"
+                        [ngModelOptions]="{standalone: true}" (change)="getEdad($event)"></div>
+                <div class="col-1 col-form-label text-star">Edad</div>
+                <div class="col-1 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.edad" id="objFM.edad" [ngModelOptions]="{standalone: true}" disabled></div>
+                <div class="col-1 col-form-label text-star">Sexo</div>
+                <div class="col-1 col-form-label text-star">
+                    <ng-select [items]="cboSexo" placeholder="Seleccione" bindLabel="descripcion" bindValue="id_sexo"
+                        [(ngModel)]="objFM.id_sexo" #ddlSexo [clearable]="false"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [ngModelOptions]="{standalone: true}">
+                    </ng-select>
+                </div>
+                <div class="col-1 col-form-label text-star">Teléfono</div>
+                <div class="col-2 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.telefono" id="objFM.telefono" [ngModelOptions]="{standalone: true}"></div>
+            </div>
+            <hr class="p-hidde">
+            <div class="mb-3 row p-hidde">
+                <div class="col-12 col-form-label text-star mb-2" id="optPaisNacimiento"><b>Lugar de Nacimiento</b>
+                </div>
+
+
+                <div class="col-4">
+                    <label class="content-input">
+                        <input type="radio" name="lnacimiento" [value]="1" [(ngModel)]="objFM.origen_nac">
+                        <i></i> PERU
+                    </label>
+                </div>
+                <div class="col-4">
+                    <label class="content-input">
+                        <input type="radio" name="lnacimiento" [value]="2" [(ngModel)]="objFM.origen_nac">
+                        <i></i> EXTRANJERO
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3 row p-hidde">
+                <ng-container *ngIf="objFM.origen_nac==1">
+                    <div class="col-2 col-form-label text-star">Departamento</div>
+                    <div class="col-2 col-form-label text-star">
+                        <ng-select [items]="cboDepartamentoNac" placeholder="Seleccione" bindLabel="nombdep"
+                            bindValue="iddpto" [(ngModel)]="objFM.iddpto" (change)="CargarProvinciaNac($event)"
+                            #ddlDepartamentoNac notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                            [ngModelOptions]="{standalone: true}">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-1 col-form-label text-star">Provincia</div>
+                    <div class="col-3 col-form-label text-star">
+                        <ng-select [items]="cboProvinciaNac" placeholder="Seleccione" bindLabel="nombprov"
+                            bindValue="idprov" [(ngModel)]="objFM.idprov" (change)="CargarDistritoNac($event)"
+                            #ddlProvinciaNac notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                            [ngModelOptions]="{standalone: true}">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-1 col-form-label text-star">Distrito</div>
+                    <div class="col-3 col-form-label text-star">
+                        <ng-select [items]="cboDistritoNac" placeholder="Seleccione" bindLabel="nombdist"
+                            bindValue="iddist" [(ngModel)]="objFM.iddist" #ddlDistritoNac
+                            notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                            [ngModelOptions]="{standalone: true}">
+                        </ng-select>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="objFM.origen_nac==2">
+
+                    <div class="col-4">
+                        <ng-select [items]="cboPaises" placeholder="Seleccione" bindLabel="descripcion"
+                            bindValue="id_pais" [(ngModel)]="objFM.id_pais" #ddlPaises
+                            notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                            [ngModelOptions]="{standalone: true}">
+                        </ng-select>
+                    </div>
+
+                </ng-container>
+            </div>
+
+            <hr class="p-hidde">
+
+            <div class="col-12 col-form-label text-star p-hidde"><b>Lugar de Domicilio</b></div>
+
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Dirección</div>
+                <div class="col-9 col-form-label text-star p-hidde"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.direccion" id="objFM.direccion" [ngModelOptions]="{standalone: true}"></div>
+
+
+                <div class="col-9 col-form-label text-star p-show">
+                    <div class="form-control">
+                        {{objFM.direccion}}, <ng-select [items]="cboDepartamentoDir" placeholder="Seleccione" bindLabel="nombdep"
+                        bindValue="iddpto" [(ngModel)]="objFM.iddpto_dir" [clearable]="false" [ngModelOptions]="{standalone: true}" class="d-inline-block ubigeo-direccion">
+                    </ng-select> - <ng-select [items]="cboPrinvinciaDir" placeholder="Seleccione" bindLabel="nombprov"
+                    bindValue="idprov" [(ngModel)]="objFM.idprov_dir"  [clearable]="false" [ngModelOptions]="{standalone: true}" class="d-inline-block ubigeo-direccion">
+                </ng-select> - <ng-select [items]="cboDistritoDir" placeholder="Seleccione" bindLabel="nombdist" bindValue="iddist"
+                [(ngModel)]="objFM.iddist_dir"  [clearable]="false" [ngModelOptions]="{standalone: true}" class="d-inline-block ubigeo-direccion">
+            </ng-select>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 row p-hidde">
+
+                <div class="col-2 col-form-label text-star">Departamento</div>
+                <div class="col-2 col-form-label text-star">
+                    <ng-select [items]="cboDepartamentoDir" placeholder="Seleccione" bindLabel="nombdep"
+                        bindValue="iddpto" [(ngModel)]="objFM.iddpto_dir" (change)="CargarProvinciaDir($event)"
+                        #ddlDepartamentoDir notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [ngModelOptions]="{standalone: true}">
+                    </ng-select>
+                </div>
+
+                <div class="col-1 col-form-label text-star">Provincia</div>
+                <div class="col-3 col-form-label text-star">
+
+                    <ng-select [items]="cboPrinvinciaDir" placeholder="Seleccione" bindLabel="nombprov"
+                        bindValue="idprov" [(ngModel)]="objFM.idprov_dir" (change)="CargarDistritoDir($event)"
+                        #ddlProvinciaDir notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [ngModelOptions]="{standalone: true}">
+                    </ng-select>
+
+                </div>
+                <div class="col-1 col-form-label text-star">Distrito</div>
+                <div class="col-3 col-form-label text-star">
+                    <ng-select [items]="cboDistritoDir" placeholder="Seleccione" bindLabel="nombdist" bindValue="iddist"
+                        [(ngModel)]="objFM.iddist_dir" #ddlDistritoDir notFoundText="no se ha encontrado ningún item"
+                        class="fomr-control" [ngModelOptions]="{standalone: true}">
+                    </ng-select>
+                </div>
+
+            </div>
+            <hr class="p-hidde">
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Grado de Instrucción</div>
+                <div class="col-3 col-form-label text-star">
+                    <ng-select [items]="cboGradoInstruccion" placeholder="Seleccione" bindLabel="descripcion"
+                        bindValue="id_grado_instruccion" [(ngModel)]="objFM.id_grado_instruccion" [clearable]="false"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [ngModelOptions]="{standalone: true}" (ngModelChange)="GradoInstruccionSeleccionado($event)">
+                    </ng-select>
+
+                </div>
+                <div class="col-1 col-form-label text-star">Profesión</div>
+                <div class="col-5 col-form-label text-star"><input type="text" class="form-control"
+                        [(ngModel)]="objFM.otro_grado_instruccion" [ngModelOptions]="{standalone: true}"
+                        [attr.disabled]="Disabled_Profesion?'':null" id="objFM.otro_grado_instruccion"></div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-3 col-form-label text-star">Estado Civil</div>
+                <div class="col-3 col-form-label text-star">
+
+
+
+                    <ng-select [items]="cboEstadoCivil" placeholder="Seleccione" bindLabel="descripcion"
+                        bindValue="id_estado_civil" [(ngModel)]="objFM.id_estado_civil" #ddlEstadoCivil
+                        [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [ngModelOptions]="{standalone: true}">
+                    </ng-select>
+
+
+                </div>
+                <div class="col-1 col-form-label text-star">Ocupación</div>
+                <div class="col-5 col-form-label text-star">
+                    <input type="text" class="form-control" [(ngModel)]="objFM.ocupacion"
+                        [ngModelOptions]="{standalone: true}" id="objFM.ocupacion">
+                </div>
+            </div>
+            <h2 class="text-center">CLASE, CATEGORIA Y CONDICION DEL POSTULANTE</h2>
+
+            <div class="mb-3 row g-3">
+                <ng-container *ngFor="let item of lstClase">
+                    <div class="col-4">
+                        <label class="content-input">
+                            <input type="radio" name="clase" [value]="item.id_clase" [(ngModel)]="objFM.id_clase"
+                                [ngModelOptions]="{standalone: true}">
+                            <i></i>{{item.descripcion}}
+                        </label>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-2 col-form-label text-end offset-4">CATEGORIA</div>
+                <div class="col-2 col-form-label text-star">
+                    <ng-select [items]="cboCategoria" placeholder="Seleccione" bindLabel="descripcion"
+                        bindValue="id_categoria" [(ngModel)]="objFM.id_categoria" #ddlCategoria
+                        (ngModelChange)="AutocompletarCondicion()" notFoundText="no se ha encontrado ningún item"
+                        class="fomr-control" [ngModelOptions]="{standalone: true}">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-12 col-form-label text-center d-flex justify-content-center">
+                    <ng-container *ngFor="let item of lstCondicion">
+                        <div class="col-3">
+                            <label class="content-input">
+                                <input type="radio" name="condicion" [value]="item.id_condicion"
+                                    [(ngModel)]="objFM.id_condicion" [ngModelOptions]="{standalone: true}" disabled>
+                                <i></i>{{item.descripcion}}
+                            </label>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- 
+                <hr>
+                <div class="mb-3 row">
+
+
+                <div class="col-2 col-form-label text-end offset-4">HORA DE INGRESO</div>
+                <div class="col-2 col-form-label text-star"><input type="time" class="form-control" [(ngModel)]="objFM.hora_inicio"   [ngModelOptions]="{standalone: true}"></div>
+                <div class="col-2 col-form-label text-end offset-4">HORA DE SALIDA</div>
+                <div class="col-2 col-form-label text-star"><input type="time" class="form-control" [(ngModel)]="objFM.hora_fin"  [ngModelOptions]="{standalone: true}"></div>
+                <div class="col-2 col-form-label text-end offset-4">FILIACION</div>
+                <div class="col-2 col-form-label text-star"><input type="text" class="form-control" [(ngModel)]="objFM.filiacion"  [ngModelOptions]="{standalone: true}"></div>
+            </div> -->
+            <hr class="p-hidde">
+            <div class="mb-3 row g-3 firma">
+                <div class="col-4 offset-4 text-center col-form-label">
+                    <hr> Postulante a Licencia de Conducir
+                </div>
+            </div>
+            <div class="mb-3 row g-3 p-show">
+                <div class="col-10 offset-1 text-center">
+                    <table class="tabla-border">
+                        <tr>
+                            <td style="width: 40px;">REG</td>
+                            <td style="width: 50px;"></td>
+                            <td style="width: 50px;"></td>
+                            <td rowspan="3" class="sb"></td>
+                            <td style="width: 40px;">PSM</td>
+                            <td style="width: 50px;"></td>
+                            <td style="width: 50px;"></td>
+                            <td rowspan="3" class="sb"></td>
+                            <td style="width: 40px;">CIE</td>
+                            <td style="width: 50px;"></td>
+                            <td style="width: 50px;"></td>
+                            <td rowspan="3" class="sb"></td>
+                            <td style="width: 40px;">OBS</td>
+                            <td style="width: 50px;"></td>
+                        </tr>
+                        <tr>
+                            <td>HU</td>
+                            <td></td>
+                            <td></td>
+
+                            <td>OFT</td>
+                            <td></td>
+                            <td></td>
+
+                            <td>ENT</td>
+                            <td></td>
+                            <td></td>
+
+                            <td>LEV</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>LAB</td>
+                            <td></td>
+                            <td></td>
+
+                            <td>OTO</td>
+                            <td></td>
+                            <td></td>
+
+                            <td>CCT</td>
+                            <td></td>
+                            <td></td>
+
+                            <td>INT</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>PS</td>
+                            <td></td>
+                            <td></td>
+                            <td class="sb"></td>
+                            <td>MG</td>
+                            <td></td>
+                            <td></td>
+
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <br class="p-hidde">
+        <div class="d-flex justify-content-end p-hidde">
+            <ng-container *hasClaim="'btn_guardar_anexo_01'">
+                <button class="btn btn-outline-primary me-1" (click)="Imprimir()"><i class="bi bi-printer-fill"></i>
+                    Imprimir</button>
+                <button class="btn btn-secondary" (click)="AbrirModalValidarDocumento()" type="submit"><i
+                        class="bi bi-save2-fill"></i> Guardar</button>
+            </ng-container>
+            <button class="btn btn-primary ms-1" (click)="modalRef.hide()"><i class="bi bi-x-lg"></i> Cerrar</button>
+        </div>
+
+    </div>
+</div>
+
+
+<ng-template #template>
+
+
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Verificar N° Documento</h4>
+    </div>
+    <div class="modal-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td colspan="3"><input type="text" disabled class="form-control fs-5 text-center mb-3"
+                            [(ngModel)]="objFM.re_numero_documento"></td>
+                </tr>
+
+                <tr>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('1')">1</button></td>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('2')">2</button></td>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('3')">3</button></td>
+                </tr>
+                <tr>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('4')">4</button></td>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('5')">5</button></td>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('6')">6</button></td>
+                </tr>
+                <tr>
+                    <td><button class="btn  btn-primary w-100" (click)="SetearReDocumento('7')">7</button></td>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('8')">8</button></td>
+                    <td><button class="btn btn-primary w-100" (click)="SetearReDocumento('9')">9</button></td>
+                </tr>
+                <tr>
+                    <td><button class="btn  btn-primary w-100" (click)="SetearReDocumento('0')">0</button></td>
+                    <td colspan="2"><button class="btn btn-primary w-100"
+                            (click)="LimpiarReDocumento()">Limpiar</button></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><button class="btn  btn-secondary w-100"
+                            (click)="ValidarDocumento()">Validar</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>

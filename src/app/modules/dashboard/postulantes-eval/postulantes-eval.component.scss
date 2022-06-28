@@ -1,0 +1,12 @@
+ul.nav.nav-tabs.mt-4.mb-4{
+    position: relative;
+    background-color: rgb(224 224 224 / 85%);
+}
+ul.nav.nav-tabs.mt-4.mb-4:before {
+    height: 24px;
+    width: 100%;
+    content: '';
+    position: absolute;
+    top: -24px;
+    background-color: rgb(224 224 224 / 85%);
+}

@@ -1,0 +1,70 @@
+
+    <header>
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="d-flex"><img src="assets/img/logo-app.png">
+                <div class="nombre-app text-star">Postulantes a Licencias de<br>Conducir</div>
+            </div>
+            <div class="d-flex">
+
+             <div class="usuario">
+
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false"> <img src="assets/img/alien.png" alt="Foto usuario">
+                        {{app.nombre_usuario}}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="javascript:void(0)" (click)="Salir()">Salir <i class="bi bi-arrow-right-short"></i></a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <button class="btn btn-primary menu-small" (click)="MenuInteractivo()"><i class="bi bi-list"></i></button>               
+
+            </div>
+
+        </div>
+    </header>
+    <main class="d-flex">
+        <div class="side-bar">
+            <!-- <ul>
+                <li><a [routerLink]="['/','dashboard', 'postulantes']" routerLinkActive="active"><i class="bi bi-file-earmark-person-fill"></i> Postulantes</a></li>
+                <li>
+                    <a [routerLink]="['/','dashboard', 'configuracion']" routerLinkActive="active"><i class="bi bi-gear-fill"></i> Configuracion</a>
+                    <ul>
+                        <li><a [routerLink]="['/','dashboard', 'configuracion','usuarios']" routerLinkActive="active"><i class="bi bi-person-square"></i> Usuarios</a></li>
+                        <li><a [routerLink]="['/','dashboard', 'configuracion','perfiles']" routerLinkActive="active"><i class="bi bi-person-video3"></i> Perfiles</a></li>
+                        <li><a [routerLink]="['/','dashboard', 'configuracion','componentes']" routerLinkActive="active"><i class="bi bi-grid-1x2-fill"></i> Componentes</a></li>
+                        <li><a [routerLink]="['/','dashboard', 'configuracion','menus']" routerLinkActive="active"><i class="bi bi-list"></i> Menús</a></li>
+                    
+                    </ul>
+                </li>
+            </ul> -->
+            
+            
+            <ul>
+                <li *ngFor="let row of menu">
+                    <a *ngIf="row.trama.hijos.length>0; else nosubmenu" href="#{{row.trama.Url}}"><span><i class="{{row.trama.Icono}}"></i></span><span>{{row.trama.Nombre_Menu}}</span></a>
+                    <ng-template #nosubmenu>
+                        <a routerLink="{{row.trama.Url}}" routerLinkActive="active-link"><span><i
+                  class="{{row.trama.Icono}}"></i></span><span>{{row.trama.Nombre_Menu}}</span></a>
+                    </ng-template>
+
+                    <ul *ngIf="row.trama.hijos.length>0;" id="{{row.trama.Url}}">
+                        <li *ngFor="let rowb of row.trama.hijos">
+                            <a routerLink="{{rowb.trama.Url}}" routerLinkActive="active-link"><span><i
+                    class="{{rowb.trama.Icono}}"></i></span><span>{{rowb.trama.Nombre_Menu}}</span></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="app-container">
+            <router-outlet></router-outlet>
+            <footer class="align-items-center flex-column w-100 d-flex p-hidde">
+                <div>Clínica Cruz Divina</div>
+                <div>Todos los derechos reservados &copy; 2022</div>
+            </footer>
+        </div>
+
+    </main>

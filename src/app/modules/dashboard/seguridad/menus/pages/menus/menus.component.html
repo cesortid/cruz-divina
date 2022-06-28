@@ -1,0 +1,91 @@
+
+
+
+
+            <div class="container-fluid ps-5 pe-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Menú</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="card mb-4">
+                            <div class="card-body pt-4">
+                                <div class="form-group row">
+                                    <label dlabels class="col-sm-2 control-label">Menu:</label>
+                                    <div class="col-sm-10">
+                                        <ng-select [items]="menus" placeholder="Seleccione un Menu" bindLabel="nombre_menu" bindValue="id_menu" [(ngModel)]="campoBusqueda" name="campoBusqueda">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <div class="text-end">
+                                            <button type="button" id="btnBuscar" class="btn btn-secondary" (click)="busqueda()"><i class="bi bi-search"></i> Buscar</button>
+                                            <button type="button" id="btnNuevoRegistro" class="btn ms-1 btn-primary" (click)="modalAgregarMenu()">
+                                                <i class="bi bi-plus-lg"></i> Nuevo Registro</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card card-auto bg-plomo">
+                            <div class="card-body">
+                                <div class="position-absolute icon-card-title">
+                                    <i class="icon icon-dashboard"></i>
+                                </div>
+                                <div class="div-centrado text-center">
+                                    <div>
+                                        <b style="font-size:3.5rem; font-weight: 500;">
+                                            {{totalMenu}}</b>
+                                    </div>
+                                    <div class="c-ContRegistros">Menus</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card xs-hidden p-3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Menu</th>
+                                        <th>URL</th>
+                                        <th>NIVEL</th>
+                                        <th>ORDEN</th>
+                                        <th>ICONO</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="ancla{{campos.id_menu}}" *ngFor="let campos of lstParametrosHijoParametro" [class.seleccionado]="campos.id_menu === menu_seleccionado">
+                                        <td class="text-left pre-wrap"><pre>{{campos.nombre_menu}}</pre>
+                                        </td>
+                                        <td class="text-left">{{campos.url}}</td>
+                                        <td class="text-center">{{campos.nivel}}</td>
+                                        <td class="text-center">{{campos.orden}}</td>
+                                        <td>{{campos.icono}}</td>
+                                        <td style="width: 10%;" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+                                                <button class="btn btn-sm" (click)="modalAgregarMenuPadre(campos)" tooltip="Agregar Módulo Hijo"><i class="bi bi-plus-lg"></i></button>
+                                                <button class="btn btn-sm" (click)="modalEditarMenu(campos)"><i class="bi bi-pencil-fill"></i></button>
+                                                <button class="btn btn-sm" (click)="mostrarAlerta(campos.id_menu)"><i class="bi bi-trash-fill"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+

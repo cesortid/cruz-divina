@@ -1,0 +1,194 @@
+<div class="p-hidde" *ngIf="OBJ_FICHA_MEDICA!=null">
+  <div class="d-flex align-items-center d-info-postulante">
+    <div>
+      <i class="bi bi-person-rolodex"></i>
+    </div>
+    <div class="ps-2">
+      <div><b>{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</b></div>
+      <div>
+        <span class="badge bg-info">
+          <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==1">No Profesional</ng-container>
+          <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==2">Profesional</ng-container>              
+        </span>
+
+      </div>
+    </div>
+    &nbsp;<br>
+
+  </div>
+<hr>
+</div>
+
+<section class="formulario formulario-laboratorio">
+    <div class="p-show position-fixed p-pie" *ngIf="OBJ_FICHA_MEDICA!=null">
+      <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 2 de 9
+    </div>
+
+  <div class="mb-3 row p-hidde">
+
+
+    <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+    <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+        [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion" (blur)="ValidarHoraIngreso()"></div>
+    <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+    <div class="col-2 col-form-label text-star"><input type="time" class="form-control p-hidde"
+        [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion"><input type="text" class="form-control p-show"></div>
+  </div>
+  <div [ngClass]="PUEDE_REGISTRAR? 'd-block' : 'd-none'">
+
+
+  <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+    <h1>I: ANÁLISIS DE LABORATORIO</h1> 
+    <h2>1: Exámen Toxicológico (muestra en orina)</h2>
+    <div class="fw-bolder">A: Prueba Rápida de Alcoholimetría</div>
+    <div class="mb-3 row">
+      <div class="col-4 col-form-label text-center">Resultado</div>
+      <div class="col-2 text-center">(+) (-)</div>
+      <div class="col-2 text-center">
+        <ng-select [items]="cboDrogas" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_tipo_resultado_prueba" [(ngModel)]="objFM.id_resultado_toxicologico" #ddlResultadoAlcohol
+          [clearable]="false" (ngModelChange)="ValidarResultadoToxicologico($event)"
+          [disabled]="(OBJ_FICHA_MEDICA?.id_condicion==1)?true:false" notFoundText="no se ha encontrado ningún item"
+          class="fomr-control" [ngModelOptions]="{standalone: true}">
+        </ng-select>
+      </div>
+      <div class="col-2 text-center">Valor</div>
+      <div class="col-2 text-center">
+
+
+        <!-- "fecha_inicio_evaluacion":null,
+    "fecha_termino_evaluacion":null,-->
+
+
+
+        <ng-select [items]="cboAlcohol" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_valor_resultado_prueba" [(ngModel)]="objFM.id_valor_resultado_toxicologico" #ddlNivelAlcohol
+          [clearable]="false" (ngModelChange)="ValidarValorToxicologico($event)"
+          [disabled]="(OBJ_FICHA_MEDICA?.id_condicion==1)?true:false" notFoundText="no se ha encontrado ningún item"
+          class="fomr-control" [ngModelOptions]="{standalone: true}"> //
+        </ng-select>
+        <!-- ngModelChange -->
+      </div>
+    </div>
+    <div class="fw-bolder">B: Prueba Rápida para Cocaína, Marihuana y Drogas Sintéticas</div>
+    <div class="mb-3 row">
+      <div class="col-6 offset-2 col-form-label text-star">Resultado Cocaína</div>
+      <div class="col-1 text-center">(+)</div>
+      <div class="col-1 text-center">(-)</div>
+      <div class="col-2 text-center">
+        <ng-select [items]="cboDrogas" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_tipo_resultado_prueba" [(ngModel)]="objFM.id_resultado_cocaina" #ddlCocaina [clearable]="false"
+          (ngModelChange)="ValidacionNegocio()" [disabled]="(OBJ_FICHA_MEDICA?.id_condicion==1)?true:false"
+          notFoundText="no se ha encontrado ningún item" class="fomr-control" [ngModelOptions]="{standalone: true}">
+        </ng-select>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <div class="col-6 offset-2 col-form-label text-star">Resultado Mahihuana</div>
+      <div class="col-1 text-center">(+)</div>
+      <div class="col-1 text-center">(-)</div>
+      <div class="col-2 text-center">
+        <ng-select [items]="cboDrogas" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_tipo_resultado_prueba" [(ngModel)]="objFM.id_resultado_marihuana" #ddlMarihuana
+          [clearable]="false" (ngModelChange)="ValidacionNegocio()"
+          [disabled]="(OBJ_FICHA_MEDICA?.id_condicion==1)?true:false" notFoundText="no se ha encontrado ningún item"
+          class="fomr-control" [ngModelOptions]="{standalone: true}">
+        </ng-select>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <div class="col-6 offset-2 col-form-label text-star">Resultado Drogas Sintéticas</div>
+      <div class="col-1 text-center">(+)</div>
+      <div class="col-1 text-center">(-)</div>
+      <div class="col-2 text-center">
+        <ng-select [items]="cboDrogas" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_tipo_resultado_prueba" [(ngModel)]="objFM.id_resultado_droga_sin" #ddlDrogas [clearable]="false"
+          (ngModelChange)="ValidacionNegocio()" [disabled]="(OBJ_FICHA_MEDICA?.id_condicion==1)?true:false"
+          notFoundText="no se ha encontrado ningún item" class="fomr-control" [ngModelOptions]="{standalone: true}">
+        </ng-select>
+      </div>
+    </div>
+    <div class="fw-bolder">2: Grupo Sanguíneo o Factor RH</div>
+    <div class="mb-3 row">
+      <div class="col-3 offset-1 col-form-label text-star">Grupo Sanguíneo</div>
+      <div class="col-2 text-center">
+        <ng-select [items]="cboGrupoSanguineo" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_grupo_sanguineo" [(ngModel)]="objFM.id_grupo_sanguineo" #ddlGrupoSanguineo [clearable]="false"
+          notFoundText="no se ha encontrado ningún item" class="fomr-control" [ngModelOptions]="{standalone: true}"> //
+        </ng-select>
+      </div>
+      <div class="col-3  offset-1 text-center col-form-label">Factor RH</div>
+      <div class="col-2 text-center">
+        <ng-select [items]="cboFactorSanguineo" placeholder="Seleccione" bindLabel="descripcion"
+          bindValue="id_factor_rh" [(ngModel)]="objFM.id_factor_rh" #ddlFactorSanguineo [clearable]="false"
+          notFoundText="no se ha encontrado ningún item" class="fomr-control" [ngModelOptions]="{standalone: true}"> //
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="mb-3 row g-3">
+      <div class="col-12 offset-1 col-form-label text-star">Resultado de Análisis de Laboratorio</div>
+
+      <div class="col-3 text-center col-form-label">APTO</div>
+      <div class="col-3 text-center">
+        <div class="form-control h-100">
+          <ng-container *ngIf="objFM.resultado_prueba">
+            <b>X</b>
+          </ng-container>
+        </div>
+      </div>
+      <div class="col-3 text-center col-form-label">NO APTO</div>
+      <div class="col-3 text-center">
+        <div class="form-control  h-100">
+          <ng-container *ngIf="!objFM.resultado_prueba">
+            <b>X</b>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 row g-3">
+      <div class="col-3 col-form-label text-star">Observaciones</div>
+
+      <div class="col-9 text-center col-form-label">
+        <textarea class="form-control" [(ngModel)]="objFM.observacion"></textarea>
+      </div>
+    </div>
+    <div class="row mb-3 p-hidde">
+      <div class="col-12 text-center">
+        <ng-container *hasClaim="'btn_guardar_lab'">
+          <button class="btn btn-primary me-1" (click)="Guardar()"><i class="bi bi-save2-fill"></i> Guardar</button>
+        </ng-container>
+        <!-- <ng-container *ngIf="objFM.id_analisis_laboratorio > 0">
+ -->
+
+
+
+ <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">  
+          <button class="btn btn-secondary" (click)="Imprimir()"><i class="bi bi-printer-fill"></i> Imprimir</button>
+        </ng-container>        
+      </div>
+    </div>
+
+
+    <div class="mb-3 row g-3 firma">
+      <div class="col-5 offset-1 col-form-label text-center">
+        <hr> Firma , sello y huella digital <br>
+        Responsable de Análisis de Laboratorio
+      </div>
+      <div class="col-5 offset-1 text-center col-form-label">
+        <hr>
+        Firma y huella digital <br> del postulante
+      </div>
+    </div>
+
+    <div class="mb-3 row mt-4 p-show p-d-flex">
+      <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+      <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+          [(ngModel)]="objFM.hora_inicio_evaluacion"></div>
+      <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+      <div class="col-2 col-form-label text-star"><input type="text" class="form-control p-show"></div>
+    </div>
+  </ng-container>
+</div>
+</section>

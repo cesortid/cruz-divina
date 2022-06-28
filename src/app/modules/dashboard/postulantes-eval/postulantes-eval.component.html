@@ -1,0 +1,40 @@
+
+<ul class="nav nav-tabs mt-4 mb-4"> 
+  <ng-container *hasClaim="'tab_laboratorio'">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/','dashboard', 'postulantes','evaluacion',ruta_variable,'laboratorio',ruta_variable]"routerLinkActive="active">ANALISIS DE LABORATORIO</a>
+      </li>  
+  </ng-container>
+  <ng-container *hasClaim="'tab_psicologia'">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/','dashboard', 'postulantes','evaluacion',ruta_variable,'psicologico',ruta_variable]" routerLinkActive="active">EVALUACION PSICOLOGICA</a>
+    </li>    
+  </ng-container>
+  <ng-container *hasClaim="'tab_visual'">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/','dashboard', 'postulantes','evaluacion',ruta_variable,'visual',ruta_variable]" routerLinkActive="active">EVALUACION VISUAL</a>
+    </li>    
+  </ng-container>
+  <ng-container *hasClaim="'tab_auditivo'">
+     <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/','dashboard', 'postulantes','evaluacion',ruta_variable,'auditivo',ruta_variable]" routerLinkActive="active"> EVALUACION AUDITIVA</a>
+      </li>   
+  </ng-container>
+  <ng-container *hasClaim="'tab_aclinico'">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/','dashboard', 'postulantes','evaluacion',ruta_variable,'clinico',ruta_variable]" routerLinkActive="active">EVALUACION CLINICA</a>
+    </li>    
+  </ng-container>
+  <ng-container *hasClaim="'tab_rfinal'">
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/','dashboard', 'postulantes','evaluacion',ruta_variable,'resultado-final',ruta_variable]" routerLinkActive="active">RESULTADO FINAL</a>
+    </li>    
+  </ng-container>
+</ul>
+<div class="container-fluid ps-5 pe-5">
+  <router-outlet></router-outlet>
+</div>
+
+<div class="reloj p-hidde" *ngIf="TIEMPO!=''">
+  {{TIEMPO}}
+</div>

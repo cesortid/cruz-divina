@@ -1,0 +1,158 @@
+
+            <div class="container-fluid ps-5 pe-5">
+                <h1 class="mt-4 mb-4">Usuarios</h1>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="card mb-4">
+                            <div class="card-body pt-4">
+                                <div class="form-group row">
+                                    <label dlabels class="col-sm-1 col-form-label">DNI:</label>
+                                    <div class="col-sm-2">
+                                        <input maxlength="8" class="form-control" type='text' [(ngModel)]="beFiltroMantenimientoUsuario.dni" name="txtDniFiltro" placeholder="Ingrese su DNI" />
+                                    </div>
+                                    <label dlabels class="col-sm-1 col-form-label">Nombre:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" maxlength="150" id="txtNombre" [(ngModel)]="beFiltroMantenimientoUsuario.persona" class="form-control" placeholder="Nombre del Usuario" />
+                                    </div>
+                                    <label dlabels class="col-sm-1 col-form-label">Perfil:</label>
+                                    <div class="col-sm-4">
+                                        <ng-select [items]="lstPerfiles" placeholder="Seleccione un Perfil" bindLabel="perfil" bindValue="id_perfil" notFoundText="no se ha encontrado ningún item" id="id_perfil" [(ngModel)]="beFiltroMantenimientoUsuario.id_perfil" name="id_perfil">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <div class="text-end">
+                                            <button type="button" id="btnBuscar" class="btn ml-1 btn-primary" (click)="buscarUsuario()">
+                                                <i class="bi bi-search"></i> Buscar
+                                            </button>
+                                            <button type="button" id="btnNuevoRegistro" class="btn btn-secondary ms-1" (click)="modalNuevoUsuario()">
+                                                <i class="bi bi-plus-lg"></i> Nuevo Registro
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card card-auto bg-plomo">
+                            <div class="card-body">
+                                <div class="position-absolute icon-card-title">
+                                    <i class="icon icon-dashboard"></i>
+                                </div>
+                                <div class="div-centrado text-center">
+                                    <div>
+                                        <b style="font-size:3.5rem; font-weight: 500;">
+                                            {{totalUsuarios}}</b>
+                                    </div>
+                                    <div class="c-ContRegistros">Usuarios</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="scroll">
+                            <table class="table app-table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Usuario</th>
+                                        <th>Dni</th>
+                                        <th>Apellidos</th>
+                                        <th>Nombres</th>
+                                        <th>Perfil</th>
+                                        <th>Correo</th>
+                                        <th>Teléfono</th>
+                                        <th>Editar</th>
+                                        <th>Estado</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let usuario of lstUsuarioMostrar">
+                                        <td class="text-center">{{usuario.usuario}}</td>
+                                        <td class="text-center">{{usuario.dni}}</td>
+                                        <td class="text-center">{{usuario.apellido_paterno}} {{usuario.apellido_materno}}
+                                        </td>
+                                        <td class="text-center">{{usuario.nombre}}</td>
+                                        <td class="text-center">
+                                            <div *ngFor="let perfil of usuario.perfiles">
+                                                - {{perfil.perfil}}
+                                            </div>
+                                        </td>
+                                        <td style="white-space: pre-wrap;">{{usuario.correos}}</td>
+                                        <td style="white-space: pre-wrap;">{{usuario.telefonos}}</td>
+                                        <td class="text-center">
+                                            <div>
+                                                <span (click)="openEditarUsuario(usuario)" style="cursor: pointer;">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div>
+                                                <span class="btn btn-sm btn-opt btn-icon" (click)="modificarEstado(usuario)"><i
+                                                        class="bi bi-trash-fill"></i></span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div *ngIf="usuario.activo">
+                                                <span (click)="cambiarContrasena(templateReseteoContrasena,usuario.id_usuario)" style="cursor: pointer;">
+                                                    <i class="bi bi-key-fill"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12">
+                            <div class="pt-4 pl-3 float-end">
+                                <pagination [totalItems]="cantidadRegistros" [itemsPerPage]="numPaginasMostrar" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [(ngModel)]="paginaActiva" (pageChanged)="cambiarPagina($event)">
+                                </pagination>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+<ng-template #templateReseteoContrasena>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Cambiar Contraseña</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row form-group">
+            <label dlabels class="col-md-12 control-label">Nueva contraseña:</label>
+            <div class="col-md-12">
+                <input class="form-control" minlength="5" #nuevaClave="ngModel" type='password' required placeholder="ingrese la nueva contraseña" name="txtNuevo" [(ngModel)]="entidadResetearClave.nuevaClave" />
+                <div [hidden]="nuevaClave.valid || nuevaClave.pristine" class="alert alert-danger">
+                    La nueva clave es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <label dlabels class="control-label">Repetir Contraseña</label>
+            </div>
+            <div class="col-md-12">
+                <input class="form-control" minlength="5" #repetirClave="ngModel" type='password' name="txtRepetir" required placeholder="vuelva a repetir la contraseña" [(ngModel)]="entidadResetearClave.repetirClave" />
+                <div [hidden]="repetirClave.valid || repetirClave.pristine" class="alert alert-danger">
+                    El repetir clave es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" type="submit" id="btnGuardar" (click)="RegistrarReseteo()"><i
+                    class="mdi mdi-content-save"></i> Guardar</button>
+            <button class="btn btn-secondary btn-sm" id="btnCancelar" type="button" (click)="modalRef.hide()"><i
+                    class="mdi mdi-close"></i> Cancelar</button>
+        </div>
+
+    </div>
+</ng-template>

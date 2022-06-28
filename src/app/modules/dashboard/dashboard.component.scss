@@ -1,0 +1,108 @@
+
+
+header{
+    padding: 10px 0;
+    background-color: var(--bg-app-color);
+
+    box-shadow: 0px 5px 11px 0px rgb(50 50 50 / 8%);
+}
+header img{
+    height: 42px;
+}
+
+.nombre-app{
+    font-weight: 700;
+    text-align: left;
+    padding-left: 20px;
+}
+h1{
+    margin: 2rem 0;
+    padding-bottom: 2rem;
+    border-bottom:  solid 1px #ccc;
+}
+section{
+    margin-bottom: 2.5rem;
+    padding: 30px 20px;
+    background-color: var(--bg-app-color);
+}
+section h2{
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+main{
+    min-height: calc(100vh - 69px);
+}
+.side-bar{
+    width: 250px;
+    background-color: var(--bg-app-sidebar);
+}
+.app-container{
+    width: calc(100% - 250px);
+}
+
+.usuario img{
+    height: 32px;
+}
+.side-bar a{
+    display: block;
+    padding: 15px 20px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: ease-out all 0.2s;
+}
+.side-bar a:hover{
+    background-color: rgba(0,0,0,0.15);
+}
+.side-bar a i{
+    padding-right: 10px;
+}
+header div >div:nth-child(2){
+    text-align: right;
+}
+
+:root{
+    --bg-app-color:#ffffff;
+    --bg-app-sidebar:#bf0909;
+}
+.menu-small{
+    display: none;
+}
+
+@media (max-width: 575.98px) { 
+
+}
+
+@media (max-width: 767.98px) { 
+
+ }
+
+@media (max-width: 991.98px) { 
+
+ }
+
+@media (max-width: 1199.98px) { 
+
+ }
+
+@media (max-width: 1399.98px) { 
+    .side-bar{
+        background-color: var(--bg-app-sidebar);
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100%;
+        z-index: 1;
+        transition: all ease-out 0.2s;
+        box-shadow: 10px 0 11px 0px rgb(50 50 50 / 20%);
+    }
+    .side-bar.active{
+        left: 0;
+    }
+    .app-container{
+        width: 100%;
+    }
+    .menu-small{
+        display: block;
+    }
+ }

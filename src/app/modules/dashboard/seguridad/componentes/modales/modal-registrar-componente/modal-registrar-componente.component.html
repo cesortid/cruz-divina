@@ -1,0 +1,106 @@
+<div class="modal-header">
+    <h4 class="modal-title" [hidden]="!cambiarEditar">Nuevo Componente</h4>
+    <h4 class="modal-title" [hidden]="cambiarEditar">Editar Componente</h4>
+    <p class="pl-4 pr-4" [hidden]="!cambiarEditar">Formulario para el registro de componente</p>
+    <p class="pl-4 pr-4" [hidden]="cambiarEditar">Formulario para la edición de componente</p>
+</div>
+<div class="modal-body">
+    <form (ngSubmit)="administrarComponente();" #ComponenteGrabarForm="ngForm" [hidden]="!cambiarEditar">
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Nombre Componente:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='text' #nombre_componente="ngModel" required name="nombre_componente" placeholder="Ingrese el nombre del componente" [(ngModel)]="entidadModal.nombre_componente" />
+                <div [hidden]="nombre_componente.valid || nombre_componente.pristine" class="alert alert-danger">
+                    El nombre del componente es obligatorio
+                </div>
+            </div>
+            <label dlabels class="col-md-2 control-label">Tipo Componente</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='text' #tipo_componente="ngModel" required name="tipo_componente" placeholder="Ingrese el tipo de componente" [(ngModel)]="entidadModal.tipo_componente" />
+                <div [hidden]="tipo_componente.valid || tipo_componente.pristine" class="alert alert-danger">
+                    El tipo del componente es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Descripción:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='text' name="descripcion" placeholder="Ingrese la descripción" [(ngModel)]="entidadModal.descripcion" />
+            </div>
+            <label dlabels class="col-md-2 control-label">Evento</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarEvento" (focus)="limpiarAutocomplete('evento')" type='text' placeholder="ingrese el evento" name="evento" [(ngModel)]="entidadModal.evento" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Página:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarPagina" type='text' required placeholder="ingrese la página" name="pagina" [(ngModel)]="entidadModal.pagina" />
+            </div>
+            <label dlabels class="col-md-2 control-label">Módulo</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarModulo" (focus)="limpiarAutocomplete('modulo')" type='text' required placeholder="ingrese el módulo" name="modulo" [(ngModel)]="entidadModal.modulo" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Sección:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarSeccion" (focus)="limpiarAutocomplete('seccion')" type='text' required placeholder="ingrese la sección" name="seccion" [(ngModel)]="entidadModal.seccion" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" type="submit" id="btnGuardar" [disabled]="!ComponenteGrabarForm.form.valid"><i class="bi bi-save2-fill"></i> Guardar</button>
+            <button class="btn btn-secondary btn-sm" id="btnTraCancelar" type="button" (click)="closeModal()">
+                <i class="mdi mdi-close"></i> Cancelar</button>
+        </div>
+    </form>
+    <form (ngSubmit)="administrarComponente();" #ComponenteEditarForm="ngForm" [hidden]="cambiarEditar">
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Nombre Componente:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='text' #nombre_componente="ngModel" required name="nombre_componente" placeholder="Ingrese el nombre del componente" [(ngModel)]="entidadModal.nombre_componente" />
+                <div [hidden]="nombre_componente.valid || nombre_componente.pristine" class="alert alert-danger">
+                    El nombre del componente es obligatorio
+                </div>
+            </div>
+            <label dlabels class="col-md-2 control-label">Tipo Componente</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='text' #tipo_componente="ngModel" required name="tipo_componente" placeholder="Ingrese el tipo de componente" [(ngModel)]="entidadModal.tipo_componente" />
+                <div [hidden]="tipo_componente.valid || tipo_componente.pristine" class="alert alert-danger">
+                    El tipo del componente es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Descripción:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" type='text' name="descripcion" placeholder="Ingrese la descripción" [(ngModel)]="entidadModal.descripcion" />
+            </div>
+            <label dlabels class="col-md-2 control-label">Evento</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarEvento" (focus)="limpiarAutocomplete('evento')" type='text' placeholder="ingrese el evento" name="evento" [(ngModel)]="entidadModal.evento" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Página:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarPagina" (focus)="limpiarAutocomplete('pagina')" type='text' required placeholder="ingrese la página" name="pagina" [(ngModel)]="entidadModal.pagina" />
+            </div>
+            <label dlabels class="col-md-2 control-label">Módulo</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarModulo" (focus)="limpiarAutocomplete('modulo')" type='text' required placeholder="ingrese el módulo" name="modulo" [(ngModel)]="entidadModal.modulo" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label dlabels class="col-md-2 control-label">Sección:</label>
+            <div class="col-md-4">
+                <input dTextBox class="form-control" [formControl]="buscarSeccion" (focus)="limpiarAutocomplete('seccion')" type='text' required placeholder="ingrese la sección" name="seccion" [(ngModel)]="entidadModal.seccion" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" type="submit" id="btnGuardar" [disabled]="!ComponenteEditarForm.form.valid"><i class="mdi mdi-content-save"></i> Guardar</button>
+            <button class="btn btn-secondary btn-sm" id="btnTraCancelar" type="button" (click)="closeModal()">
+                <i class="mdi mdi-close"></i> Cancelar</button>
+        </div>
+    </form>
+</div>

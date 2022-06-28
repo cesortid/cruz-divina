@@ -1,0 +1,100 @@
+<div class="p-hidde" *ngIf="OBJ_FICHA_MEDICA!=null">
+    <div class="d-flex align-items-center d-info-postulante">
+      <div>
+        <i class="bi bi-person-rolodex"></i>
+      </div>
+      <div class="ps-2">
+        <div><b>{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</b></div>
+        <div>
+          <span class="badge bg-info">
+            <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==1">No Profesional</ng-container>
+            <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==2">Profesional</ng-container>              
+          </span>
+  
+        </div>
+      </div>
+      &nbsp;<br>
+  
+    </div>
+  <hr>
+  </div>
+<section class="formulario formulario-rf">
+    <div class="p-show position-fixed p-pie" *ngIf="OBJ_FICHA_MEDICA!=null">
+        <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 9 de 9
+      </div>
+    <div class="mb-3 row p-hidde">
+        <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+        <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion" (blur)="VerificarInicio()" disabled></div>
+        <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+        <div class="col-2 col-form-label text-star">
+            <input type="time" class="form-control"
+                [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion" disabled>
+                    <input type="text" class="form-control p-show">
+            </div>
+    </div>
+    <ng-container *ngIf="PUEDE_REGISTRAR">
+        <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+            <h1>RESULTADO FINAL</h1>
+            <div class="mb-3 row g-3">
+                <div class="col-3 text-center col-form-label">APTO</div>
+                <div class="col-3 text-center">
+                    <div class="form-control h-100">
+                        <ng-container *ngIf="objFM.resultado_final">
+                            <b>X</b>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-3 text-center col-form-label">NO APTO</div>
+                <div class="col-3 text-center">
+                    <div class="form-control  h-100">
+                        <ng-container *ngIf="!objFM.resultado_final">
+                            <b>X</b>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row g-3">
+                <div class="col-3 col-form-label text-star">Observaciones</div>
+
+                <div class="col-9 text-center col-form-label">
+                    <textarea class="form-control" [(ngModel)]="objFM.observacion"></textarea>
+                </div>
+            </div>
+            <div class="row mb-3 mt-3 p-hidde">
+                <div class="col-12 text-center">
+                    <ng-container *hasClaim="'btn_guardar_final'">
+                        <button class="btn btn-primary" (click)="Guardar()" type="submit"><i class="bi bi-save2-fill"></i>
+                            Guardar</button>
+                    </ng-container>
+
+                        <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+                            <button class="btn btn-secondary ms-1" (click)="Imprimir()"><i class="bi bi-printer-fill"></i> Imprimir</button>
+                        </ng-container>
+                </div>
+            </div>
+            <div class="mb-3 row g-3 firma">
+                <div class="col-5 offset-1 col-form-label text-center">
+                    <hr> Firma , sello y huella digital <br>
+                    Responsable Director Médico
+                </div>
+
+                <div class="col-5 offset-1 text-center col-form-label">
+                    <hr>
+                    Firma y huella digital <br> del postulante
+                </div>
+            </div>
+
+            <div class="mb-3 row mt-4 p-show p-d-flex">
+                <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+                <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                        [(ngModel)]="objFM.hora_inicio_evaluacion"></div>
+                <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+                <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                    [(ngModel)]="objFM.hora_termino_evaluacion">
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</section>

@@ -1,0 +1,100 @@
+
+            <div class="container-fluid">
+                <div class="d-inline-block mb-4">
+                    <h1 class="font-weight-normal">Componentes</h1>
+                    <div class="line mt-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="card mb-4">
+                            <div class="card-body pt-4">
+                                <div class="form-group row">
+                                    <label dlabels class="col-sm-2 control-label">Componentes:</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type='text' placeholder="Ingrese nombre del componente" name="campoBusqueda" [(ngModel)]="campoBusqueda" />
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <div class="text-end">
+                                            <button id="btnBuscar" class="btn btn-secondary" (click)="busqueda()"><i class="bi bi-search"></i> Buscar</button>
+                                            <button type="button" id="btnNuevoRegistro" class="btn ms-1 ml-1 btn-primary" (click)="modalAgregarComponente()"><i class="bi bi-plus-lg"></i> Nuevo
+                                                Registro</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card card-auto bg-plomo">
+                            <div class="card-body">
+                                <div class="position-absolute icon-card-title">
+                                    <i class="icon icon-dashboard"></i>
+                                </div>
+                                <div class="div-centrado text-center">
+                                    <div>
+                                        <b style="font-size:3.5rem; font-weight: 500;">
+                                            {{totalComponentes}}</b>
+                                    </div>
+                                    <div class="c-ContRegistros">Componentes</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card xs-hidden p-3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>NOMBRE</th>
+                                        <th>TIPO COMPONENTE</th>
+                                        <th>SECCIÓN</th>
+                                        <th>PÁGINA</th>
+                                        <th>MÓDULO</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let campos of arregloComponente">
+                                        <td class="text-left">{{campos.nombre_componente}}</td>
+                                        <td class="text-left">{{campos.tipo_componente}}</td>
+                                        <td class="text-left">{{campos.seccion}}</td>
+                                        <td class="text-left">{{campos.pagina}}</td>
+                                        <td>
+                                            <div class="text-left">
+                                                {{campos.modulo}}
+                                            </div>
+                                        </td>
+                                        <td width="140" class="xs-footer-lista xs-100 xs-text-right pre-wrap">
+
+                                                <button class="btn btn-sm btn-opt btn-icon" (click)="modalEditarComponente(campos)"><i
+                                                        class="bi bi-pencil-fill"></i></button>
+                                                <button class="btn btn-sm btn-opt btn-icon" (click)="mostrarAlerta(campos.id_componente)"><i
+                                                        class="bi bi-trash-fill"></i></button>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12">
+                        <div class="clearfix bg-white pt-3">
+                            <div class="float-right">
+                                <pagination [totalItems]="totalComponentes" [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" [rotate]="false" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [(ngModel)]="paginaActual" (pageChanged)="cambiarPagina($event)">
+                                </pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+

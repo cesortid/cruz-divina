@@ -1,0 +1,904 @@
+<div class="p-hidde" *ngIf="OBJ_FICHA_MEDICA!=null">
+    <div class="d-flex align-items-center d-info-postulante">
+        <div>
+            <i class="bi bi-person-rolodex"></i>
+        </div>
+        <div class="ps-2">
+            <div><b>{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}}
+                    {{OBJ_FICHA_MEDICA.nombres}}</b></div>
+            <div>
+                <span class="badge bg-info">
+                    <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==1">No Profesional</ng-container>
+                    <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==2">Profesional</ng-container>
+                </span>
+
+            </div>
+        </div>
+        &nbsp;<br>
+
+    </div>
+    <hr>
+</div>
+<div [ngClass]="PUEDE_REGISTRAR? 'd-block' : 'd-none'">
+    <tabset>
+        <tab heading="EVALUACIÓN PSICOLÓGICA" id="tab1">
+            <section class="formulario">
+                <div class="p-show position-fixed p-pie" *ngIf="OBJ_FICHA_MEDICA!=null">
+                    <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 3 de 9
+                </div>
+                <div class="mb-3 row p-hidde">
+                    <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+                    <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                            [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion"
+                            (blur)="ValidarHoraIngreso()"></div>
+                    <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+                    <div class="col-2 col-form-label text-star"><input type="time" class="form-control p-hidde"
+                            [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion">
+                    </div>
+                    <input type="text" class="form-control p-show">
+
+                </div>
+
+
+
+                <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+                    <h1>II: EVALUACIÓN PSICOLÓGICA</h1>
+                    <h2>1: Organicidad (completar A o B de acuerdo a evaluación realizada)</h2>
+                    <div class="fw-bolder">A: Equipo Psicosensometrico</div>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">Test de Palanca</div>
+                        <div class="col-4 text-center">
+
+
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_palanca"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_resultado_test_palanca">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">Reactimetro</div>
+                        <div class="col-4 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_reactimetro"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_resultado_reactimetro">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">Test de Punteo</div>
+                        <div class="col-4 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_punteo"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_resultado_test_punteo">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="fw-bolder">B: Pruebas</div>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">Wechsler-diseño de Cubos </div>
+                        <div class="col-4 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.wechsler" [clearable]="false"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_wechsler">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">Benton Forma C.</div>
+                        <div class="col-4 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_benton_formac"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+
+                    <h2>2: Inteligencia (completar A o B de acuerdo a evaluación realizada).</h2>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">A. Test de Matrices Progresivas de Raven</div>
+                        <div class="col-4 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.test_matrices_progresivas"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_test_matrices_progresivas">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">B. Test de Dominos Anstey</div>
+                        <div class="col-4 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.test_dominios_anstey"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_test_dominios_anstey">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-4 col-form-label text-star">C. Test de Otis (abreviado)</div>
+                        <div class="col-4 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_otis"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <h2>3: Personalidad (completar A más B, C o D de acuerdo a evaluación realizada).</h2>
+                    <div class="fw-bolder">A. Test proyectivo Karen Machover</div>
+                    <div class="mb-3 row">
+                        <div class="col-8 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_proyectivo"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="fw-bolder">B. NPF 0 Test de los 4 temperamentos</div>
+                    <div class="mb-3 row">
+                        <div class="col-8 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.test_npf" [clearable]="false"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_test_npf">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="fw-bolder">C. Inventario de Personalidad de Eysenck</div>
+                    <div class="mb-3 row">
+                        <div class="col-8 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico"
+                                [(ngModel)]="objFM.id_resultado_inventario_personalidad" [clearable]="false"
+                                notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <h2>4: Rasgo Psicopatológico (completar A más B, C o D de acuerdo a evaluación realizada).</h2>
+                    <div class="fw-bolder">A. Test Obligatorio: Test de AUDIT</div>
+                    <div class="mb-3 row">
+                        <div class="col-8 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_audit"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="fw-bolder">B. Cuestionario de inventario de cambios de personalidad neurológicos
+                        (Nechapi).
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-8 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.cuestionario_inventario_cambios"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()" [disabled]="disabled_cuestionario_inventario_cambios">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+                    <div class="fw-bolder">C. Test de persona con arma (sumada a una estructurada)</div>
+                    <div class="mb-3 row">
+                        <div class="col-8 text-center">
+                            <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
+                                bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_personaarma"
+                                [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                                (change)="ValidarNegocio00()">
+                            </ng-select>
+                        </div>
+                        <div class="col-1 offset-2 text-center">(+)</div>
+                        <div class="col-1 text-center">(-)</div>
+                    </div>
+
+                    <div class="mb-3 row g-3">
+                        <div class="col-12 offset-1 col-form-label text-star">Resultado Final de la Evaluación
+                            Psicológica
+                        </div>
+
+                        <div class="col-3 text-center col-form-label">APTO</div>
+                        <div class="col-3 text-center">
+                            <div class="form-control h-100">
+                                <ng-container *ngIf="objFM.resultado_prueba">
+                                    <b>X</b>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="col-3 text-center col-form-label">NO APTO</div>
+                        <div class="col-3 text-center">
+                            <div class="form-control  h-100">
+                                <ng-container *ngIf="!objFM.resultado_prueba">
+                                    <b>X</b>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row g-3">
+                        <div class="col-3 col-form-label text-star">Observaciones</div>
+
+                        <div class="col-9 text-center col-form-label">
+                            <textarea class="form-control" [(ngModel)]="objFM.observacion"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row g-3 firma">
+                        <div class="col-5 offset-1 col-form-label text-center">
+                            <hr> Firma , sello y huella digital <br>
+                            Responsable de Evaluación Psicológica
+                        </div>
+
+                        <div class="col-5 offset-1 text-center col-form-label">
+                            <hr>
+                            Firma y huella digital postulante
+                        </div>
+                    </div>
+                    <div class="mb-3 row p-show p-d-flex mt-4">
+
+
+                        <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+                        <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
+                                [(ngModel)]="objFM.hora_inicio_evaluacion" (blur)="ValidarHoraIngreso()"></div>
+                        <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
+                        <div class="col-2 col-form-label text-star">
+                            <input type="text" class="form-control">
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-3 p-hidde">
+                        <div class="col-12 text-center">
+                            <ng-container *hasClaim="'btn_guardar_psico'">
+                                <button class="btn btn-primary" (click)="GuardarEvaluacionPsicologica()"><i
+                                        class="bi bi-save2-fill"></i> Guardar</button>
+                            </ng-container>
+                            <ng-container
+                                *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+
+                                <button class="btn btn-secondary ms-1" (click)="Imprimir01()"><i
+                                        class="bi bi-printer-fill"></i> Imprimir</button>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                </ng-container>
+            </section>
+        </tab>
+        <tab heading="HS PSICOLÓGICA" id="tab2">
+            <ng-container *ngIf="objFM.id_evaluacion_psicologica > 0">
+                <section class="formulario formulario-hs-psicologia">
+                    <div class="formulario-hs-psicologia-p1">
+                        <h1 class="encabezado1 mt-4">HISTORIA CLÍNICA PSICOLÓGICA</h1>
+                        <div class="mb-3 row">
+                            <div class="col-3 col-form-label not-col-form-label text-star">N° REGISTRO</div>
+                            <div class="col-3 col-form-label not-col-form-label text-star">
+                                {{OBJ_FICHA_MEDICA.numero_snc}}</div>
+                            <div class="col-6 col-form-label not-col-form-label text-end">FECHA DE EVALUACIÓN:
+                                <b>{{fecha_evaluacion}}</b>
+                            </div>
+                        </div>
+                        <h1>I: DATOS GENERALES</h1>
+                        <ng-container *ngIf="OBJ_FICHA_MEDICA!=null">
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">DNI</div>
+                                <div class="col-9 col-form-label text-star">
+                                    <div class="form-control">{{OBJ_FICHA_MEDICA.numero_documento}}</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Sexo</div>
+                                <div class="col-9 col-form-label text-star d-flex">
+                                    <div class="form-control">{{OBJ_FICHA_MEDICA.sexo_string}}</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Edad</div>
+                                <div class="col-9 col-form-label text-star">
+                                    <div class="form-control">
+                                        <span>{{OBJ_FICHA_MEDICA.edad}}</span> años
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Fecha de Nacimiento</div>
+                                <div class="col-9 col-form-label text-star">
+                                    <div class="form-control">{{OBJ_FICHA_MEDICA.fecha_nac_string}}</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Lugar de Nacimiento</div>
+                                <div class="col-9 col-form-label text-star">
+                                    <ng-container *ngIf="OBJ_FICHA_MEDICA.id_pais!=null || OBJ_FICHA_MEDICA.id_pais==0">
+                                        <div class="form-control">{{OBJ_FICHA_MEDICA.pais}} </div>
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="!(OBJ_FICHA_MEDICA.id_pais!=null || OBJ_FICHA_MEDICA.id_pais==0)">
+                                        <div class="form-control">{{OBJ_FICHA_MEDICA.departamento}} -
+                                            {{OBJ_FICHA_MEDICA.provincia}} - {{OBJ_FICHA_MEDICA.distrito}}</div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Estado Civil</div>
+                                <div class="col-9 col-form-label text-star d-flex">
+                                    <div class="form-control">{{OBJ_FICHA_MEDICA.estado_civil}} </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Grado de Instrucción</div>
+                                <div class="col-9 col-form-label text-star d-flex flex-wrap gap-2">
+                                    <div class="form-control">{{OBJ_FICHA_MEDICA.grado_instruccion}} </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Dirección</div>
+                                <div class="col-9 col-form-label text-star">
+                                    <div class="form-control">
+                                        {{OBJ_FICHA_MEDICA.direccion}}, {{OBJ_FICHA_MEDICA.departamento_dir}} -
+                                        {{OBJ_FICHA_MEDICA.provincia_dir}} - {{OBJ_FICHA_MEDICA.distrito_dir}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">Ocupación</div>
+                                <div class="col-9 col-form-label text-star">
+                                    <div class="form-control">{{OBJ_FICHA_MEDICA.ocupacion}}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <h1>II: MOTIVO DE EVALUACIÓN</h1>
+                        <div class="mb-3 row">
+                            <div class="col-12 col-form-label text-star">
+                                <input type="text" class="form-control" disabled
+                                    value="Evaluación Psicológica para licencia de conducir">
+                            </div>
+                            <div class="col-12 col-form-label text-star">
+                                ENTREVISTA, OBSERVACIÓN, REGISTRO
+                            </div>
+                        </div>
+
+
+                        <h1>III: HISTORIA FAMILIAR</h1>
+                        <div class="mb-3 row">
+                            <div class="col-12 col-form-label text-star">
+                                <textarea class="form-control" rows="4" [(ngModel)]="objH.historia_familiar"></textarea>
+                            </div>
+                        </div>
+                        <h1>IV: ANTECEDENTES PSICOPATOLOGICOS PERSONALES Y/O FAMILIARES</h1>
+                        <div class="mb-3 row">
+                            <div class="col-12 col-form-label text-star">
+                                <textarea class="form-control" rows="4"
+                                    [(ngModel)]="objH.antecedentes_psicopaticos_personales"></textarea>
+                            </div>
+                        </div>
+
+                        <h1>V: HABITOS <span>Pasatiempos, consumo de tabaco, alcohol y/o drogas</span></h1>
+                        <div class="mb-3 row">
+                            <div class="col-12 col-form-label text-star">
+                                <textarea class="form-control" rows="4" [(ngModel)]="objH.habitos"></textarea>
+                            </div>
+                        </div>
+
+                        <h1>VI: INCIDENTES Y/O ACCIDENTES DE TRANSITO <span>Pasatiempos, consumo de tabaco, alcohol y/o
+                                drogas</span></h1>
+                        <div class="mb-3 row">
+                            <div class="col-12 col-form-label text-star">
+                                <textarea class="form-control" rows="4"
+                                    [(ngModel)]="objH.incidentes_accidentes_transito"></textarea>
+                            </div>
+                        </div>
+
+                        <h1>VII: CONSUMO DE FARMACOS Y/O OTRAS SUSTANCIAS <span>Tiempo, frecuencia</span></h1>
+                        <div class="mb-3 row">
+                            <div class="col-12 col-form-label text-star">
+                                <textarea class="form-control" rows="4"
+                                    [(ngModel)]="objH.consumo_farmacos_sustancias"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="break"></div>
+                    <div class="pmt"></div>
+                    <div class="formulario-hs-psicologia-p1">
+                        <h1 class="mt-4">VIII: EXAMEN MENTAL</h1>
+                        <h2>8.1 OBSERVACIÓN DE CONDUCTAS</h2>
+                        <div class="row">
+                            <div class="col-12">
+                                <table>
+                                    <tr>
+                                        <td><div class="opcion">- Presentación</div></td>
+                                        <td *ngFor="let item of control.resultpresentacion">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="presentacion"
+                                                    [value]="item.id_resultado_presentacion"
+                                                    [(ngModel)]="objH.id_resultado_presentacion" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_presentacion">
+                                        <td colspan="4">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Postura</div></td>
+                                        <td *ngFor="let item of control.resultpostura">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="postura" [value]="item.id_resultado_postura"
+                                                    [(ngModel)]="objH.id_resultado_postura" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_postura">
+                                        <td colspan="4">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Actitud</div></td>
+                                        <td *ngFor="let item of control.resultactitud">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="actitud" [value]="item.id_resultado_actitud"
+                                                    [(ngModel)]="objH.id_resultado_actitud" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_actitud">
+                                        <td colspan="4">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Orientación</div></td>
+                                        <td>
+                                            <div class="opcion">Tiempo</div>
+                                        </td>
+                                        <td *ngFor="let item of control.resultorientacion">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="otiempo"
+                                                    [value]="item.id_resultado_orientacion"
+                                                    [(ngModel)]="objH.id_resultado_orientacion_tiempo" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_orientacion_tiempo">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <div class="opcion">Espacio</div>
+                                        </td>
+                                        <td *ngFor="let item of control.resultorientacion">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="oespacio"
+                                                    [value]="item.id_resultado_orientacion"
+                                                    [(ngModel)]="objH.id_resultado_orientacion_espacio" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_orientacion_espacio">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <div class="opcion">Persona</div>
+                                        </td>
+                                        <td *ngFor="let item of control.resultorientacion">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="opersona"
+                                                    [value]="item.id_resultado_orientacion"
+                                                    [(ngModel)]="objH.id_resultado_orientacion_persona" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_orientacion_persona">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <h2>8.2 PROCESOS COGNITIVOS</h2>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="opcion">- Atención y concentración</div>
+                                        </td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="objH.proceso_cognitivo_atencion_concentracion">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="opcion">- Percepción</div>
+                                        </td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="objH.proceso_cognitivo_percepcion">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Memoria</div></td>
+                                        <td><div class="opcion">A corto plazo</div></td>
+                                        <td *ngFor="let item of control.resultmemoria">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="mcortoplazo"
+                                                    [value]="item.id_resultado_memoria"
+                                                    [(ngModel)]="objH.id_resultado_memoria_corto" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_memoria_corto">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><div class="opcion">A mediano plazo</div></td>
+                                        <td *ngFor="let item of control.resultmemoria">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="mmedianoplazo"
+                                                    [value]="item.id_resultado_memoria"
+                                                    [(ngModel)]="objH.id_resultado_memoria_mediano" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_memoria_mediano">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><div class="opcion">A largo plazo</div></td>
+                                        <td *ngFor="let item of control.resultmemoria">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="mlargooplazo"
+                                                    [value]="item.id_resultado_memoria"
+                                                    [(ngModel)]="objH.id_resultado_memoria_largo" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_memoria_largo">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Lenguaje</div></td>
+                                        <td><div class="opcion">Ritmo</div></td>
+                                        <td *ngFor="let item of control.resultlenguajeritmo">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="lritno"
+                                                    [value]="item.id_resultado_lenguaje_ritmo"
+                                                    [(ngModel)]="objH.id_resultado_lenguaje_ritmo" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_lenguaje_ritmo">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><div class="opcion">Tono</div></td>
+                                        <td *ngFor="let item of control.resultlenguajetono">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="ltono"
+                                                    [value]="item.id_resultado_lenguaje_tono"
+                                                    [(ngModel)]="objH.id_resultado_lenguaje_tono" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_lenguaje_tono">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><div class="opcion">Articulación</div></td>
+                                        <td *ngFor="let item of control.resultlenguajearticulacion">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="larticulacion"
+                                                    [value]="item.id_resultado_lenguaje_articulacion"
+                                                    [(ngModel)]="objH.id_resultado_lenguaje_articulacion" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_lenguaje_articulacion">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Pensamiento</div></td>
+                                        <td><div class="opcion">Curso</div></td>
+                                        <td *ngFor="let item of control.resultpensamientocurso">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="pcurso"
+                                                    [value]="item.id_resultado_pensamiento_curso"
+                                                    [(ngModel)]="objH.id_resultado_pensamiento_curso"
+                                                    (change)="PensamientoCursoChange($event)">{{item.descripcion}}
+
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()=='OTRO'">
+                                                    <input type="text" class="form-control position-relative"
+                                                        style="visibility: visible;"
+                                                        (change)="PensamientoCursoOtroChange($event)"
+                                                        [(ngModel)]="objH.otro_pensamiento_curso">
+                                                </ng-container>
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()!='OTRO'">
+                                                    <i></i>
+                                                </ng-container>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_pensamiento_curso">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><div class="opcion">Contenido</div></td>
+                                        <td *ngFor="let item of control.resultpensamientocontenido">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="pcontenido"
+                                                    [value]="item.id_resultado_pensamiento_contenido"
+                                                    [(ngModel)]="objH.id_resultado_pensamiento_contenido"
+                                                    (change)="PensamientoContenidoChange($event)">{{item.descripcion}}
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()=='OTRO'">
+                                                    <input type="text" class="form-control position-relative"
+                                                        style="visibility: visible;"
+                                                        (change)="PensamientoContenidoOtroChange($event)"
+                                                        [(ngModel)]="objH.otro_pensamiento_contenido">
+                                                </ng-container>
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()!='OTRO'">
+                                                    <i></i>
+                                                </ng-container>
+                                            </label>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_pensamiento_contenido">
+                                        <td></td>
+                                        <td colspan="3">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Afecto</div></td>
+
+                                        <td *ngFor="let item of control.resultafecto">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="afectado" [value]="item.id_resultado_afecto"
+                                                    [(ngModel)]="objH.id_resultado_afecto"
+                                                    (change)="AfectoChange($event)">{{item.descripcion}}
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()=='OTRO'">
+                                                    <input type="text" class="form-control position-relative"
+                                                        style="visibility: visible;"
+                                                        [(ngModel)]="objH.otro_resultado_afecto"
+                                                        (change)="AfectoOtroChange($event)">
+                                                </ng-container>
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()!='OTRO'">
+                                                    <i></i>
+                                                </ng-container>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_afecto">
+                                        <td colspan="4">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="opcion">- Sensopercepción</div></td>
+                                        <td *ngFor="let item of control.resultsensopercepcion">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="senso"
+                                                    [value]="item.id_resultado_senso_percepcion"
+                                                    [(ngModel)]="objH.id_resultado_senso_percepcion"
+                                                    (change)="SensoChange($event)">{{item.descripcion}}
+                                                <ng-container *ngIf="item.descripcion.toUpperCase().trim()=='ALTERADA'">
+                                                    <input type="text" class="form-control position-relative"
+                                                        style="visibility: visible;"
+                                                        [(ngModel)]="objH.alterada_senso_percepcion"
+                                                        (change)="SensoOtroChange($event)">
+                                                </ng-container>
+                                                <ng-container *ngIf="item.descripcion.toUpperCase().trim()!='ALTERADA'">
+                                                    <i></i>
+                                                </ng-container>
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_senso_percepcion">
+                                        <td colspan="4">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <h2>8.3 ALTERACIONES DE LOS RITMOS VITALES</h2>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><div class="opcion">- Apetito y conducta alimentaria</div></td>
+                                        <td *ngFor="let item of control.resultapetitoconductaalimentaria">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="apetito"
+                                                    [value]="item.id_resultado_apetito_conducta_alimentaria"
+                                                    [(ngModel)]="objH.id_resultado_apetito_conducta_alimentaria" (change)="ValidarEstandar()">{{item.descripcion}}
+                                                <i></i>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_apetito_conducta_alimentaria">
+                                        <td colspan="4">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><div class="opcion">- Ciclo sueño-vigilia</div></td>
+                                        <td *ngFor="let item of control.resultciclosueniovigilia">
+                                            <label class="content-input justify-content-between">
+                                                <input type="radio" name="ciclo"
+                                                    [value]="item.id_resultado_ciclo_suenio_vigilia"
+                                                    [(ngModel)]="objH.id_resultado_ciclo_suenio_vigilia"
+                                                    (change)="CicloChange($event)">{{item.descripcion}}
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()=='ALTERADO'">
+                                                    <input type="text" class="form-control position-relative"
+                                                        style="visibility: visible;" (change)="CicloOtroChange($event)"
+                                                        [(ngModel)]="objH.alterado_suenio_vigilia">
+                                                </ng-container>
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()!='ALTERADO'">
+                                                    <i></i>
+                                                </ng-container>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_ciclo_suenio_vigilia">
+                                        <td colspan="4">
+                                            dfgdfgdf sdf sd 
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <h1>IX: CONCLUSIONES</h1>
+                        <div class="mb-3 row">
+                            <div class="col-5 col-form-label text-star"><div class="opcion">Área Cognitiva</div></div>
+                            <div class="col-5 text-star">
+                                <input type="text" class="form-control" [(ngModel)]="objH.conclusiones_area_cognitiva">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-5 col-form-label text-star"><div class="opcion">Área Emocional</div></div>
+                            <div class="col-5 text-star">
+                                <input type="text" class="form-control" [(ngModel)]="objH.conclusiones_area_emocional">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-5 col-form-label text-star">
+                                <h1>X: RECOMENDACIONES</h1>
+                            </div>
+                            <div class="col-5 text-star">
+                                <!-- <input type="text" class="form-control" [(ngModel)]="objH.recomendacion"> -->
+
+                                <select class="form-control" [(ngModel)]="objH.recomendacion">
+                                    <option value="APTO">APTO</option>
+                                    <option value="NO APTO">NO APTO</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row p-hidde">
+                            <div class="col-12 text-center">
+                                <ng-container *hasClaim="'btn_guardar_psico'">
+                                    <button class="btn btn-primary" (click)="GuardarHistorialPsicologico()"><i
+                                            class="bi bi-save2-fill"></i> Guardar</button>
+                                </ng-container>
+
+                                <ng-container
+                                    *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+                                    <button class="btn btn-secondary ms-1" (click)="Imprimir01()"><i
+                                            class="bi bi-printer-fill"></i> Imprimir</button>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <hr class="p-hidde">
+                        <div class="mb-3 row g-3 firma">
+                            <div class="col-5 offset-7 text-center col-form-label">
+                                <hr>
+                                FIRMA Y SELLO DEL PSICOLOGO(A)
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+        </tab>
+    </tabset>
+</div>
