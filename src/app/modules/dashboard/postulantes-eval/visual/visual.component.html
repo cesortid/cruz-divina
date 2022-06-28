@@ -1,35 +1,38 @@
 <div class="p-hidde" *ngIf="OBJ_FICHA_MEDICA!=null">
     <div class="d-flex align-items-center d-info-postulante">
-      <div>
-        <i class="bi bi-person-rolodex"></i>
-      </div>
-      <div class="ps-2">
-        <div><b>{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</b></div>
         <div>
-          <span class="badge bg-info">
-            <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==1">No Profesional</ng-container>
-            <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==2">Profesional</ng-container>              
-          </span>
-  
+            <i class="bi bi-person-rolodex"></i>
         </div>
-      </div>
-      &nbsp;<br>
-  
+        <div class="ps-2">
+            <div><b>{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}}
+                    {{OBJ_FICHA_MEDICA.nombres}}</b></div>
+            <div>
+                <span class="badge bg-info">
+                    <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==1">No Profesional</ng-container>
+                    <ng-container *ngIf="OBJ_FICHA_MEDICA.id_condicion==2">Profesional</ng-container>
+                </span>
+
+            </div>
+        </div>
+        &nbsp;<br>
+
     </div>
-  <hr>
-  </div>
+    <hr>
+</div>
 <section class="formulario formulario-visual">
     <div class="p-show position-fixed p-pie" *ngIf="OBJ_FICHA_MEDICA!=null">
-        <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}} {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 4 de 9
-      </div>
+        <span class="text-uppercase">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}}
+            {{OBJ_FICHA_MEDICA.nombres}}</span> - Hoja 4 de 9
+    </div>
     <div class="mb-3 row p-hidde">
         <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
         <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
-                [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion"
-                (blur)="VerificarInicio()"></div>
+                [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion" (blur)="VerificarInicio()">
+        </div>
         <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
         <div class="col-2 col-form-label text-star"><input type="time" class="form-control p-hidde"
-                [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion"><input type="text" class="form-control p-show"></div>
+                [(ngModel)]="objFM.hora_termino_evaluacion" id="objFM.hora_termino_evaluacion"><input type="text"
+                class="form-control p-show"></div>
     </div>
     <ng-container *ngIf="PUEDE_REGISTRAR">
         <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
@@ -58,12 +61,6 @@
                         [(ngModel)]="objFM.id_resultado_agudeza_visual_sc_od" (change)="ValidarLentes()">
                     </ng-select>
                     <div class="text-center">
-                        <!-- <ng-select [items]="cboCC" placeholder="Seleccione" bindLabel="descripcion"
-                    bindValue="id_resultado_agudeza_visual_cc"  [clearable]="false"
-                    notFoundText="no se ha encontrado ningún item" class="custom-class"
-                    [(ngModel)]="objFM.id_resultado_agudeza_visual_cc_od" (change)="ValidarLentes()">
-                </ng-select> -->
-
                         <ng-select [(ngModel)]="objFM.id_resultado_agudeza_visual_cc_od" [clearable]="false"
                             (change)="ValidarLentes()">
                             <ng-option *ngFor="let car of cboCC" [disabled]="car.disabled"
@@ -83,11 +80,6 @@
                         [(ngModel)]="objFM.id_resultado_agudeza_visual_sc_oi" (change)="ValidarLentes()">
                     </ng-select>
                     <div class="text-center">
-                        <!-- <ng-select [items]="cboCCI" placeholder="Seleccione" bindLabel="descripcion"
-                    bindValue="id_resultado_agudeza_visual_cc"  [clearable]="false"
-                    notFoundText="no se ha encontrado ningún item" class="custom-class"
-                    [(ngModel)]="objFM.id_resultado_agudeza_visual_cc_oi" (change)="ValidarLentes()">
-                </ng-select> -->
                         <ng-select [(ngModel)]="objFM.id_resultado_agudeza_visual_cc_oi" [clearable]="false"
                             (change)="ValidarLentes()">
                             <ng-option *ngFor="let car of cboCCI" [disabled]="car.disabled"
@@ -109,13 +101,30 @@
                 </div>
                 <div class="col-12 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_agudeza_visual_lentes">
                     Para Profesional el máximo valor debe ser 20/20 con o sin lentes<br>
-                    Para No Profesional no puede utilizar lentes con espejos en ambos ojos y el valor máximo apra un ojo es 20/30 con o sin lentes.
+                    Para No Profesional no puede utilizar lentes con espejos en ambos ojos y el valor máximo apra un ojo
+                    es 20/30 con o sin lentes.
                 </div>
             </div>
             <h2>2: Visión de Profundidad</h2>
             <div class="mb-3 row">
-                <div class="col-2 offset-1 col-form-label text-star">Resultado</div>
-                <div class="col-7 text-center">
+                <div class="col-12">Resultado</div>
+                <div class="col-1 offset-1">
+                    <div class="col-form-label text-star">OD</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-1">
+                    <div class="col-form-label text-star">OI</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-3 text-center">
                     <ng-select [items]="cboProfundidad" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_vision_profundidad" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
@@ -123,12 +132,30 @@
                 </div>
                 <div class="col-1 text-center">(+)</div>
                 <div class="col-1 text-center">(-)</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_vision_produndidad">Mínimo 66% de aciertos si es No Profesional y 88% de aciertos si es Profesional</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none"
+                    id="objFM.id_resultado_vision_produndidad">Mínimo 66% de aciertos si es No Profesional y 88% de
+                    aciertos si es Profesional</div>
             </div>
             <h2>3: Visión de Colores</h2>
             <div class="mb-3 row">
-                <div class="col-2 offset-1 col-form-label text-star">Resultado</div>
-                <div class="col-7 text-center">
+                <div class="col-12">Resultado</div>
+                <div class="col-1 offset-1">
+                    <div class="col-form-label text-star">OD</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-1">
+                    <div class="col-form-label text-star">OI</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-3 text-center">
                     <ng-select [items]="cboColores" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_vision_colores" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
@@ -137,13 +164,30 @@
                 </div>
                 <div class="col-1 text-center">(+)</div>
                 <div class="col-1 text-center">(-)</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_vision_colores">No reconoce y no diferencia colores</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_vision_colores">
+                    No reconoce y no diferencia colores</div>
 
             </div>
             <h2>4: Balance Muscular</h2>
             <div class="mb-3 row">
-                <div class="col-2 offset-1 col-form-label text-star">Resultado</div>
-                <div class="col-7 text-center">
+                <div class="col-12">Resultado</div>
+                <div class="col-1 offset-1">
+                    <div class="col-form-label text-star">OD</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-1">
+                    <div class="col-form-label text-star">OI</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-3 text-center">
                     <ng-select [items]="cboBalance" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_balance_muscular" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
@@ -152,12 +196,29 @@
                 </div>
                 <div class="col-1 text-center">(+)</div>
                 <div class="col-1 text-center">(-)</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_balance_muscular">Desbalance ocular presente</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none"
+                    id="objFM.id_resultado_balance_muscular">Desbalance ocular presente</div>
             </div>
             <h2>5: Visión Nocturna</h2>
             <div class="mb-3 row">
-                <div class="col-2 offset-1 col-form-label text-star">Resultado</div>
-                <div class="col-7 text-center">
+                <div class="col-12">Resultado</div>
+                <div class="col-1 offset-1">
+                    <div class="col-form-label text-star">OD</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-1">
+                    <div class="col-form-label text-star">OI</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-3 text-center">
                     <ng-select [items]="cboNocturna" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_vision_nocturna" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
@@ -166,12 +227,29 @@
                 </div>
                 <div class="col-1 text-center">(+)</div>
                 <div class="col-1 text-center">(-)</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_vision_nocturna">No distingue figuras</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_vision_nocturna">
+                    No distingue figuras</div>
             </div>
             <h2>6.1: Encandilamiento</h2>
             <div class="mb-3 row">
-                <div class="col-2 offset-1 col-form-label text-star">Resultado</div>
-                <div class="col-7 text-center">
+                <div class="col-12">Resultado</div>
+                <div class="col-1 offset-1">
+                    <div class="col-form-label text-star">OD</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-1">
+                    <div class="col-form-label text-star">OI</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-3 text-center">
                     <ng-select [items]="cboEncandilamiento" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_encandilamiento" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
@@ -180,11 +258,29 @@
                 </div>
                 <div class="col-1 text-center">(+)</div>
                 <div class="col-1 text-center">(-)</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_encandilamiento">No distingue figuras</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_encandilamiento">
+                    No distingue figuras</div>
             </div>
             <h2>6.2: Recuperación de Encandilamiento</h2>
             <div class="mb-3 row">
-                <div class="col-2 offset-1 col-form-label text-star">Resultado</div>
+
+                <div class="col-12">Resultado</div>
+                <div class="col-1 offset-1">
+                    <div class="col-form-label text-star">OD</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
+                <div class="col-1">
+                    <div class="col-form-label text-star">OI</div>
+                </div>
+                <div class="col-2">
+                    <ng-select [items]="[{label:'------'}]" placeholder="Seleccione" bindLabel="label" bindValue="label"
+                        [clearable]="false" notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                        [disabled]="valor_ninguno_desabilitado" [(ngModel)]="valor_ninguno"></ng-select>
+                </div>
                 <div class="col-3 text-center">
                     <ng-select [items]="cboRecuperacionFigura" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_recuperacion_encandilamiento_figuras" [clearable]="false"
@@ -192,8 +288,6 @@
                         [(ngModel)]="objFM.id_resultado_recuperacion_encandilamiento_figuras"
                         (change)="ValidarNegocio()">
                     </ng-select>
-                </div>
-                <div class="col-3 offset-1 text-center">
                     <ng-select [items]="cboRecuperacionTiempo" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_recuperacion_encandilamiento_recupera" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
@@ -203,32 +297,42 @@
                 </div>
                 <div class="col-1 text-center">(+)</div>
                 <div class="col-1 text-center">(-)</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.encandilamiento_figura">No distingue figuras</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.encandilamiento_recupera">Debe recuperar en 5" como máximo</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.encandilamiento_figura">No
+                    distingue figuras</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.encandilamiento_recupera">Debe
+                    recuperar en 5" como máximo</div>
             </div>
             <h2>7: Campo visual</h2>
             <div class="mb-3 row">
-                <div class="col-2 offset-1 col-form-label text-star">Resultado</div>
-                <div class="col-3 text-center">
+                <div class="col-12">Resultado</div>
+                <div class="col-1 offset-1">
+                    <div class="col-form-label text-star">OD</div>
+                </div>
+                <div class="col-3">
                     <ng-select [items]="cboCampoVisualD" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_campo_visual_od" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
                         [(ngModel)]="objFM.id_resultado_campo_visual_od" (change)="ValidarNegocio()">
                     </ng-select>
                 </div>
-                <div class="col-3 offset-1 text-center">
+                <div class="col-1">
+                    <div class="col-form-label text-star">OI</div>
+                </div>
+                <div class="col-3">
                     <ng-select [items]="cboCampoVisualI" placeholder="Seleccione" bindLabel="descripcion"
                         bindValue="id_resultado_campo_visual_oi" [clearable]="false"
                         notFoundText="no se ha encontrado ningún item" class="fomr-control"
                         [(ngModel)]="objFM.id_resultado_campo_visual_oi" (change)="ValidarNegocio()">
                     </ng-select>
                 </div>
-                <div class="col-1 text-center">(+)</div>
+
+                <div class="col-1 offset-1  text-center">(+)</div>
                 <div class="col-1 text-center">(-)</div>
-                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_campo_visual">No puede tener la visión alterada en ningún ojo</div>
+                <div class="offset-1 col-11 p-hidde text-danger fw-bold d-none" id="objFM.id_resultado_campo_visual">No
+                    puede tener la visión alterada en ningún ojo</div>
             </div>
             <div class="mb-3 row g-3">
-                <div class="col-12 offset-1 col-form-label text-star">Resultado Final de la Evaluación Visual</div>
+                <div class="col-12 col-form-label text-star">Resultado Final de la Evaluación Visual</div>
 
                 <div class="col-3 text-center col-form-label">APTO</div>
                 <div class="col-3 text-center">
@@ -258,10 +362,12 @@
             <div class="mb-3 row g-3 p-hidde">
                 <div class="text-center">
                     <ng-container *hasClaim="'btn_guardar_visual'">
-                        <button class="btn btn-primary" (click)="Guardar()"><i class="bi bi-save2-fill"></i> Guardar</button>
+                        <button class="btn btn-primary" (click)="Guardar()"><i class="bi bi-save2-fill"></i>
+                            Guardar</button>
                     </ng-container>
                     <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
-                        <button class="btn btn-secondary ms-1" (click)="Imprimir()"><i class="bi bi-printer-fill"></i> Imprimir</button>
+                        <button class="btn btn-secondary ms-1" (click)="Imprimir()"><i class="bi bi-printer-fill"></i>
+                            Imprimir</button>
                     </ng-container>
 
 
@@ -283,7 +389,7 @@
             <div class="mb-3 row mt-4 p-show p-d-flex">
                 <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
                 <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
-                        [(ngModel)]="objFM.hora_inicio_evaluacion" ></div>
+                        [(ngModel)]="objFM.hora_inicio_evaluacion"></div>
                 <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
                 <div class="col-2 col-form-label text-star"><input type="text" class="form-control p-show">
                 </div>

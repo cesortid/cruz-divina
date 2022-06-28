@@ -10,6 +10,8 @@ import { FichaMedicaService } from 'src/app/services/fichamedica/fichamedica.ser
   styleUrls: ['./visual.component.scss']
 })
 export class VisualComponent implements OnInit {
+  valor_ninguno_desabilitado:boolean=true;
+  valor_ninguno="------";
   ID_FICHA_MEDICA_SNC: number = 0;
   OBJ_FICHA_MEDICA: any = null;
   OBJ_HORA: any = null;
