@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 export class Funciones {
 
@@ -59,5 +60,17 @@ export class Funciones {
            return false;
           }
       }
-
+      public solo_entero= createNumberMask({
+        prefix: '',
+        suffix: '',
+        includeThousandsSeparator: true,
+        thousandsSeparatorSymbol: ',',
+        allowDecimal: false,
+        decimalSymbol: '.',
+        decimalLimit: 0,
+        integerLimit: 2,
+        requireDecimal: false,
+        allowNegative: false,
+        allowLeadingZeroes: false
+    });
 }

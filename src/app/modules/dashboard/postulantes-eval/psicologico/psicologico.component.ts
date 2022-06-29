@@ -11,9 +11,10 @@ import Swal from 'sweetalert2';
   styleUrls: ['./psicologico.component.scss']
 })
 export class PsicologicoComponent implements OnInit {
-  PUEDE_REGISTRAR:boolean=false;
+  PUEDE_REGISTRAR: boolean = false;
   ID_FICHA_MEDICA_SNC: number = 0;
   OBJ_FICHA_MEDICA: any = null;
+  PROFESIONAL:boolean=false;
   OBJ_HORA: any = null;
   cboApto = [];
   objFM = {
@@ -41,7 +42,24 @@ export class PsicologicoComponent implements OnInit {
     "observacion": "NINGUNA",
     "activo": true, //
     "usuario_creacion": sessionStorage.getItem("Usuario"),
-    "usuario_modificacion": sessionStorage.getItem("Usuario")
+    "usuario_modificacion": sessionStorage.getItem("Usuario"),
+
+    "test": {
+      "id_evaluacion_psico_metrica": 0,
+      "id_evaluacion_psicologica": 0,
+      "palanca_errores": 0,
+      "palanca_tiempo_error": 0,
+      "palanca_tiempo_error_cent": 0,
+      "palanca_tiempo_prueba": 0,
+      "palanca_tiempo_prueba_cent": 0,
+      "reactimetro_tiempo": 0,
+      "reactimetro_tiempo_cent": 0,
+      "punteo_errores": 0,
+      "punteo_aciertos": 0,
+      "punteo_tiempo": 0,
+      "punteo_tiempo_cent": 0
+    }
+
   };
 
   objH = {
@@ -108,10 +126,32 @@ export class PsicologicoComponent implements OnInit {
     resultpresentacion: [],
     resultsensopercepcion: []
   };
-  fecha_evaluacion:string="";
+  fecha_evaluacion: string = "";
 
-
-  constructor(private crypto: CryptoService, private servicio: FichaMedicaService, private rutaActual: ActivatedRoute, private helper: Funciones) { }
+  Palanca = {
+    errores: 12,
+    te_seg: 5,
+    te_centecimas: 0,
+    tp_seg: 60,
+    tp_centecimas: 0,
+    apto: true,
+    texto: 'E:12, TE:5" 0c, TP:60" 0c'
+  }
+  Reactimetro = {
+    tt_seg: 3,
+    tt_centecimas: 0,
+    apto: true,
+    texto: 'TT:3 0c'
+  }
+  Punteo = {
+    errores: 23,
+    aciertos: 24,
+    ta_seg: 4,
+    ta_centecimas: 0,
+    apto: true,
+    texto: 'E:23, A:24, TA:4" 0c'
+  }
+  constructor(private crypto: CryptoService, private servicio: FichaMedicaService, private rutaActual: ActivatedRoute, public helper: Funciones) { }
 
   ngOnInit(): void {
 
@@ -133,7 +173,7 @@ export class PsicologicoComponent implements OnInit {
               this.ValidarHoraLaboratorio();
               this.Setear(rptaExiste.data);
             }
-            else{
+            else {
               this.ValidarHoraLaboratorio();
               this.SetearPorCondicion();
             }
@@ -148,7 +188,7 @@ export class PsicologicoComponent implements OnInit {
             if (rptaCombos && rptaExiste.existe) {
               this.SetearHijo(rptaExiste.data);
             }
-            else{
+            else {
               this.SetearPorCondicionH();
             }
           });
@@ -194,12 +234,13 @@ export class PsicologicoComponent implements OnInit {
       let param = { "id_ficha_medica_snc": id_ficha_medica_snc };
       this.servicio.obtenerFichaMedica(param).subscribe((data: any) => {
         this.OBJ_FICHA_MEDICA = data.objfichamedica;
-        this.OBJ_HORA=data.objhoraevaluacion;
+        this.PROFESIONAL=(this.OBJ_FICHA_MEDICA.id_condicion == 2)?true:false;
+        this.OBJ_HORA = data.objhoraevaluacion;
         this.OBJ_FICHA_MEDICA.fecha_nac_string = this.getFechaString(this.OBJ_FICHA_MEDICA.fecha_nacimiento);
-        this.OBJ_FICHA_MEDICA.sexo_string=(this.OBJ_FICHA_MEDICA.sexo=="M")?"MASCULINO":"FEMENINO";
+        this.OBJ_FICHA_MEDICA.sexo_string = (this.OBJ_FICHA_MEDICA.sexo == "M") ? "MASCULINO" : "FEMENINO";
 
 
-        this.fecha_evaluacion= this.getFechaString(this.OBJ_FICHA_MEDICA.fecha_inicio_evaluacion);
+        this.fecha_evaluacion = this.getFechaString(this.OBJ_FICHA_MEDICA.fecha_inicio_evaluacion);
         resolve(true);
 
       });
@@ -224,22 +265,22 @@ export class PsicologicoComponent implements OnInit {
       });
       return false;
     }
-    else{
-      if(this.OBJ_FICHA_MEDICA.id_condicion==1){
-        if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"01:08")==false){
-          this.helper.Mensaje("info","Mensaje del sistema","El tiempo de duración en el <b>Área de Psicología</b> debe ser <b>mínimo de 1 hora con 8 minutos</b>",()=>{
+    else {
+      if (this.OBJ_FICHA_MEDICA.id_condicion == 1) {
+        if (this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion, this.objFM.hora_termino_evaluacion, "01:08") == false) {
+          this.helper.Mensaje("info", "Mensaje del sistema", "El tiempo de duración en el <b>Área de Psicología</b> debe ser <b>mínimo de 1 hora con 8 minutos</b>", () => {
             //document.getElementById("objFM.hora_termino_evaluacion")!.focus();
           });
           return false;
-        }        
+        }
       }
-      if(this.OBJ_FICHA_MEDICA.id_condicion==2){
-        if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"01:11")==false){
-          this.helper.Mensaje("info","Mensaje del sistema","El tiempo de duración en el <b>Área de Psicología</b> debe ser <b>mínimo de 1 hora con 11 minutos</b>",()=>{
+      if (this.OBJ_FICHA_MEDICA.id_condicion == 2) {
+        if (this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion, this.objFM.hora_termino_evaluacion, "01:11") == false) {
+          this.helper.Mensaje("info", "Mensaje del sistema", "El tiempo de duración en el <b>Área de Psicología</b> debe ser <b>mínimo de 1 hora con 11 minutos</b>", () => {
             //document.getElementById("objFM.hora_termino_evaluacion")!.focus();
           });
           return false;
-        }        
+        }
       }
     }
 
@@ -251,9 +292,9 @@ export class PsicologicoComponent implements OnInit {
     }
     return true;
   }
-  disabled_resultado_test_palanca: boolean = false;
-  disabled_resultado_reactimetro: boolean = false;
-  disabled_resultado_test_punteo: boolean = false;
+  disabled_resultado_test_palanca: boolean = true;
+  disabled_resultado_reactimetro: boolean = true;
+  disabled_resultado_test_punteo: boolean = true;
   disabled_wechsler: boolean = true;
   disabled_test_matrices_progresivas: boolean = true;
   disabled_test_dominios_anstey: boolean = true;
@@ -300,38 +341,38 @@ export class PsicologicoComponent implements OnInit {
       this.objFM.resultado_prueba = true;
     }
   }
-  SetearControlesPorCondicion(){
+  SetearControlesPorCondicion() {
     if (this.OBJ_FICHA_MEDICA.id_condicion == 1) {
-      this.disabled_resultado_test_palanca = true;
-      this.disabled_resultado_reactimetro = true;
-      this.disabled_resultado_test_punteo = true;
+     // this.disabled_resultado_test_palanca = true;
+     // this.disabled_resultado_reactimetro = true;
+     // this.disabled_resultado_test_punteo = true;
     }
   }
 
 
-  SetearPorCondicionH(){
-    this.objH.id_resultado_presentacion=1;
-    this.objH.id_resultado_postura=1;
-    this.objH.id_resultado_actitud=1;
-    this.objH.id_resultado_orientacion_tiempo=1;
-    this.objH.id_resultado_orientacion_espacio=1;
-    this.objH.id_resultado_orientacion_persona=1;
-    this.objH.proceso_cognitivo_atencion_concentracion="PROCESOS COGNITIVOS CONSERVADOS";
-    this.objH.proceso_cognitivo_percepcion="SIN ALTERACIONES";
-    this.objH.id_resultado_memoria_corto=1;
-    this.objH.id_resultado_memoria_mediano=1;
-    this.objH.id_resultado_memoria_largo=1;
-    this.objH.id_resultado_lenguaje_ritmo=3;
-    this.objH.id_resultado_lenguaje_tono=2;
-    this.objH.id_resultado_lenguaje_articulacion=2;
-    this.objH.id_resultado_pensamiento_curso=1;
-    this.objH.id_resultado_pensamiento_contenido=1;
-    this.objH.id_resultado_afecto=1;
-    this.objH.id_resultado_senso_percepcion=1;
-    this.objH.id_resultado_apetito_conducta_alimentaria=1;
-    this.objH.id_resultado_ciclo_suenio_vigilia=1;
-    this.objH.conclusiones_area_cognitiva="PROMEDIO APTO";
-    this.objH.conclusiones_area_emocional="ESTABLE APTO";
+  SetearPorCondicionH() {
+    this.objH.id_resultado_presentacion = 1;
+    this.objH.id_resultado_postura = 1;
+    this.objH.id_resultado_actitud = 1;
+    this.objH.id_resultado_orientacion_tiempo = 1;
+    this.objH.id_resultado_orientacion_espacio = 1;
+    this.objH.id_resultado_orientacion_persona = 1;
+    this.objH.proceso_cognitivo_atencion_concentracion = "PROCESOS COGNITIVOS CONSERVADOS";
+    this.objH.proceso_cognitivo_percepcion = "SIN ALTERACIONES";
+    this.objH.id_resultado_memoria_corto = 1;
+    this.objH.id_resultado_memoria_mediano = 1;
+    this.objH.id_resultado_memoria_largo = 1;
+    this.objH.id_resultado_lenguaje_ritmo = 3;
+    this.objH.id_resultado_lenguaje_tono = 2;
+    this.objH.id_resultado_lenguaje_articulacion = 2;
+    this.objH.id_resultado_pensamiento_curso = 1;
+    this.objH.id_resultado_pensamiento_contenido = 1;
+    this.objH.id_resultado_afecto = 1;
+    this.objH.id_resultado_senso_percepcion = 1;
+    this.objH.id_resultado_apetito_conducta_alimentaria = 1;
+    this.objH.id_resultado_ciclo_suenio_vigilia = 1;
+    this.objH.conclusiones_area_cognitiva = "PROMEDIO APTO";
+    this.objH.conclusiones_area_emocional = "ESTABLE APTO";
     //id_resultado_apetito_conducta_alimentaria
   }
   ValidarNegocio00() {
@@ -386,6 +427,10 @@ export class PsicologicoComponent implements OnInit {
 
   GuardarEvaluacionPsicologica() {
     if (this.ValidarFromulario00()) {
+
+      this.ValidarPalanca();
+      this.ValidarReactimetro();
+      this.ValidarPunteo();
 
       if (this.objFM.id_evaluacion_psicologica == 0 || this.objFM.id_evaluacion_psicologica == null) {
         this.servicio.insertarEvaluacionPsicologica(this.objFM).subscribe((data: any) => {
@@ -501,42 +546,42 @@ export class PsicologicoComponent implements OnInit {
     return true;
   }
   GuardarHistorialPsicologico() {
-    this.objH.resultado_prueba=(this.objH.recomendacion=="APTO")?true:false;
+    this.objH.resultado_prueba = (this.objH.recomendacion == "APTO") ? true : false;
 
 
 
     if (this.ValidarFromularioHP()) {
 
-      if((this.CumpleEstandar()==false) && (this.objH.resultado_prueba==true)){
-        this.helper.Mensaje("question","Aviso","El postulante <b>No cumple</b> con los característica estándar.<br>¿Desea continuar y registrar como <b>APTO</b> al postulante?",(rpta:any)=>{
-          if(rpta.value){
+      if ((this.CumpleEstandar() == false) && (this.objH.resultado_prueba == true)) {
+        this.helper.Mensaje("question", "Aviso", "El postulante <b>No cumple</b> con los característica estándar.<br>¿Desea continuar y registrar como <b>APTO</b> al postulante?", (rpta: any) => {
+          if (rpta.value) {
             if (this.objH.id_historia_clinica == 0 || this.objH.id_historia_clinica == null) {
               this.servicio.insertarHistoriaClinica(this.objH).subscribe((data: any) => {
-                this.objFM.resultado_prueba= this.objH.resultado_prueba;
+                this.objFM.resultado_prueba = this.objH.resultado_prueba;
                 this.GuardarEvaluacionPsicologica();
               });
             }
             else {
               this.servicio.modificarHistoriaClinica(this.objH).subscribe((data: any) => {
-                this.objFM.resultado_prueba= this.objH.resultado_prueba;
+                this.objFM.resultado_prueba = this.objH.resultado_prueba;
                 this.GuardarEvaluacionPsicologica();
               });
             }
           }
         });
       }
-      if((this.CumpleEstandar()==true) && (this.objH.resultado_prueba==false)){
-        this.helper.Mensaje("question","Aviso","El postulante <b>Si cumple</b> con los característica estándar.<br>¿Desea continuar y registrar como <b>NO APTO</b> al postulante?",(rpta:any)=>{
-          if(rpta.value){
+      if ((this.CumpleEstandar() == true) && (this.objH.resultado_prueba == false)) {
+        this.helper.Mensaje("question", "Aviso", "El postulante <b>Si cumple</b> con los característica estándar.<br>¿Desea continuar y registrar como <b>NO APTO</b> al postulante?", (rpta: any) => {
+          if (rpta.value) {
             if (this.objH.id_historia_clinica == 0 || this.objH.id_historia_clinica == null) {
               this.servicio.insertarHistoriaClinica(this.objH).subscribe((data: any) => {
-                this.objFM.resultado_prueba= this.objH.resultado_prueba;
+                this.objFM.resultado_prueba = this.objH.resultado_prueba;
                 this.GuardarEvaluacionPsicologica();
               });
             }
             else {
               this.servicio.modificarHistoriaClinica(this.objH).subscribe((data: any) => {
-                this.objFM.resultado_prueba= this.objH.resultado_prueba;
+                this.objFM.resultado_prueba = this.objH.resultado_prueba;
                 this.GuardarEvaluacionPsicologica();
               });
             }
@@ -544,16 +589,16 @@ export class PsicologicoComponent implements OnInit {
         });
       }
 
-      if((this.CumpleEstandar()==true) && (this.objH.resultado_prueba==true)){
+      if ((this.CumpleEstandar() == true) && (this.objH.resultado_prueba == true)) {
         if (this.objH.id_historia_clinica == 0 || this.objH.id_historia_clinica == null) {
           this.servicio.insertarHistoriaClinica(this.objH).subscribe((data: any) => {
-            this.objFM.resultado_prueba= this.objH.resultado_prueba;
+            this.objFM.resultado_prueba = this.objH.resultado_prueba;
             this.GuardarEvaluacionPsicologica();
           });
         }
         else {
           this.servicio.modificarHistoriaClinica(this.objH).subscribe((data: any) => {
-            this.objFM.resultado_prueba= this.objH.resultado_prueba;
+            this.objFM.resultado_prueba = this.objH.resultado_prueba;
             this.GuardarEvaluacionPsicologica();
           });
         }
@@ -583,6 +628,50 @@ export class PsicologicoComponent implements OnInit {
     this.objFM.id_resultado_test_personaarma = data.id_resultado_test_personaarma;
     this.objFM.resultado_prueba = data.resultado_prueba;
     this.objFM.observacion = data.observacion;
+
+
+    this.objFM.test.id_evaluacion_psicologica= this.objFM.id_evaluacion_psicologica;
+
+    if(data.test!=null){
+      this.objFM.test.id_evaluacion_psico_metrica=data.test[0].id_evaluacion_psico_metrica;
+      this.objFM.test.palanca_errores=data.test[0].palanca_errores;
+      this.objFM.test.palanca_tiempo_error=data.test[0].palanca_tiempo_error;
+      this.objFM.test.palanca_tiempo_error_cent=data.test[0].palanca_tiempo_error_cent;
+      this.objFM.test.palanca_tiempo_prueba=data.test[0].palanca_tiempo_prueba;
+      this.objFM.test.palanca_tiempo_prueba_cent=data.test[0].palanca_tiempo_prueba_cent;
+
+      this.objFM.test.reactimetro_tiempo=data.test[0].reactimetro_tiempo;
+      this.objFM.test.reactimetro_tiempo_cent=data.test[0].reactimetro_tiempo_cent;
+
+      this.objFM.test.punteo_errores=data.test[0].punteo_errores;
+      this.objFM.test.punteo_aciertos=data.test[0].punteo_aciertos;
+      this.objFM.test.punteo_tiempo=data.test[0].punteo_tiempo;
+      this.objFM.test.punteo_tiempo_cent=data.test[0].punteo_tiempo_cent;     
+      
+      
+      this.Palanca.errores=this.objFM.test.palanca_errores;
+      this.Palanca.te_seg=this.objFM.test.palanca_tiempo_error;
+      this.Palanca.te_centecimas=this.objFM.test.palanca_tiempo_error_cent;
+      this.Palanca.tp_seg=this.objFM.test.palanca_tiempo_prueba;
+      this.Palanca.tp_centecimas=this.objFM.test.palanca_tiempo_prueba_cent;
+
+      this.Reactimetro.tt_seg=this.objFM.test.reactimetro_tiempo;
+      this.Reactimetro.tt_centecimas=this.objFM.test.reactimetro_tiempo_cent;
+
+
+      this.Punteo.errores=this.objFM.test.punteo_errores
+      this.Punteo.aciertos=this.objFM.test.punteo_aciertos
+      this.Punteo.ta_seg=this.objFM.test.punteo_tiempo
+      this.Punteo.ta_centecimas=this.objFM.test.punteo_tiempo_cent
+
+      this.ValidarPalanca();
+      this.ValidarReactimetro();
+      this.ValidarPunteo();
+
+    }
+
+
+
     this.ValidarHoraIngreso();
   }
   getFecha(fechastring: any): any {
@@ -665,31 +754,31 @@ export class PsicologicoComponent implements OnInit {
   Imprimir01() {
     window.print();
   }
-  ValidarHoraIngreso(){
+  ValidarHoraIngreso() {
 
-      if(!this.helper.ValidarHoraIngreso(
-        this.OBJ_HORA.hora_termino_evaluacion_an_lab,
-        this.objFM.hora_inicio_evaluacion
-      )){
-        this.helper.Mensaje("error","Aviso","La hora de ingreso no puede ser menor o igual a <b>"+(this.OBJ_HORA.hora_termino_evaluacion_an_lab)+"</b>",()=>{
-          document.getElementById("objFM.hora_inicio_evaluacion")?.focus();
-        });
-      }
-
-  }
-  ValidarHoraLaboratorio(){
-
-    if(this.OBJ_HORA.hora_termino_evaluacion_an_lab!=null){
-      this.PUEDE_REGISTRAR=true;
-    }
-    else{
-      this.helper.Mensaje("error","Aviso","Aún no se concluye la Evaluación en Analisis de Laboratorio",()=>{
+    if (!this.helper.ValidarHoraIngreso(
+      this.OBJ_HORA.hora_termino_evaluacion_an_lab,
+      this.objFM.hora_inicio_evaluacion
+    )) {
+      this.helper.Mensaje("error", "Aviso", "La hora de ingreso no puede ser menor o igual a <b>" + (this.OBJ_HORA.hora_termino_evaluacion_an_lab) + "</b>", () => {
+        document.getElementById("objFM.hora_inicio_evaluacion")?.focus();
       });
-      this.PUEDE_REGISTRAR=false;
+    }
+
+  }
+  ValidarHoraLaboratorio() {
+
+    if (this.OBJ_HORA.hora_termino_evaluacion_an_lab != null) {
+      this.PUEDE_REGISTRAR = true;
+    }
+    else {
+      this.helper.Mensaje("error", "Aviso", "Aún no se concluye la Evaluación en Analisis de Laboratorio", () => {
+      });
+      this.PUEDE_REGISTRAR = false;
     }
   }
-  
-  ValidarEstandar(){
+
+  ValidarEstandar() {
     // if(
     //   (this.objH.id_resultado_presentacion==1) &&
     //   (this.objH.id_resultado_postura==1) &&
@@ -831,7 +920,7 @@ export class PsicologicoComponent implements OnInit {
     //   } else {
     //     document.getElementById("objH.id_resultado_pensamiento_curso")!.classList.remove("d-none");
     //   }
-  
+
     //   if(
     //     (this.objH.id_resultado_pensamiento_contenido==1)
     //   ){
@@ -875,41 +964,99 @@ export class PsicologicoComponent implements OnInit {
 
   }
 
-  CumpleEstandar(){
-    if(
-      (this.objH.id_resultado_presentacion==1) &&
-      (this.objH.id_resultado_postura==1) &&
-      (this.objH.id_resultado_actitud==1) &&
-      (this.objH.id_resultado_orientacion_tiempo==1) &&
-      (this.objH.id_resultado_orientacion_espacio==1) &&
-      (this.objH.id_resultado_orientacion_persona==1) &&
+  CumpleEstandar() {
+    if (
+      (this.objH.id_resultado_presentacion == 1) &&
+      (this.objH.id_resultado_postura == 1) &&
+      (this.objH.id_resultado_actitud == 1) &&
+      (this.objH.id_resultado_orientacion_tiempo == 1) &&
+      (this.objH.id_resultado_orientacion_espacio == 1) &&
+      (this.objH.id_resultado_orientacion_persona == 1) &&
       // (this.objH.proceso_cognitivo_atencion_concentracion=="PROCESOS COGNITIVOS CONSERVADOS")&&
       // (this.objH.proceso_cognitivo_percepcion=="SIN ALTERACIONES")&&
-      (this.objH.id_resultado_memoria_corto==1) &&
-      (this.objH.id_resultado_memoria_mediano==1) &&
-      (this.objH.id_resultado_memoria_largo==1) &&
-      (this.objH.id_resultado_lenguaje_ritmo==3) &&
-      (this.objH.id_resultado_lenguaje_tono==2) &&
-      (this.objH.id_resultado_lenguaje_articulacion==2) &&
-      (this.objH.id_resultado_pensamiento_curso==1) &&
-      (this.objH.id_resultado_pensamiento_contenido==1) &&
-      (this.objH.id_resultado_afecto==1) &&
-      (this.objH.id_resultado_senso_percepcion==1) &&
-      (this.objH.id_resultado_apetito_conducta_alimentaria==1) &&
-      (this.objH.id_resultado_ciclo_suenio_vigilia==1) //&&
+      (this.objH.id_resultado_memoria_corto == 1) &&
+      (this.objH.id_resultado_memoria_mediano == 1) &&
+      (this.objH.id_resultado_memoria_largo == 1) &&
+      (this.objH.id_resultado_lenguaje_ritmo == 3) &&
+      (this.objH.id_resultado_lenguaje_tono == 2) &&
+      (this.objH.id_resultado_lenguaje_articulacion == 2) &&
+      (this.objH.id_resultado_pensamiento_curso == 1) &&
+      (this.objH.id_resultado_pensamiento_contenido == 1) &&
+      (this.objH.id_resultado_afecto == 1) &&
+      (this.objH.id_resultado_senso_percepcion == 1) &&
+      (this.objH.id_resultado_apetito_conducta_alimentaria == 1) &&
+      (this.objH.id_resultado_ciclo_suenio_vigilia == 1) //&&
       // (this.objH.conclusiones_area_cognitiva=="PROMEDIO APTO") &&
       // (this.objH.conclusiones_area_emocional=="ESTABLE APTO") 
       //(this.objH.resultado_prueba==true)
-    ){
+    ) {
       //quitar mensaje
       return true;
     }
-    else{
+    else {
       return false;
     }
 
   }
-}
 
-// this.OBJ_HORA.hora_termino_evaluacion_an_lab,
-// this.objFM.hora_inicio_evaluacion
+
+  ValidarPalanca() {
+    let obj = this.Palanca;
+    if ((obj.errores <= 12) && (obj.te_seg <= 5) && (obj.tp_seg <= 60)) {
+      this.Palanca.apto = true;
+    } else {
+      this.Palanca.apto = false;
+    }
+    if (this.Palanca.apto) {
+      this.objFM.id_resultado_test_palanca = 1;
+    }
+    else {
+      this.objFM.id_resultado_test_palanca = 2;
+    }
+    this.Palanca.texto = 'E:' + obj.errores + ', TE:' + obj.te_seg + '" ' + obj.te_centecimas + 'c, TP:' + obj.tp_seg + '" ' + obj.tp_centecimas + 'c';
+    this.objFM.test.palanca_errores=Number(this.Palanca.errores);
+    this.objFM.test.palanca_tiempo_error=Number(this.Palanca.te_seg);
+    this.objFM.test.palanca_tiempo_error_cent=Number(this.Palanca.te_centecimas);
+    this.objFM.test.palanca_tiempo_prueba=Number(this.Palanca.tp_seg);
+    this.objFM.test.palanca_tiempo_prueba_cent=Number(this.Palanca.tp_centecimas);
+    
+  }
+  ValidarReactimetro() {
+    let obj = this.Reactimetro;
+    let numero = Number(String(obj.tt_seg) + "." + obj.tt_centecimas)
+    if (numero <= 4.3) {
+      this.Reactimetro.apto = true;
+    }
+    else {
+      this.Reactimetro.apto = false;
+    }
+    if (this.Reactimetro.apto) {
+      this.objFM.id_resultado_reactimetro = 1;
+    }
+    else {
+      this.objFM.id_resultado_reactimetro = 2;
+    }
+    this.Reactimetro.texto = 'TT:' + obj.tt_seg + '" ' + obj.tt_centecimas + 'c';
+    this.objFM.test.reactimetro_tiempo=Number(this.Reactimetro.tt_seg);
+    this.objFM.test.reactimetro_tiempo_cent=Number(this.Reactimetro.tt_centecimas);
+  }
+  ValidarPunteo() {
+    let obj = this.Punteo;
+    if ((obj.errores <= 23) && (obj.aciertos >= 24) && (obj.ta_seg >= 4)) {
+      this.Punteo.apto = true;
+    } else {
+      this.Punteo.apto = false;
+    }
+    if (this.Punteo.apto) {
+      this.objFM.id_resultado_test_punteo = 1;
+    }
+    else {
+      this.objFM.id_resultado_test_punteo = 2;
+    }
+    this.Punteo.texto = 'E:' + obj.errores + ', A:' + obj.aciertos + ', TA:' + obj.ta_seg + '" ' + obj.ta_centecimas + 'c';
+    this.objFM.test.punteo_errores= Number(this.Punteo.errores);
+    this.objFM.test.punteo_aciertos= Number(this.Punteo.aciertos);
+    this.objFM.test.punteo_tiempo= Number(this.Punteo.ta_seg);
+    this.objFM.test.punteo_tiempo_cent= Number(this.Punteo.ta_centecimas);
+  }
+}

@@ -8,6 +8,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TreeviewModule } from 'ngx-treeview';
 import { HasClaimDirective } from 'src/app/core/guards/has-claim.directive';
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { HasClaimDirective } from 'src/app/core/guards/has-claim.directive';
     PaginationModule.forRoot(),
     TooltipModule.forRoot(),
     TreeviewModule.forRoot(),
-
+    TextMaskModule
   ],
   exports:[
     FormsModule,
@@ -35,7 +36,8 @@ import { HasClaimDirective } from 'src/app/core/guards/has-claim.directive';
     NgSelectModule,
     PaginationModule,
     TooltipModule,
-    TreeviewModule
+    TreeviewModule,
+    TextMaskModule
   ]
 })
 export class SharedModule { }
