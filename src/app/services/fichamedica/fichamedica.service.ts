@@ -120,6 +120,22 @@ export class FichaMedicaService {
     return this.apiService.GET("api/FichaMedica/listarDistrito", param);
   }
 
+  listarClase(param: any) {
+    return this.apiService.GET("api/FichaMedica/listarClase", param);
+  }
+  listarCategoria(param: any) {
+    return this.apiService.GET("api/FichaMedica/listarCategoria", param);
+  }
+  validarPostulanteDni(param: any) {
+    return this.apiService.GET("api/FichaMedica/validarPostulanteDni", param);
+  }
+
+  validarPostulanteNombre(param: any) {
+    return this.apiService.GET("api/FichaMedica/validarPostulanteNombre", param);
+  }
+
+
+
   //ANEXO 01
   listarFichaMedicaControl() {
     return this.apiService.GET("api/FichaMedica/listarFichaMedicaControl");

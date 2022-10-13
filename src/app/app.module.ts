@@ -11,11 +11,13 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { HttpTokenInterceptor } from './core/guards/interceptors/http.token.interceptor';
 import { Funciones } from './modules/shared/funciones';
 import { NgHttpLoaderModule } from 'ng-http-loader'; // <============
+import { HomonimosComponent } from './modules/dashboard/postulantes-eval/modales/homonimos/homonimos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    Anexo01Component
+    Anexo01Component,
+    HomonimosComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +35,6 @@ import { NgHttpLoaderModule } from 'ng-http-loader'; // <============
 
   ],
   bootstrap: [AppComponent],
-  entryComponents:[Anexo01Component]
+  entryComponents:[Anexo01Component,HomonimosComponent]
 })
 export class AppModule { }

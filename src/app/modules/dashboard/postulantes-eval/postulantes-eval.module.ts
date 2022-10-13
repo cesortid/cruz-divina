@@ -50,12 +50,12 @@ const routes:Routes=[
 
 @NgModule({
   declarations: [
-    PostulantesEvalComponent
+    PostulantesEvalComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule
-  ]
+  ],
 })
 export class PostulantesEvalModule { }

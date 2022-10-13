@@ -3,8 +3,10 @@ import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from 
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Funciones } from 'src/app/modules/shared/funciones';
+import { CryptoService } from 'src/app/services/comunes/crypto.service';
 import { FichaMedicaService } from 'src/app/services/fichamedica/fichamedica.service';
 import Swal from 'sweetalert2'
+import { HomonimosComponent } from '../modales/homonimos/homonimos.component';
 
 
 @Component({
@@ -17,7 +19,7 @@ export class Anexo01Component implements OnInit {
 
   cboTipoDocumento?: any = [];
   cboSexo: any = [];
-  lstClase: any = [];
+  lstTramite: any = [];
   cboCategoria: any = [];
   lstCondicion: any = [];
   cboEstadoCivil: any = [];
@@ -30,7 +32,9 @@ export class Anexo01Component implements OnInit {
   cboPrinvinciaDir: any = [];
   cboDistritoDir: any = [];
   cboPaises: any = [];
-
+  cboClase: any = [];
+  cboProfesion:any=[];
+  cboOcupacion:any=[];
 
   @ViewChild('ddlSexo') ddlSexo!: NgSelectComponent;
 
@@ -46,12 +50,20 @@ export class Anexo01Component implements OnInit {
   @ViewChild('ddlEstadoCivil') ddlEstadoCivil!: NgSelectComponent;
   @ViewChild('ddlCategoria') ddlCategoria!: NgSelectComponent;
   @ViewChild('ddlPaises') ddlPaises!: NgSelectComponent;
+
+  @ViewChild('ddlProfesion') ddlProfesion!: NgSelectComponent;
+  @ViewChild('ddlOcupacion') ddlOcupacion!: NgSelectComponent;
+  @ViewChild('ddlClase') ddlClase!: NgSelectComponent;
+
+  
+  
+
   @Output() retornoValores = new EventEmitter();
 
 
-  @ViewChild('template', { read: TemplateRef }) template!:TemplateRef<any>;
+  @ViewChild('template', { read: TemplateRef }) template!: TemplateRef<any>;
 
-  FORMULARIOS_INCOMPLETOS:boolean=true;
+  FORMULARIOS_INCOMPLETOS: boolean = true;
   objFM = {
     "id_ficha_medica_snc": 0,
     "numero_informe": null,
@@ -77,7 +89,7 @@ export class Anexo01Component implements OnInit {
     "otro_grado_instruccion": "----",
     "id_estado_civil": null,
     "ocupacion": null,
-    "id_clase": null,
+    "id_tramite": null,
     "id_categoria": null,
     "id_condicion": null,
     "hora_inicio": null,
@@ -93,50 +105,103 @@ export class Anexo01Component implements OnInit {
     iddpto_dir: null,
     origen_nac: null,
     id_pais: null,
-    re_numero_documento:""
+    re_numero_documento: "",
+    id_clase: null,
+    id_profesion:null,
+    id_ocupacion:null,
+    otro_profesion:"",
+    otro_ocupacion:"",
+    validar_edad:true
   };
   formValido: boolean = false;
 
 
-  modalRefHijo: BsModalRef=new BsModalRef();
+  modalRefHijo: BsModalRef = new BsModalRef();
+  BsModalRef_hijo!:BsModalRef;
+  filtro_edad:any;
+
+  es_nacional:boolean=false;
+  sede_depa:any=[];
 
 
-  constructor(public modalRef: BsModalRef, private servicio: FichaMedicaService, private funciones:Funciones,private modalService: BsModalService) { }
+  constructor(public modalRef: BsModalRef, private servicio: FichaMedicaService, public funciones: Funciones, private modalService: BsModalService,
+    private crypto: CryptoService) { }
 
   ngOnInit(): void {
     let this_paranet = this;
     this.CargarCombo();
+    this.es_nacional=(String(this.crypto.desencriptar(sessionStorage.getItem("Org_1")!)).toUpperCase()=="TRUE")?true:false;
+    this.sede_depa=JSON.parse(this.crypto.desencriptar(sessionStorage.getItem("Org_2")!));
 
+    console.log(this.es_nacional);
+    console.log(this.sede_depa);
   }
   CargarCombo() {
     this.servicio.listarFichaMedicaControl().subscribe((data: any) => {
       this.cboTipoDocumento = data.resulttipodocumento;
       this.cboSexo = data.resultsexo;
-      this.lstClase = data.resultclase;
+      this.lstTramite = data.resulttramite;
       this.cboCategoria = data.resultcategoria;
       this.lstCondicion = data.resultcondicion;
       this.cboEstadoCivil = data.resultestadocivil;
       this.cboGradoInstruccion = data.resultgradoinstruccion;
       this.cboDepartamentoNac = data.resultdepartamento;
+      this.filtro_edad=data.resultedad[0];
       //this.cboDepartamentoDir=data.resultdepartamento;
 
       let DepartamentosCobertura: any = [];
+
+
+
+
       this.cboDepartamentoNac.forEach((element: any) => {
-        if (element.iddpto == "07" || element.iddpto == "15") {
+
+        if(this.es_nacional){
           DepartamentosCobertura.push(element);
+        }
+        else{
+          // [{"Id_Sede_Ubigeo":"1","CodDepa":"15","CodProv":"1501"},{"Id_Sede_Ubigeo":"2","CodDepa":"07","CodProv":"0701"}]
+          let existe=this.sede_depa.filter((x:any)=>x.CodDepa==element.iddpto);
+          if(existe.length>0){
+            DepartamentosCobertura.push(element);
+          }        
         }
       });
       this.cboDepartamentoDir = DepartamentosCobertura;
+      if(this.OBJETO_EDITAR==null){
+        this.objFM.iddpto_dir=this.sede_depa[0].CodDepa;
+        let param = { "iddpto": this.objFM.iddpto_dir };
+        this.servicio.listarProvincia(param).subscribe((data: any) => {
+          this.cboPrinvinciaDir = data;
+
+ 
+            let num_prov:any=String(this.sede_depa[0].CodDepa+"01");
+            this.objFM.idprov_dir=num_prov;//;
+            let param_ = { "iddpto": this.objFM.iddpto_dir, "idprov": this.objFM.idprov_dir };
+            this.servicio.listarDistrito(param_).subscribe((data_: any) => {
+              this.cboDistritoDir = data_;
+              let num_dist:any=String(this.sede_depa[0].CodDepa+"0101");
+              this.objFM.iddist_dir=num_dist;//;
+            });            
+
+
+        });
+      }
+
+
+
       this.cboPaises = data.resultpais;
+      this.cboProfesion=data.resultprofesion;
+      this.cboOcupacion=data.resultocupacion;
 
       if (this.OBJETO_EDITAR != null) {
 
 
 
 
-        if(this.OBJETO_EDITAR.iddpto!=null){
-          let origen_nac:any=1;
-          this.objFM.origen_nac=origen_nac;
+        if (this.OBJETO_EDITAR.iddpto != null) {
+          let origen_nac: any = 1;
+          this.objFM.origen_nac = origen_nac;
           let param = { "iddpto": this.OBJETO_EDITAR.iddpto };
           this.servicio.listarProvincia(param).subscribe((data: any) => {
             this.cboProvinciaNac = data;
@@ -148,33 +213,33 @@ export class Anexo01Component implements OnInit {
             });
           });
         }
-        if(this.OBJETO_EDITAR.id_pais!=null){
-          let origen_nac:any=2;
-          this.objFM.origen_nac=origen_nac;
+        if (this.OBJETO_EDITAR.id_pais != null) {
+          let origen_nac: any = 2;
+          this.objFM.origen_nac = origen_nac;
           let param = { "iddpto": this.OBJETO_EDITAR.iddpto };
 
-            this.CargarComboEdicionDomicilio();
+          this.CargarComboEdicionDomicilio();
 
         }
 
-      }else{
-        let hoy_=new Date();
-        let hoy= hoy_.getFullYear()+"-"+('0'+(hoy_.getMonth()+1)).slice(-2)+'-'+hoy_.getDate();
-        this.objFM.fecha_inicio_evaluacion=hoy;
-        this.objFM.fecha_termino_evaluacion=hoy;
-        this.objFM.fecha_informe=hoy;
+      } else {
+        let hoy_ = new Date();
+        let hoy = hoy_.getFullYear() + "-" + ('0' + (hoy_.getMonth() + 1)).slice(-2) + '-' + hoy_.getDate();
+        this.objFM.fecha_inicio_evaluacion = hoy;
+        //this.objFM.fecha_termino_evaluacion = hoy;
+       // this.objFM.fecha_informe = hoy;
       }
 
     });
   }
-  CargarComboEdicionDomicilio(){
+  CargarComboEdicionDomicilio() {
     let param = { "iddpto": this.OBJETO_EDITAR.iddpto_dir };
     this.servicio.listarProvincia(param).subscribe((data: any) => {
       this.cboPrinvinciaDir = data;
       let param_ = { "iddpto": this.OBJETO_EDITAR.iddpto_dir, "idprov": this.OBJETO_EDITAR.idprov_dir };
       this.servicio.listarDistrito(param_).subscribe((data_: any) => {
         this.cboDistritoDir = data_;
-        setTimeout(() => {this.SetearEdicion();}, 1);
+        setTimeout(() => { this.SetearEdicion(); }, 1);
       });
     });
   }
@@ -240,45 +305,51 @@ export class Anexo01Component implements OnInit {
       });
     }
   }
-  AutocompletarCondicion(){
-    let casos=[
-      {id_categoria:1,id_condicion:1},
-      {id_categoria:2,id_condicion:2},
-      {id_categoria:3,id_condicion:2},
-      {id_categoria:4,id_condicion:2},
-      {id_categoria:5,id_condicion:2},
-      {id_categoria:6,id_condicion:2},
-      {id_categoria:7,id_condicion:2},
-      {id_categoria:8,id_condicion:1},
-      {id_categoria:9,id_condicion:1},
-      {id_categoria:10,id_condicion:1},
-      {id_categoria:11,id_condicion:2}
+  AutocompletarCondicion() {
+
+
+
+    let casos = [
+      { id_clase:1, id_categoria: 3, id_condicion: 1 },
+      { id_clase:1, id_categoria: 4, id_condicion: 2 },
+      { id_clase:1, id_categoria: 5, id_condicion: 2 },
+      { id_clase:1, id_categoria: 6, id_condicion: 2 },
+      { id_clase:1, id_categoria: 7, id_condicion: 2 },
+      { id_clase:1, id_categoria: 8, id_condicion: 2 },
+      { id_clase:1, id_categoria: 9, id_condicion: 2 },
+
+      { id_clase:2, id_categoria: 10, id_condicion: 1 },
+      { id_clase:2, id_categoria: 11, id_condicion: 1 },
+      { id_clase:2, id_categoria: 12, id_condicion: 1 },
+      { id_clase:2, id_categoria: 13, id_condicion: 2 },
+
+
     ];
-    let condicion:any=casos.find(x=>x.id_categoria==this.objFM.id_categoria);
-    this.objFM.id_condicion=condicion.id_condicion;
+    let condicion: any = casos.find(x => x.id_categoria == this.objFM.id_categoria);
+    this.objFM.id_condicion = condicion.id_condicion;
   }
   Validar(): boolean {
-    if(this.objFM.origen_nac==1){
-      this.objFM.id_pais=null;
+    if (this.objFM.origen_nac == 1) {
+      this.objFM.id_pais = null;
 
-      try{
-        this.ddlPaises.clearAllText;      
-       }catch(e){}
+      try {
+        this.ddlPaises.clearAllText;
+      } catch (e) { }
     }
-    if(this.objFM.origen_nac==2){
-      this.objFM.iddpto=null;
-      this.objFM.idprov=null;
-      this.objFM.iddist=null;
+    if (this.objFM.origen_nac == 2) {
+      this.objFM.iddpto = null;
+      this.objFM.idprov = null;
+      this.objFM.iddist = null;
 
-      try{
-       this.ddlDepartamentoNac.clearAllText;
-      this.ddlProvinciaNac.clearAllText;
-      this.ddlDistritoNac.clearAllText;       
-      }catch(e){}
+      try {
+        this.ddlDepartamentoNac.clearAllText;
+        this.ddlProvinciaNac.clearAllText;
+        this.ddlDistritoNac.clearAllText;
+      } catch (e) { }
 
 
-      this.cboProvinciaNac=[];
-      this.cboDistritoNac=[];
+      this.cboProvinciaNac = [];
+      this.cboDistritoNac = [];
     }
 
     // if (this.objFM.numero_informe == "" || this.objFM.numero_informe == null) {
@@ -306,13 +377,13 @@ export class Anexo01Component implements OnInit {
     //   return false;
     // }
 
-    if (this.objFM.hora_inicio_evaluacion == "" || this.objFM.hora_inicio_evaluacion == null || this.objFM.hora_inicio_evaluacion == "00:00" ) {
+    if (this.objFM.hora_inicio_evaluacion == "" || this.objFM.hora_inicio_evaluacion == null || this.objFM.hora_inicio_evaluacion == "00:00") {
       // this.Mensaje("info", "Digite la hora de Inicio de la Evaluación Médica", () => {
       //   document.getElementById("objFM.hora_inicio_evaluacion")?.focus();
       // })
       // return false;
-      this.objFM.hora_inicio_evaluacion=null;
-    
+      this.objFM.hora_inicio_evaluacion = null;
+
     }
 
     if (this.OBJETO_EDITAR != null) {
@@ -356,12 +427,18 @@ export class Anexo01Component implements OnInit {
       })
       return false;
     }
-    if (this.objFM.fecha_nacimiento == "" || this.objFM.fecha_nacimiento == null) {
-      this.Mensaje("info", "Seleccione la fecha de nacimiento del postulante", () => {
-        document.getElementById("objFM.fecha_nacimiento")?.focus();
-      })
-      return false;
-    }
+    // if (this.objFM.fecha_nacimiento == "" || this.objFM.fecha_nacimiento == null) {
+    //   this.Mensaje("info", "Seleccione la fecha de nacimiento del postulante", () => {
+    //     document.getElementById("objFM.fecha_nacimiento")?.focus();
+    //   })
+    //   return false;
+    // }
+
+
+
+
+
+
 
     if (this.objFM.id_sexo == 0 || this.objFM.id_sexo == null) {
       this.Mensaje("info", "Seleccione campo sexo", () => {
@@ -375,6 +452,25 @@ export class Anexo01Component implements OnInit {
       })
       return false;
     }
+    let obtener_primer_numero=String(String(this.objFM.telefono).substring(0,1));
+
+    if (obtener_primer_numero=="9") {
+      if (String(this.objFM.telefono).length!=9) {
+        this.Mensaje("info", "Formato de número de teléfono incorrecto", () => {
+          document.getElementById("objFM.telefono")?.focus();
+        })
+        return false;
+      }
+    }
+    if (obtener_primer_numero!="9") {
+      if (String(this.objFM.telefono).length!=8) {
+        this.Mensaje("info", "Formato de número de teléfono incorrecto", () => {
+          document.getElementById("objFM.telefono")?.focus();
+        })
+        return false;
+      }
+    }
+
 
 
     //SI ES PERUANO
@@ -454,39 +550,70 @@ export class Anexo01Component implements OnInit {
       })
       return false;
     }
+
+
     if (
-      (this.objFM.id_grado_instruccion == 4 || this.objFM.id_grado_instruccion == 5) 
+      (this.objFM.id_grado_instruccion == 4 || this.objFM.id_grado_instruccion == 5)
       &&
-      (this.objFM.otro_grado_instruccion== "" || this.objFM.otro_grado_instruccion== null)
-      )
-       {
-      this.Mensaje("info", "Digite Profesión", () => {
-        document.getElementById("objFM.otro_grado_instruccion")?.focus();
+      (this.objFM.id_profesion  == null)
+    ) {
+      this.Mensaje("info", "Seleccione Profesión", () => {
+        this.ddlProfesion.focus()
       })
       return false;
     }
+    if (
+      (this.objFM.id_grado_instruccion == 4 || this.objFM.id_grado_instruccion == 5)
+      &&
+      (this.objFM.id_profesion  == 8)
+      &&
+      (this.objFM.otro_profesion  == "")
+    ) {
+      this.Mensaje("info", "Digite Profesión", () => {
+        document.getElementById("objFM.otro_profesion")?.focus();
+      })
+      return false;
+    }
+
 
     if (this.objFM.id_estado_civil == 0 || this.objFM.id_estado_civil == null) {
       this.Mensaje("info", "Seleccione Estado Civil", () => {
         // document.getElementById("objFM.id_grado_instruccion")?.focus();
         this.ddlEstadoCivil.focus();
-      })
+      });
       return false;
     }
-    if (this.objFM.ocupacion == "" || this.objFM.ocupacion == null) {
+
+
+
+    if (this.objFM.id_ocupacion==null) {
+      this.Mensaje("info", "Seleccione Ocupación", () => {
+        this.ddlOcupacion.focus();
+      });
+      return false;
+    }
+
+    if (this.objFM.id_ocupacion==2 && this.objFM.otro_ocupacion=="" ) {
       this.Mensaje("info", "Digite Ocupación", () => {
-        document.getElementById("objFM.ocupacion")?.focus();
-      })
+        document.getElementById("objFM.otro_ocupacion")?.focus();
+      });
       return false;
     }
 
 
-    if (this.objFM.id_clase == "" || this.objFM.id_clase == null) {
-      this.Mensaje("info", "Seleccione clase", () => {
+    if (this.objFM.id_tramite == "" || this.objFM.id_tramite == null) {
+      this.Mensaje("info", "Seleccione trámite", () => {
         // document.getElementById("objFM.numero_documento")?.focus();
-      })
+      });
       return false;
     }
+    if (this.objFM.id_clase ==  null) {
+      this.Mensaje("info", "Seleccione clase", () => {
+        this.ddlClase.focus()
+      });
+      return false;
+    }
+    
     if (this.objFM.id_categoria == 0 || this.objFM.id_categoria == null) {
       this.Mensaje("info", "Seleccione categoría", () => {
         this.ddlCategoria.focus();
@@ -499,7 +626,8 @@ export class Anexo01Component implements OnInit {
       })
       return false;
     }
-
+   // if(this.objFM.validar_edad){
+    //}
 
     //aca va lña validacion y mensajes
 
@@ -507,48 +635,65 @@ export class Anexo01Component implements OnInit {
   }
   Guardar() {
 
-
-
-    if (this.Validar()) {
-      
-
-      if (this.OBJETO_EDITAR == null) {
-        this.servicio.insertarFichamedica(this.objFM).subscribe((data: any) => {
-          this.modalRef.hide();
-          this.funciones.Mensaje("success","Mensaje del sistema","Se registró a postulante",()=>{
-            this.retornoValores.emit(true);
-          });
+    if(this.objFM.edad==null){
+      this.Mensaje("info", "Seleccione fecha de nacimiento", () => {
+        document.getElementById("objFM.fecha_nacimiento")?.focus();
+      })
+    }
+    else{
+      if ((Number(this.objFM.edad) < Number(this.filtro_edad.edad_minima)) || (Number(this.objFM.edad) > Number(this.filtro_edad.edad_maxima))) {
+        this.funciones.Mensaje("question","Aviso del sistema","El postulante no cumple con la edad requerida ¿Está seguro que desea continuar con el registro?",(respuesta:any) => {
+          if(respuesta.value){
+            if (this.Validar()) {          
+              this.Guardar2();
+            }
+          }
         });
-      }
-      else {
-        this.servicio.Modificarfichamedica(this.objFM).subscribe((data: any) => {
-          this.modalRef.hide();
-          this.funciones.Mensaje("success","Mensaje del sistema","Información guardada",()=>{
-            this.retornoValores.emit(true);
-          });
-        });
-      }
+      }      
     }
 
+
+
+
+
   };
-  AbrirModalValidarDocumento(){
-    this.objFM.re_numero_documento="";
+
+  Guardar2(){
+    if (this.OBJETO_EDITAR == null) {
+      this.servicio.insertarFichamedica(this.objFM).subscribe((data: any) => {
+        this.modalRef.hide();
+        this.funciones.Mensaje("success", "Mensaje del sistema", "Se registró a postulante", () => {
+          this.retornoValores.emit(true);
+        });
+      });
+    }
+    else {
+      this.servicio.Modificarfichamedica(this.objFM).subscribe((data: any) => {
+        this.modalRef.hide();
+        this.funciones.Mensaje("success", "Mensaje del sistema", "Información guardada", () => {
+          this.retornoValores.emit(true);
+        });
+      });
+    }
+  }
+  AbrirModalValidarDocumento() {
+    this.objFM.re_numero_documento = "";
     if (this.Validar()) {
       let config = {
         ignoreBackdropClick: false,
         keyboard: true,
         class: 'modal-sm modal-dialog-centered'
       };
-      this.modalRefHijo = this.modalService.show(this.template,config);   
+      this.modalRefHijo = this.modalService.show(this.template, config);
     }
   }
-  ValidarDocumento(){
-    if(this.objFM.numero_documento==this.objFM.re_numero_documento){
+  ValidarDocumento() {
+    if (this.objFM.numero_documento == this.objFM.re_numero_documento) {
       this.modalRefHijo.hide();
       this.Guardar();
     }
-    else{
-      this.funciones.Mensaje("info","","Digite correctamente el DNI",()=>{})
+    else {
+      this.funciones.Mensaje("info", "", "Digite correctamente el DNI", () => { })
     }
   }
 
@@ -565,7 +710,7 @@ export class Anexo01Component implements OnInit {
     this.objFM.fecha_inicio_evaluacion = this.getDatePeruToUSA(this.OBJETO_EDITAR.fecha_inicio_evaluacion);
     this.objFM.fecha_termino_evaluacion = this.getDatePeruToUSA(this.OBJETO_EDITAR.fecha_termino_evaluacion);
 
-    
+
     //this.objFM.hora_inicio_evaluacion = this.getHora(this.OBJETO_EDITAR.hora_inicio_evaluacion);
     this.objFM.hora_inicio_evaluacion = this.OBJETO_EDITAR.hora_inicio_evaluacion;
     //this.objFM.hora_termino_evaluacion = this.getHora(this.OBJETO_EDITAR.hora_termino_evaluacion);
@@ -586,7 +731,7 @@ export class Anexo01Component implements OnInit {
     this.objFM.otro_grado_instruccion = this.OBJETO_EDITAR.otro_grado_instruccion;
     this.objFM.id_estado_civil = this.OBJETO_EDITAR.id_estado_civil;
     this.objFM.ocupacion = this.OBJETO_EDITAR.ocupacion;
-    this.objFM.id_clase = this.OBJETO_EDITAR.id_clase; //<<<<------------------
+    this.objFM.id_tramite = this.OBJETO_EDITAR.id_tramite; //<<<<------------------
     this.objFM.id_categoria = this.OBJETO_EDITAR.id_categoria;
     this.objFM.id_condicion = this.OBJETO_EDITAR.id_condicion; //<<---------------
     // this.objFM.hora_inicio = this.getHora(this.OBJETO_EDITAR.hora_inicio);
@@ -596,7 +741,7 @@ export class Anexo01Component implements OnInit {
     this.objFM.filiacion = this.OBJETO_EDITAR.filiacion;
     this.objFM.iddpto_dir = this.OBJETO_EDITAR.iddpto_dir;
     this.objFM.idprov_dir = this.OBJETO_EDITAR.idprov_dir;
-    this.objFM.fecha_nacimiento =  this.getFecha(this.OBJETO_EDITAR.fecha_nacimiento);
+    this.objFM.fecha_nacimiento = this.getFecha(this.OBJETO_EDITAR.fecha_nacimiento);
     this.objFM.edad = this.OBJETO_EDITAR.edad;
     this.objFM.iddist_dir = this.OBJETO_EDITAR.iddist_dir;
     this.objFM.id_pais = this.OBJETO_EDITAR.id_pais;
@@ -609,14 +754,32 @@ export class Anexo01Component implements OnInit {
         (OBJ_HORA.hora_termino_evaluacion_evis != null) &&
         (OBJ_HORA.hora_termino_evaluacion_evaud != null) &&
         (OBJ_HORA.hora_termino_evaluacion_evacl != null)
-      ){
-        this.FORMULARIOS_INCOMPLETOS=false;
+      ) {
+        this.FORMULARIOS_INCOMPLETOS = false;
       }
-      else{
-        this.FORMULARIOS_INCOMPLETOS=true;
+      else {
+        this.FORMULARIOS_INCOMPLETOS = true;
       }
 
       //this.ValidacionCondicion();
+    });
+
+    
+
+    this.objFM.id_profesion=this.OBJETO_EDITAR.id_profesion;
+    this.objFM.id_ocupacion=this.OBJETO_EDITAR.id_ocupacion;
+    this.objFM.otro_profesion=this.OBJETO_EDITAR.otro_profesion;
+    this.objFM.otro_ocupacion=this.OBJETO_EDITAR.otro_ocupacion;
+
+
+
+
+    this.CargarClase(Number(this.objFM.id_tramite)).then((rpta:any)=>{
+      this.objFM.id_clase=this.OBJETO_EDITAR.id_clase;
+      this.CargarCategoria().then(()=>{
+        this.objFM.id_categoria=this.OBJETO_EDITAR.id_categoria;
+
+      });
     });
 
   }
@@ -629,9 +792,8 @@ export class Anexo01Component implements OnInit {
       returnFocus: false
     }).then(condicion);
   }
-  getEdad(fecha: any) {
-
-    let dateString = fecha.target.value;
+  getEdad(fecha: any,input:any=null) {
+    let dateString = (input==null)?fecha.target.value:input;
     let hoy = new Date();
     let fechaNacimiento = new Date(dateString);
     let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
@@ -645,14 +807,14 @@ export class Anexo01Component implements OnInit {
     this.objFM.edad = edad;
     //return edad;
   }
-  getFecha(fechastring: any):any {
+  getFecha(fechastring: any): any {
     let fecha = new Date(fechastring);
-    return fecha.getFullYear() + "-" + (this.zfill(fecha.getMonth() + 1,2)) + "-" + this.zfill(fecha.getDate(),2);
+    return fecha.getFullYear() + "-" + (this.zfill(fecha.getMonth() + 1, 2)) + "-" + this.zfill(fecha.getDate(), 2);
   }
-  getHora(fechastring: any):any {
+  getHora(fechastring: any): any {
 
     let fecha = new Date(fechastring);
-    return  fecha.getHours() + ':' + fecha.getMinutes();
+    return fecha.getHours() + ':' + fecha.getMinutes();
   }
   zfill(number: any, width: any) {
     var numberOutput = Math.abs(number); /* Valor absoluto del número */
@@ -673,38 +835,201 @@ export class Anexo01Component implements OnInit {
       }
     }
   }
-  Disabled_Profesion:boolean=true;
-  GradoInstruccionSeleccionado(e:any){
-    if(
-      this.objFM.id_grado_instruccion==null 
-      || this.objFM.id_grado_instruccion==1
-      || this.objFM.id_grado_instruccion==2
-      || this.objFM.id_grado_instruccion==3
-      ){
-        this.objFM.otro_grado_instruccion="----";
-        this.Disabled_Profesion=true;
-      }
-      else{
-        this.objFM.otro_grado_instruccion="";
-        this.Disabled_Profesion=false;
-      }
+  Disabled_Profesion: boolean = true;
+  GradoInstruccionSeleccionado(e: any) {
+    if (
+      this.objFM.id_grado_instruccion == null
+      || this.objFM.id_grado_instruccion == 1
+      || this.objFM.id_grado_instruccion == 2
+      || this.objFM.id_grado_instruccion == 3
+    ) {
+      this.objFM.otro_grado_instruccion = "----";
+      this.Disabled_Profesion = true;
+    }
+    else {
+      this.objFM.otro_grado_instruccion = "";
+      this.Disabled_Profesion = false;
+    }
   }
-  FechaInicioSeleccionada(){
-    this.objFM.fecha_informe=this.objFM.fecha_inicio_evaluacion;
-    this.objFM.fecha_termino_evaluacion=this.objFM.fecha_inicio_evaluacion;
+  FechaInicioSeleccionada() {
+    this.objFM.fecha_informe = this.objFM.fecha_inicio_evaluacion;
+    this.objFM.fecha_termino_evaluacion = this.objFM.fecha_inicio_evaluacion;
   }
-  SetearReDocumento(digito:string){
-    this.objFM.re_numero_documento=this.objFM.re_numero_documento+""+digito;
+  SetearReDocumento(digito: string) {
+    this.objFM.re_numero_documento = this.objFM.re_numero_documento + "" + digito;
   }
-  LimpiarReDocumento(){
-    this.objFM.re_numero_documento="";
+  LimpiarReDocumento() {
+    this.objFM.re_numero_documento = "";
   }
-  getDatePeruToUSA(ddmmyyyy:string):string{
-    let partes=ddmmyyyy.split("/");
-    return partes[2]+"-"+partes[1]+"-"+partes[0];
+  getDatePeruToUSA(ddmmyyyy: string): string {
+    let partes = ddmmyyyy.split("/");
+    return partes[2] + "-" + partes[1] + "-" + partes[0];
   }
-  Imprimir(){
+  Imprimir() {
     window.print();
   }
 
+  CargarClase(id_tramite: number): Promise<any> {
+    let promesa = new Promise((resolve) => {
+      let param = { "id_tramite": id_tramite };
+      this.servicio.listarClase(param).subscribe((data: any) => {
+        
+        this.objFM.id_clase=null;
+        this.cboCategoria=[];
+        this.objFM.id_categoria=null;
+
+        this.cboClase = data.listaclase;
+        resolve(true);
+      });
+    });
+    return promesa;
+  }
+  CargarCategoria(): Promise<any> {
+    let promesa = new Promise((resolve) => {
+
+      if(Number(this.objFM.id_clase)==0){
+        this.objFM.id_categoria=null;
+        this.cboCategoria=[];
+        resolve(true);
+      }
+      else{
+      let param = { "id_tramite": Number(this.objFM.id_tramite), "id_clase": Number(this.objFM.id_clase) };
+      this.servicio.listarCategoria(param).subscribe((data: any) => {
+        this.objFM.id_categoria=null;
+        this.cboCategoria=data.listacategoria;
+        resolve(true);
+      });        
+      }
+
+    });
+    return promesa;
+  }
+  TramiteSeleccionado() {
+    this.CargarClase(Number(this.objFM.id_tramite));
+  }
+  ProfesionSeleccionada(){
+   if(this.objFM.id_profesion!=8){
+    this.objFM.otro_profesion="";
+   }
+  }
+  OcupacionSeleccionada(){
+   if(this.objFM.id_ocupacion!=2){
+    this.objFM.otro_ocupacion="";
+   }
+  }
+  ValidarDNIHistorial(){
+    let param={"id_tipo_documento":this.objFM.id_tipo_documento,"numero_documento":this.objFM.numero_documento};
+    this.servicio.validarPostulanteDni(param).subscribe((data:any)=>{
+
+      if(data.resultpostulante.length>0){
+
+        this.SetearInfoPersona(data.resultpostulante[0]);
+       //
+      }
+    });
+  }
+  ValidarNombre():Promise<any>{
+    let param={"apellido_paterno":this.objFM.apellido_paterno,"apellido_materno":this.objFM.apellido_materno,"nombres":this.objFM.nombres};
+    let promesa=new Promise((resolve)=>{
+      this.servicio.validarPostulanteNombre(param).subscribe((data:any)=>{
+
+          if(data.resultpostulantes.length==0){
+            //no cuenta con homonimos
+            alert("no hay homonimia");
+          }
+          else{
+            //abrir Modal para elegir y cuando haga click, se completará la informacion como si de diera click en validar persona
+            //luego guardar2()
+            let config={
+              ignoreBackdropClick: true,
+              keyboard: false,
+              class: 'modal-xl modal-anexo01',
+              initialState: {
+                lstHomonimos: data.resultpostulantes
+              }
+            }
+            this.BsModalRef_hijo = this.modalService.show(HomonimosComponent,config);
+            this.BsModalRef_hijo.content.retornoValores.subscribe(
+              (data:any) => {
+                if(typeof(data)=="boolean"){
+                }
+                else{
+                  this.SetearInfoPersona(data).then(()=>{
+                  });
+                }
+              }
+            )
+          }
+        resolve(data);
+      });
+    });
+
+    return promesa;
+  }
+  SetearInfoPersona(info:any):Promise<any>{
+    let promesa=new Promise((resolve)=>{
+    this.objFM.apellido_paterno=info.apellido_paterno;
+    this.objFM.apellido_materno=info.apellido_materno;
+    this.objFM.nombres=info.nombres;
+    this.objFM.fecha_nacimiento=this.getFecha(info.fecha_nacimiento);
+    this.objFM.telefono=info.telefono;
+    this.objFM.direccion=info.direccion;
+    this.objFM.id_sexo=info.id_sexo;
+
+
+    this.objFM.id_pais = info.id_pais;
+    this.objFM.iddpto_dir = info.iddpto_dir;
+    this.objFM.idprov_dir = info.idprov_dir;
+
+
+    this.objFM.iddpto = info.iddpto;
+    this.objFM.idprov= info.idprov;
+
+
+    if (this.objFM.iddpto != null) {
+      let origen_nac: any = 1;
+      this.objFM.origen_nac = origen_nac;
+      let param = { "iddpto": this.objFM.iddpto };
+      this.servicio.listarProvincia(param).subscribe((data: any) => {
+        this.cboProvinciaNac = data;
+
+        let param_ = { "iddpto": info.iddpto, "idprov": info.idprov };
+        this.servicio.listarDistrito(param_).subscribe((data_: any) => {
+          this.cboDistritoNac = data_;
+            this.objFM.iddist= info.iddist;
+
+
+
+            let param__ = { "iddpto": info.iddpto_dir };
+            this.servicio.listarProvincia(param__).subscribe((data: any) => {
+              this.cboPrinvinciaDir = data;
+              let param___ = { "iddpto": info.iddpto_dir, "idprov": info.idprov_dir };
+              this.servicio.listarDistrito(param___).subscribe((data_: any) => {
+                this.cboDistritoDir = data_;
+                this.objFM.iddist_dir = info.iddist_dir;
+
+                setTimeout(() => {
+                  //termina
+                  resolve(true)
+                }, 200);
+
+              });
+            });
+            
+            let inn:HTMLInputElement= document.getElementById("objFM.fecha_nacimiento")as HTMLInputElement;
+            setTimeout(() => {
+              this.getEdad(null,inn.value);
+            }, 100);
+        });
+      });
+    }
+    if (this.objFM.id_pais != null) {
+      let origen_nac: any = 2;
+      this.objFM.origen_nac = origen_nac;
+    }
+
+
+  });
+  return promesa;
+  }
 }

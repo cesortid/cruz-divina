@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  host:'http://34.66.93.246/ws_cdsnc/',
+  host:'http://190.117.83.98/ws_cdsnc/',
   MAX_SIZE_UPLOAD : 20971520
 };
 

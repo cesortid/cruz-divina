@@ -73,4 +73,17 @@ export class Funciones {
         allowNegative: false,
         allowLeadingZeroes: false
     });
+    public entero = createNumberMask({
+      prefix: '',
+      suffix: '',
+      includeThousandsSeparator: true,
+      thousandsSeparatorSymbol: '',
+      allowDecimal: false,
+      decimalSymbol: '',
+      decimalLimit: 0,
+      integerLimit: 9,
+      requireDecimal: false,
+      allowNegative: false,
+      allowLeadingZeroes: true
+  });
 }

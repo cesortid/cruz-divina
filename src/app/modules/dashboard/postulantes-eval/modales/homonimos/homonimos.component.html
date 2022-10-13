@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left"></h4>
+    <button type="button" class="close btn-close pull-right" aria-label="Close"  (click)="Cerrar()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+
+<div class="container mt-4 mb-4">
+    <div class="modal-body">
+        <div>
+            <table class="table app-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tipo de documento</th>
+                        <th>Número de Doc.</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Nombre</th>
+                        <th>Fecha de Nac.</th>
+                        <th>Lugar de nacimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    <tr *ngFor="let item of lstHomonimos">
+                        <td><input type="radio" name="sel" (click)="Seleccionar(item)"></td>
+                        <td>{{item.tipo_documento}}</td>
+                        <td>{{item.numero_documento}}</td>
+                        <td>{{item.apellido_paterno}}</td>
+                        <td>{{item.apellido_materno}}</td>
+                        <td>{{item.nombres}}</td>
+                        <th>{{item.fec_nac_str}}</th>
+                        <td>
+                            <ng-container *ngIf="item.pais==null">
+                                {{item.departamento}} - {{item.provincia}} - {{item.distrito}}
+                            </ng-container>
+                            <ng-container *ngIf="item.pais!=null">
+                                {{item.pais}}
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="d-flex justify-content-end">
+
+            <button class="btn btn-primary btn-sm" type="submit" (click)="Mantener()"><i class="bi bi-x-lg"></i> No es ninguno</button>
+
+            <!-- <button class="btn btn-primary ms-1" (click)="Cerrar()"><i class="bi bi-x-lg"></i> Cerrar</button> -->
+        </div>
+
+    </div>
+</div>
