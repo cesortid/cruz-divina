@@ -248,6 +248,9 @@
                     </ng-select>
 
                 </div>
+                <ng-container *ngIf="objFM.id_grado_instruccion==4 || objFM.id_grado_instruccion==5">
+
+
                 <div class="col-1 col-form-label text-star">Profesión</div>
                 <div class="col-5 col-form-label text-star">
 
@@ -262,6 +265,7 @@
                             [ngModelOptions]="{standalone: true}" id="objFM.otro_profesion">
                     </ng-container>
                 </div>
+                </ng-container>
             </div>
             <div class="mb-3 row">
                 <div class="col-3 col-form-label text-star">Estado Civil</div>

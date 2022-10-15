@@ -55,9 +55,15 @@ export class LoginComponent implements OnInit {
 
           let es_nacional=this.crypto.encriptar(String(organizacion[0].Es_Nacional));
           let sede_depa=this.crypto.encriptar(JSON.stringify(organizacion[0].Sede_Depa));
+          let id_sede=this.crypto.encriptar(JSON.stringify(organizacion[0].Id_Sede));
+          let id_organizacion=this.crypto.encriptar(JSON.stringify(organizacion[0].Id_Organizacion));
           
-          sessionStorage.setItem("Org_1",es_nacional);
-          sessionStorage.setItem("Org_2",sede_depa);
+
+          sessionStorage.setItem("Org_0",id_organizacion);
+          sessionStorage.setItem("Org_1",id_sede);
+          sessionStorage.setItem("Org_2",es_nacional);
+          sessionStorage.setItem("Org_3",sede_depa);
+
 
 
 

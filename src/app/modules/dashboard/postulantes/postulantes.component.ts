@@ -27,12 +27,17 @@ export class PostulantesComponent implements OnInit {
     "apellido_materno":"",
     "nombres":"",
     "skip":this.buscarDesde,
-    "take":this.itemxPagina
+    "take":this.itemxPagina,
+
+    id_organizacion:0,
+    id_sede:0
+
   };
 
   cboTipoDocumento:any=[];
 
-
+  id_org:any=null;
+  id_sede:any=null;
   constructor(private router:Router, private crypto:CryptoService, private modalService: BsModalService , private servicio:FichaMedicaService) { 
   }
 
@@ -46,6 +51,13 @@ export class PostulantesComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.id_org=Number(this.crypto.desencriptar(sessionStorage.getItem("Org_0")!));
+    this.id_sede=Number(this.crypto.desencriptar(sessionStorage.getItem("Org_1")!));
+    this.filtro.id_organizacion=this.id_org;
+    this.filtro.id_sede=this.id_sede;
+
+
     this.Busqueda();
     this.CargarCombos();
 

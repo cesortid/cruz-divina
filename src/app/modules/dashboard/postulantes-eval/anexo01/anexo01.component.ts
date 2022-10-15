@@ -111,7 +111,9 @@ export class Anexo01Component implements OnInit {
     id_ocupacion:null,
     otro_profesion:"",
     otro_ocupacion:"",
-    validar_edad:true
+    validar_edad:true,
+    id_sede:null,
+    id_organizacion:null
   };
   formValido: boolean = false;
 
@@ -122,7 +124,8 @@ export class Anexo01Component implements OnInit {
 
   es_nacional:boolean=false;
   sede_depa:any=[];
-
+  id_org:any=null;
+  id_sede:any=null;
 
   constructor(public modalRef: BsModalRef, private servicio: FichaMedicaService, public funciones: Funciones, private modalService: BsModalService,
     private crypto: CryptoService) { }
@@ -130,11 +133,21 @@ export class Anexo01Component implements OnInit {
   ngOnInit(): void {
     let this_paranet = this;
     this.CargarCombo();
-    this.es_nacional=(String(this.crypto.desencriptar(sessionStorage.getItem("Org_1")!)).toUpperCase()=="TRUE")?true:false;
-    this.sede_depa=JSON.parse(this.crypto.desencriptar(sessionStorage.getItem("Org_2")!));
+    this.es_nacional=(String(this.crypto.desencriptar(sessionStorage.getItem("Org_2")!)).toUpperCase()=="TRUE")?true:false;
+    this.sede_depa=JSON.parse(this.crypto.desencriptar(sessionStorage.getItem("Org_3")!));
 
-    console.log(this.es_nacional);
-    console.log(this.sede_depa);
+    this.id_org=Number(this.crypto.desencriptar(sessionStorage.getItem("Org_0")!));
+    this.id_sede=Number(this.crypto.desencriptar(sessionStorage.getItem("Org_1")!));
+    
+    this.objFM.id_organizacion=this.id_org;
+    this.objFM.id_sede=this.id_sede;
+
+
+
+
+    // id_sede:null,
+    // id_organizacion:null
+
   }
   CargarCombo() {
     this.servicio.listarFichaMedicaControl().subscribe((data: any) => {
@@ -408,7 +421,19 @@ export class Anexo01Component implements OnInit {
       })
       return false;
     }
+  //   {
+  //     "id_tipo_documento": 1,
+  //     "descripcion": "DNI",
+  //     "tamanio": 8
+  // },
+  let caracteres_documento=this.cboTipoDocumento.find((x:any)=>x.id_tipo_documento==this.objFM.id_tipo_documento).tamanio;
 
+    if(caracteres_documento!= String(this.objFM.numero_documento).length){
+      this.Mensaje("info", "Es incorrecto el formato para número de Documento", () => {
+        document.getElementById("objFM.numero_documento")?.focus();
+      })
+      return false;
+    }
     if (this.objFM.apellido_paterno == "" || this.objFM.apellido_paterno == null) {
       this.Mensaje("info", "Digite Apellido Paterno del postulante", () => {
         document.getElementById("objFM.apellido_paterno")?.focus();
@@ -634,6 +659,7 @@ export class Anexo01Component implements OnInit {
     return true;
   }
   Guardar() {
+    
 
     if(this.objFM.edad==null){
       this.Mensaje("info", "Seleccione fecha de nacimiento", () => {
@@ -649,7 +675,10 @@ export class Anexo01Component implements OnInit {
             }
           }
         });
-      }      
+      }   
+      else{
+        this.Guardar2();
+      }   
     }
 
 
@@ -659,8 +688,20 @@ export class Anexo01Component implements OnInit {
   };
 
   Guardar2(){
+    let obj_send=JSON.parse(JSON.stringify(this.objFM));
+    if(!(obj_send.id_grado_instruccion==4 || obj_send.id_grado_instruccion==5)){
+      obj_send.id_profesion=null;
+      obj_send.otro_profesion="";
+    }
+
+
     if (this.OBJETO_EDITAR == null) {
-      this.servicio.insertarFichamedica(this.objFM).subscribe((data: any) => {
+      obj_send.fecha_termino_evaluacion=null;
+      obj_send.fecha_informe=null;
+
+
+
+      this.servicio.insertarFichamedica(obj_send).subscribe((data: any) => {
         this.modalRef.hide();
         this.funciones.Mensaje("success", "Mensaje del sistema", "Se registró a postulante", () => {
           this.retornoValores.emit(true);
@@ -668,7 +709,11 @@ export class Anexo01Component implements OnInit {
       });
     }
     else {
-      this.servicio.Modificarfichamedica(this.objFM).subscribe((data: any) => {
+      obj_send.fecha_termino_evaluacion=(obj_send.fecha_termino_evaluacion=="")?null:obj_send.fecha_termino_evaluacion;
+      obj_send.fecha_informe=(obj_send.fecha_informe=="")?null:obj_send.fecha_informe;
+
+
+      this.servicio.Modificarfichamedica(obj_send).subscribe((data: any) => {
         this.modalRef.hide();
         this.funciones.Mensaje("success", "Mensaje del sistema", "Información guardada", () => {
           this.retornoValores.emit(true);
@@ -862,8 +907,14 @@ export class Anexo01Component implements OnInit {
     this.objFM.re_numero_documento = "";
   }
   getDatePeruToUSA(ddmmyyyy: string): string {
-    let partes = ddmmyyyy.split("/");
-    return partes[2] + "-" + partes[1] + "-" + partes[0];
+    if(ddmmyyyy!=null){
+      let partes = ddmmyyyy.split("/");
+      return partes[2] + "-" + partes[1] + "-" + partes[0];      
+    }
+    else{
+      return "";
+    }
+
   }
   Imprimir() {
     window.print();
@@ -918,7 +969,10 @@ export class Anexo01Component implements OnInit {
    }
   }
   ValidarDNIHistorial(){
-    let param={"id_tipo_documento":this.objFM.id_tipo_documento,"numero_documento":this.objFM.numero_documento};
+    let param={"id_tipo_documento":this.objFM.id_tipo_documento,"numero_documento":this.objFM.numero_documento,
+    id_organizacion:this.id_org,
+    id_sede:this.id_sede
+  };
     this.servicio.validarPostulanteDni(param).subscribe((data:any)=>{
 
       if(data.resultpostulante.length>0){
@@ -929,13 +983,16 @@ export class Anexo01Component implements OnInit {
     });
   }
   ValidarNombre():Promise<any>{
-    let param={"apellido_paterno":this.objFM.apellido_paterno,"apellido_materno":this.objFM.apellido_materno,"nombres":this.objFM.nombres};
+    let param={"apellido_paterno":this.objFM.apellido_paterno,"apellido_materno":this.objFM.apellido_materno,"nombres":this.objFM.nombres,
+    id_organizacion:this.id_org,
+    id_sede:this.id_sede
+  };
     let promesa=new Promise((resolve)=>{
       this.servicio.validarPostulanteNombre(param).subscribe((data:any)=>{
 
           if(data.resultpostulantes.length==0){
             //no cuenta con homonimos
-            alert("no hay homonimia");
+            // alert("no hay homonimia");
           }
           else{
             //abrir Modal para elegir y cuando haga click, se completará la informacion como si de diera click en validar persona
@@ -1016,10 +1073,7 @@ export class Anexo01Component implements OnInit {
               });
             });
             
-            let inn:HTMLInputElement= document.getElementById("objFM.fecha_nacimiento")as HTMLInputElement;
-            setTimeout(() => {
-              this.getEdad(null,inn.value);
-            }, 100);
+
         });
       });
     }
@@ -1027,7 +1081,10 @@ export class Anexo01Component implements OnInit {
       let origen_nac: any = 2;
       this.objFM.origen_nac = origen_nac;
     }
-
+    let inn:HTMLInputElement= document.getElementById("objFM.fecha_nacimiento")as HTMLInputElement;
+    setTimeout(() => {
+      this.getEdad(null,inn.value);
+    }, 100);
 
   });
   return promesa;
