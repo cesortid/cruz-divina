@@ -108,6 +108,7 @@ export class PsicologicoComponent implements OnInit {
     "activo": true,
     "usuario_creacion": sessionStorage.getItem("Usuario")
   };
+  no_apto_con_observaciones:boolean=false;
 
 
   control: any = {
@@ -130,15 +131,15 @@ export class PsicologicoComponent implements OnInit {
 
   Palanca = {
     errores: 12,
-    te_seg: 5,
+    te_seg: 5.00,
     te_centecimas: 0,
-    tp_seg: 60,
+    tp_seg: 60.00,
     tp_centecimas: 0,
     apto: true,
     texto: 'E:12, TE:5" 0c, TP:60" 0c'
   }
   Reactimetro = {
-    tt_seg: 3,
+    tt_seg: 4.30,
     tt_centecimas: 0,
     apto: true,
     texto: 'TT:3 0c'
@@ -251,6 +252,7 @@ export class PsicologicoComponent implements OnInit {
 
 
   ValidarFromulario00(): boolean {
+    
 
     if (this.objFM.hora_inicio_evaluacion == null || this.objFM.hora_inicio_evaluacion == "") {
       this.Mensaje("info", "Complete la Hora de ingreso de la evaluación", () => {
@@ -267,7 +269,7 @@ export class PsicologicoComponent implements OnInit {
     }
     else {
       if (this.OBJ_FICHA_MEDICA.id_condicion == 1) {
-        if (this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion, this.objFM.hora_termino_evaluacion, "01:08") == false) {
+        if (this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion, this.objFM.hora_termino_evaluacion, "01:08",this.OBJ_HORA.fecha_inicio_evaluacion_evaps) == false) {
           this.helper.Mensaje("info", "Mensaje del sistema", "El tiempo de duración en el <b>Área de Psicología</b> debe ser <b>mínimo de 1 hora con 8 minutos</b>", () => {
             //document.getElementById("objFM.hora_termino_evaluacion")!.focus();
           });
@@ -275,7 +277,7 @@ export class PsicologicoComponent implements OnInit {
         }
       }
       if (this.OBJ_FICHA_MEDICA.id_condicion == 2) {
-        if (this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion, this.objFM.hora_termino_evaluacion, "01:11") == false) {
+        if (this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion, this.objFM.hora_termino_evaluacion, "01:11",this.OBJ_HORA.fecha_inicio_evaluacion_evaps) == false) {
           this.helper.Mensaje("info", "Mensaje del sistema", "El tiempo de duración en el <b>Área de Psicología</b> debe ser <b>mínimo de 1 hora con 11 minutos</b>", () => {
             //document.getElementById("objFM.hora_termino_evaluacion")!.focus();
           });
@@ -290,6 +292,14 @@ export class PsicologicoComponent implements OnInit {
       });
       return false;
     }
+
+    if(this.no_apto_con_observaciones && this.objFM.observacion.trim()==""){
+      this.Mensaje("info", "Complete las observaciones", () => {
+        document.getElementById('objFM.observacion')?.focus();
+      });
+      return false;
+    }
+
     return true;
   }
   disabled_resultado_test_palanca: boolean = true;
@@ -378,19 +388,19 @@ export class PsicologicoComponent implements OnInit {
   ValidarNegocio00() {
     if (this.OBJ_FICHA_MEDICA.id_condicion == 1) {
       if (
-        this.objFM.id_resultado_test_palanca == 3 &&
-        this.objFM.id_resultado_reactimetro == 3 &&
-        this.objFM.id_resultado_test_punteo == 3 &&
-        this.objFM.wechsler == 3 &&
+        (this.objFM.id_resultado_test_palanca == 3 || this.objFM.id_resultado_test_palanca == 1) &&
+        (this.objFM.id_resultado_reactimetro == 3 || this.objFM.id_resultado_reactimetro == 1)&&
+        (this.objFM.id_resultado_test_punteo == 3 || this.objFM.id_resultado_test_punteo == 1)&&
+        (this.objFM.wechsler == 3 || this.objFM.wechsler == 1)&&
         this.objFM.id_resultado_benton_formac == 1 &&
-        this.objFM.test_matrices_progresivas == 3 &&
-        this.objFM.test_dominios_anstey == 3 &&
+        (this.objFM.test_matrices_progresivas == 3 || this.objFM.test_matrices_progresivas == 1) &&
+        (this.objFM.test_dominios_anstey == 3 || this.objFM.test_dominios_anstey == 1) &&
         this.objFM.id_resultado_test_otis == 1 &&
         this.objFM.id_resultado_test_proyectivo == 1 &&
-        this.objFM.test_npf == 3 &&
+        (this.objFM.test_npf == 3 || this.objFM.test_npf == 1 ) &&
         this.objFM.id_resultado_inventario_personalidad == 1 &&
         this.objFM.id_resultado_test_audit == 1 &&
-        this.objFM.cuestionario_inventario_cambios == 3 &&
+        (this.objFM.cuestionario_inventario_cambios == 3 ||  this.objFM.cuestionario_inventario_cambios == 1) &&
         this.objFM.id_resultado_test_personaarma == 1
       ) {
         this.objFM.resultado_prueba = true;
@@ -405,16 +415,16 @@ export class PsicologicoComponent implements OnInit {
         this.objFM.id_resultado_test_palanca == 1 &&
         this.objFM.id_resultado_reactimetro == 1 &&
         this.objFM.id_resultado_test_punteo == 1 &&
-        this.objFM.wechsler == 3 &&
+        (this.objFM.wechsler == 3 || this.objFM.wechsler == 1) &&
         this.objFM.id_resultado_benton_formac == 1 &&
-        this.objFM.test_matrices_progresivas == 3 &&
-        this.objFM.test_dominios_anstey == 3 &&
+        (this.objFM.test_matrices_progresivas == 3 || this.objFM.test_matrices_progresivas == 1)  &&
+        (this.objFM.test_dominios_anstey == 3 || this.objFM.test_dominios_anstey == 1) &&
         this.objFM.id_resultado_test_otis == 1 &&
         this.objFM.id_resultado_test_proyectivo == 1 &&
-        this.objFM.test_npf == 3 &&
+        (this.objFM.test_npf == 3 || this.objFM.test_npf == 1 )&&
         this.objFM.id_resultado_inventario_personalidad == 1 &&
         this.objFM.id_resultado_test_audit == 1 &&
-        this.objFM.cuestionario_inventario_cambios == 3 &&
+        (this.objFM.cuestionario_inventario_cambios == 3 || this.objFM.cuestionario_inventario_cambios == 1) &&
         this.objFM.id_resultado_test_personaarma == 1
       ) {
         this.objFM.resultado_prueba = true;
@@ -423,6 +433,31 @@ export class PsicologicoComponent implements OnInit {
         this.objFM.resultado_prueba = false;
       }
     }
+
+    if(
+      this.objFM.id_resultado_test_palanca == 4 ||
+      this.objFM.id_resultado_reactimetro == 4 ||
+      this.objFM.id_resultado_test_punteo == 4 ||
+      this.objFM.wechsler == 4 ||
+      this.objFM.id_resultado_benton_formac == 4 ||
+      this.objFM.test_matrices_progresivas == 4 ||
+      this.objFM.test_dominios_anstey == 4 ||
+      this.objFM.id_resultado_test_otis == 4 ||
+      this.objFM.id_resultado_test_proyectivo ==4 ||
+      this.objFM.test_npf == 4 ||
+      this.objFM.id_resultado_inventario_personalidad == 4 ||
+      this.objFM.id_resultado_test_audit == 4 ||
+      this.objFM.cuestionario_inventario_cambios == 4 ||
+      this.objFM.id_resultado_test_personaarma == 4
+    ){
+      this.no_apto_con_observaciones=true;
+      this.objFM.observacion="";
+    }
+    else{
+      this.no_apto_con_observaciones=false;
+      this.objFM.observacion="NINGUNA";
+    }
+
   }
 
   GuardarEvaluacionPsicologica() {
@@ -1013,17 +1048,17 @@ export class PsicologicoComponent implements OnInit {
     else {
       this.objFM.id_resultado_test_palanca = 2;
     }
-    this.Palanca.texto = 'E:' + obj.errores + ', TE:' + obj.te_seg + '" ' + obj.te_centecimas + 'c, TP:' + obj.tp_seg + '" ' + obj.tp_centecimas + 'c';
+    this.Palanca.texto = 'E:' + obj.errores + ', TE:' + obj.te_seg + '" ' + ', TP:' + obj.tp_seg + '"';
     this.objFM.test.palanca_errores=Number(this.Palanca.errores);
     this.objFM.test.palanca_tiempo_error=Number(this.Palanca.te_seg);
     this.objFM.test.palanca_tiempo_error_cent=Number(this.Palanca.te_centecimas);
     this.objFM.test.palanca_tiempo_prueba=Number(this.Palanca.tp_seg);
     this.objFM.test.palanca_tiempo_prueba_cent=Number(this.Palanca.tp_centecimas);
-    
+    this.ValidarNegocio00();
   }
   ValidarReactimetro() {
     let obj = this.Reactimetro;
-    let numero = Number(String(obj.tt_seg) + "." + obj.tt_centecimas)
+    let numero = Number(String(obj.tt_seg))
     if (numero <= 4.3) {
       this.Reactimetro.apto = true;
     }
@@ -1036,9 +1071,10 @@ export class PsicologicoComponent implements OnInit {
     else {
       this.objFM.id_resultado_reactimetro = 2;
     }
-    this.Reactimetro.texto = 'TT:' + obj.tt_seg + '" ' + obj.tt_centecimas + 'c';
+    this.Reactimetro.texto = 'TT:' + obj.tt_seg + '"';
     this.objFM.test.reactimetro_tiempo=Number(this.Reactimetro.tt_seg);
     this.objFM.test.reactimetro_tiempo_cent=Number(this.Reactimetro.tt_centecimas);
+    this.ValidarNegocio00();
   }
   ValidarPunteo() {
     let obj = this.Punteo;
@@ -1053,10 +1089,11 @@ export class PsicologicoComponent implements OnInit {
     else {
       this.objFM.id_resultado_test_punteo = 2;
     }
-    this.Punteo.texto = 'E:' + obj.errores + ', A:' + obj.aciertos + ', TA:' + obj.ta_seg + '" ' + obj.ta_centecimas + 'c';
+    this.Punteo.texto = 'E:' + obj.errores + ', A:' + obj.aciertos + ', TA:' + obj.ta_seg + '"';
     this.objFM.test.punteo_errores= Number(this.Punteo.errores);
     this.objFM.test.punteo_aciertos= Number(this.Punteo.aciertos);
     this.objFM.test.punteo_tiempo= Number(this.Punteo.ta_seg);
     this.objFM.test.punteo_tiempo_cent= Number(this.Punteo.ta_centecimas);
+    this.ValidarNegocio00();
   }
 }

@@ -25,9 +25,18 @@
                         [(ngModel)]="objFM.numero_informe" id="objFM.numero_informe"
                         [ngModelOptions]="{standalone: true}"></div>
                 <div class="col-3 col-form-label text-star">Fecha de Informe</div>
-                <div class="col-3 col-form-label text-star"><input type="date" class="form-control"
-                        [(ngModel)]="objFM.fecha_informe" id="objFM.fecha_informe" [ngModelOptions]="{standalone: true}"
-                        disabled ></div>
+                <div class="col-3 col-form-label text-star">
+                    <input type="date" class="form-control p-hidde" [(ngModel)]="objFM.fecha_informe" id="objFM.fecha_informe"
+                        [ngModelOptions]="{standalone: true}">                        
+
+                    <ng-container *ngIf="objFM.fecha_informe!=''">
+                        <input type="date" class="form-control p-show" [(ngModel)]="objFM.fecha_informe">
+                </ng-container>
+                    <ng-container *ngIf="objFM.fecha_informe==''">
+                        <input type="text" class="form-control p-show">
+                    </ng-container>
+          
+                </div>
             </div>
             <h2>EVALUACION MEDICA</h2>
             <div class="mb-3 row">
@@ -36,16 +45,25 @@
                         [(ngModel)]="objFM.fecha_inicio_evaluacion" id="objFM.fecha_inicio_evaluacion"
                         [ngModelOptions]="{standalone: true}" (ngModelChange)="FechaInicioSeleccionada()"></div>
                 <div class="col-3 col-form-label text-star ">Fecha de Término</div>
-                <div class="col-3 col-form-label text-star"><input type="date" class="form-control"
+                <div class="col-3 col-form-label text-star">
+                    <input type="date" class="form-control p-hidde"
                         [(ngModel)]="objFM.fecha_termino_evaluacion" id="objFM.fecha_termino_evaluacion"
-                        [ngModelOptions]="{standalone: true}" disabled></div>
+                        [ngModelOptions]="{standalone: true}">
+                        {{objFM.fecha_termino_evaluacion}}
+                        <ng-container *ngIf="objFM.fecha_termino_evaluacion!=''">
+                            <input type="date" class="form-control p-show" [(ngModel)]="objFM.fecha_termino_evaluacion">
+                    </ng-container>
+                        <ng-container *ngIf="objFM.fecha_termino_evaluacion==''">
+                            <input type="text" class="form-control p-show">
+                        </ng-container>
+                    </div>
             </div>
             <div class="mb-3 row">
                 <div class="col-3 col-form-label text-star">Hora de Inicio</div>
                 <div class="col-3 col-form-label text-star"><input type="time" class="form-control p-hidde"
                         [(ngModel)]="objFM.hora_inicio_evaluacion" id="objFM.hora_inicio_evaluacion"
                         [ngModelOptions]="{standalone: true}">
-                    <input type="text" class="form-control p-show">
+                    <input type="text" class="form-control p-show" [(ngModel)]="objFM.hora_inicio_evaluacion">
                 </div>
                 <div class="col-3 col-form-label text-star">Hora de Término</div>
                 <div class="col-3 col-form-label text-star"><input type="time" class="form-control p-hidde"
@@ -69,9 +87,10 @@
                     <div class="input-group mb-3">
 
                         <input type="text" class="form-control" [(ngModel)]="objFM.numero_documento"
-                        id="objFM.numero_documento" [ngModelOptions]="{standalone: true}">
-                        <button class="btn btn-outline-primary p-hidde" type="button" id="button-addon2" (click)="ValidarDNIHistorial()"><i class="bi bi-card-checklist"></i></button>
-                      </div>
+                            id="objFM.numero_documento" [ngModelOptions]="{standalone: true}">
+                        <button class="btn btn-outline-primary p-hidde" type="button" id="button-addon2"
+                            (click)="ValidarDNIHistorial()"><i class="bi bi-card-checklist"></i></button>
+                    </div>
 
 
                 </div>
@@ -91,15 +110,16 @@
                 <div class="col-9 col-form-label text-star">
                     <div class="input-group mb-3">
 
-                        <input type="text" class="form-control"
-                        [(ngModel)]="objFM.nombres" id="objFM.nombres" [ngModelOptions]="{standalone: true}">
-                        <button class="btn btn-outline-primary p-hidde" type="button" id="button-addon2" (click)="ValidarNombre()"><i class="bi bi-person-bounding-box"></i></button>
-                      </div>
-
-
-
-                    
+                        <input type="text" class="form-control" [(ngModel)]="objFM.nombres" id="objFM.nombres"
+                            [ngModelOptions]="{standalone: true}">
+                        <button class="btn btn-outline-primary p-hidde" type="button" id="button-addon2"
+                            (click)="ValidarNombre()"><i class="bi bi-person-bounding-box"></i></button>
                     </div>
+
+
+
+
+                </div>
             </div>
             <div class="mb-3 row">
                 <div class="col-3 col-form-label text-star">Fecha de Nacimiento</div>
@@ -119,7 +139,7 @@
                 </div>
                 <div class="col-1 col-form-label text-star">Teléfono</div>
                 <div class="col-2 col-form-label text-star"><input type="text" class="form-control"
-                        [(ngModel)]="objFM.telefono" id="objFM.telefono"   [textMask]="{mask: funciones.entero}"></div>
+                        [(ngModel)]="objFM.telefono" id="objFM.telefono" [textMask]="{mask: funciones.entero}"></div>
             </div>
             <hr class="p-hidde">
             <div class="mb-3 row p-hidde">
@@ -251,20 +271,21 @@
                 <ng-container *ngIf="objFM.id_grado_instruccion==4 || objFM.id_grado_instruccion==5">
 
 
-                <div class="col-1 col-form-label text-star">Profesión</div>
-                <div class="col-5 col-form-label text-star">
+                    <div class="col-1 col-form-label text-star">Profesión</div>
+                    <div class="col-5 col-form-label text-star">
 
-                    <ng-select [items]="cboProfesion" placeholder="Seleccione" bindLabel="descripcion"
-                        bindValue="id_profesion" [(ngModel)]="objFM.id_profesion" [clearable]="false"
-                        notFoundText="no se ha encontrado ningún item" class="fomr-control"
-                        [ngModelOptions]="{standalone: true}" (ngModelChange)="ProfesionSeleccionada()" #ddlProfesion>
-                    </ng-select>
+                        <ng-select [items]="cboProfesion" placeholder="Seleccione" bindLabel="descripcion"
+                            bindValue="id_profesion" [(ngModel)]="objFM.id_profesion" [clearable]="false"
+                            notFoundText="no se ha encontrado ningún item" class="fomr-control"
+                            [ngModelOptions]="{standalone: true}" (ngModelChange)="ProfesionSeleccionada()"
+                            #ddlProfesion>
+                        </ng-select>
 
-                    <ng-container *ngIf="objFM.id_profesion==8">
-                        <input type="text" class="form-control mt-2" [(ngModel)]="objFM.otro_profesion"
-                            [ngModelOptions]="{standalone: true}" id="objFM.otro_profesion">
-                    </ng-container>
-                </div>
+                        <ng-container *ngIf="objFM.id_profesion==8">
+                            <input type="text" class="form-control mt-2" [(ngModel)]="objFM.otro_profesion"
+                                [ngModelOptions]="{standalone: true}" id="objFM.otro_profesion">
+                        </ng-container>
+                    </div>
                 </ng-container>
             </div>
             <div class="mb-3 row">
@@ -492,4 +513,3 @@
         </table>
     </div>
 </ng-template>
-

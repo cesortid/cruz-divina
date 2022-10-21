@@ -121,6 +121,8 @@ export class Anexo01Component implements OnInit {
   modalRefHijo: BsModalRef = new BsModalRef();
   BsModalRef_hijo!:BsModalRef;
   filtro_edad:any;
+  filtro_tramite_pais: any =[];
+
 
   es_nacional:boolean=false;
   sede_depa:any=[];
@@ -160,6 +162,7 @@ export class Anexo01Component implements OnInit {
       this.cboGradoInstruccion = data.resultgradoinstruccion;
       this.cboDepartamentoNac = data.resultdepartamento;
       this.filtro_edad=data.resultedad[0];
+      this.filtro_tramite_pais=data.resulttramitepais;
       //this.cboDepartamentoDir=data.resultdepartamento;
 
       let DepartamentosCobertura: any = [];
@@ -182,6 +185,23 @@ export class Anexo01Component implements OnInit {
       });
       this.cboDepartamentoDir = DepartamentosCobertura;
       if(this.OBJETO_EDITAR==null){
+        let origen_nac: any = 1;
+        this.objFM.origen_nac = origen_nac;
+        this.objFM.iddpto=this.sede_depa[0].CodDepa;
+        let param_nac = { "iddpto": this.objFM.iddpto };
+        this.servicio.listarProvincia(param_nac).subscribe((data: any) => {
+          this.cboProvinciaNac = data;
+          this.objFM.idprov=this.cboProvinciaNac[0].idprov;
+          let param_ = { "iddpto": this.objFM.iddpto, "idprov": this.objFM.idprov };
+          this.servicio.listarDistrito(param_).subscribe((data_: any) => {
+            this.cboDistritoNac = data_;
+            this.objFM.iddist=this.cboDistritoNac[0].iddist;
+          });
+        });
+
+
+
+
         this.objFM.iddpto_dir=this.sede_depa[0].CodDepa;
         let param = { "iddpto": this.objFM.iddpto_dir };
         this.servicio.listarProvincia(param).subscribe((data: any) => {
@@ -651,10 +671,45 @@ export class Anexo01Component implements OnInit {
       })
       return false;
     }
-   // if(this.objFM.validar_edad){
-    //}
 
-    //aca va lña validacion y mensajes
+    if(this.filtro_tramite_pais.length>0){
+    //   {
+    //     "id_pais_tramite": 3,
+    //     "id_tramite": 4,
+    //     "id_pais": 6,
+    //     "cod_pais": "108",
+    //     "descripcion": "ESPAÑA",
+    //     "condicion": false
+    // }
+
+      for(let i=0;i<this.filtro_tramite_pais.length;i++){
+        let ele=this.filtro_tramite_pais[i];
+        if(ele.id_tramite==this.objFM.id_tramite){
+          if(ele.condicion){
+            //deberia ir
+            if(ele.pais.filter((x:any)=>x.id_pais==this.objFM.id_pais).length==0){
+              this.Mensaje("info", "No es posible continuar con el registro debido a que el trámite seleccionado no está habilitado para el pais de nacimiento del postulante", () => {
+                // document.getElementById("objFM.numero_documento")?.focus();
+              })
+              return false;
+            }
+          }
+          else{
+            //no deberia ir
+            if(ele.pais.filter((x:any)=>x.id_pais==this.objFM.id_pais).length>0){
+              this.Mensaje("info", "No es posible continuar con el registro debido a que el trámite seleccionado no está habilitado para el pais de nacimiento del postulante", () => {
+                // document.getElementById("objFM.numero_documento")?.focus();
+              })
+              return false;
+            }
+          }
+
+
+        }
+
+      }
+
+    }
 
     return true;
   }

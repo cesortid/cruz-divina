@@ -30,7 +30,7 @@ export class PostulantesEvalComponent implements OnInit, OnDestroy {
           this.CargarTiempoTranscurrido(Number(this.crypto.desencriptar(this.ruta_variable)));
           this.INTERVAL=setInterval(()=>{
             this.CargarTiempoTranscurrido(Number(this.crypto.desencriptar(this.ruta_variable)));
-          },1000)              
+          },5000)              
         }
       });
 

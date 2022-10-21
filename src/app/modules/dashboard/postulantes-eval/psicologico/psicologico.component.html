@@ -53,22 +53,20 @@
                             <div class="col-3 col-form-label text-star">Test de Palanca</div>
                             <div class="col-5">
                                 <ng-container *ngIf="!PROFESIONAL">
-                                    <input type="text" disabled value="------"
-                                    class="form-control">
+                                    <input type="text" disabled value="------" class="form-control">
                                 </ng-container>
                                 <ng-container *ngIf="PROFESIONAL">
-                                    <input type="text" disabled [(ngModel)]="Palanca.texto"
-                                    class="form-control">
+                                    <input type="text" disabled [(ngModel)]="Palanca.texto" class="form-control">
                                 </ng-container>
 
-                                </div>
+                            </div>
                             <div class="col-2 text-center ps-0">
 
 
                                 <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
                                     bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_palanca"
                                     [clearable]="false" notFoundText="no se ha encontrado ningún item"
-                                    class="fomr-control" (change)="ValidarNegocio00()"
+                                    class="fomr-control" (ngModelChange)="ValidarNegocio00()"
                                     [disabled]="disabled_resultado_test_palanca">
                                 </ng-select>
                             </div>
@@ -79,20 +77,18 @@
                             <div class="col-3 col-form-label text-star">Reactimetro</div>
                             <div class="col-5">
                                 <ng-container *ngIf="!PROFESIONAL">
-                                    <input type="text" disabled value="------"
-                                    class="form-control">
+                                    <input type="text" disabled value="------" class="form-control">
                                 </ng-container>
                                 <ng-container *ngIf="PROFESIONAL">
-                                    <input type="text" disabled [(ngModel)]="Reactimetro.texto"
-                                    class="form-control">
+                                    <input type="text" disabled [(ngModel)]="Reactimetro.texto" class="form-control">
                                 </ng-container>
 
-                                </div>
+                            </div>
                             <div class="col-2 text-center ps-0">
                                 <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
                                     bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_reactimetro"
                                     [clearable]="false" notFoundText="no se ha encontrado ningún item"
-                                    class="fomr-control" (change)="ValidarNegocio00()"
+                                    class="fomr-control" (ngModelChange)="ValidarNegocio00()"
                                     [disabled]="disabled_resultado_reactimetro">
                                 </ng-select>
                             </div>
@@ -103,21 +99,19 @@
                             <div class="col-3 col-form-label text-star">Test de Punteo</div>
                             <div class="col-5">
                                 <ng-container *ngIf="!PROFESIONAL">
-                                    <input type="text" disabled value="------"
-                                    class="form-control">
+                                    <input type="text" disabled value="------" class="form-control">
                                 </ng-container>
                                 <ng-container *ngIf="PROFESIONAL">
-                                    <input type="text" disabled [(ngModel)]="Punteo.texto"
-                                    class="form-control">
+                                    <input type="text" disabled [(ngModel)]="Punteo.texto" class="form-control">
                                 </ng-container>
 
 
-                                </div>
+                            </div>
                             <div class="col-2 text-center ps-0">
                                 <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
                                     bindValue="id_resultado_psicologico" [(ngModel)]="objFM.id_resultado_test_punteo"
                                     [clearable]="false" notFoundText="no se ha encontrado ningún item"
-                                    class="fomr-control" (change)="ValidarNegocio00()"
+                                    class="fomr-control" (ngModelChange)="ValidarNegocio00()"
                                     [disabled]="disabled_resultado_test_punteo">
                                 </ng-select>
                             </div>
@@ -131,7 +125,8 @@
                                 <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
                                     bindValue="id_resultado_psicologico" [(ngModel)]="objFM.wechsler"
                                     [clearable]="false" notFoundText="no se ha encontrado ningún item"
-                                    class="fomr-control" (change)="ValidarNegocio00()" [disabled]="disabled_wechsler">
+                                    class="fomr-control" (change)="ValidarNegocio00()" >
+                                    <!-- [disabled]="disabled_wechsler" -->
                                 </ng-select>
                             </div>
                             <div class="col-1 text-center">(+)</div>
@@ -157,8 +152,9 @@
                                 <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
                                     bindValue="id_resultado_psicologico" [(ngModel)]="objFM.test_matrices_progresivas"
                                     [clearable]="false" notFoundText="no se ha encontrado ningún item"
-                                    class="fomr-control" (change)="ValidarNegocio00()"
-                                    [disabled]="disabled_test_matrices_progresivas">
+                                    class="fomr-control" (ngModelChange)="ValidarNegocio00()"
+                                    >
+                                    <!-- [disabled]="disabled_test_matrices_progresivas" -->
                                 </ng-select>
                             </div>
                             <div class="col-1 text-center">(+)</div>
@@ -170,8 +166,8 @@
                                 <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
                                     bindValue="id_resultado_psicologico" [(ngModel)]="objFM.test_dominios_anstey"
                                     [clearable]="false" notFoundText="no se ha encontrado ningún item"
-                                    class="fomr-control" (change)="ValidarNegocio00()"
-                                    [disabled]="disabled_test_dominios_anstey">
+                                    class="fomr-control" (change)="ValidarNegocio00()">
+                                    <!-- [disabled]="disabled_test_dominios_anstey" -->
                                 </ng-select>
                             </div>
                             <div class="col-1 text-center">(+)</div>
@@ -209,7 +205,8 @@
                                 <ng-select [items]="cboApto" placeholder="Seleccione" bindLabel="descripcion"
                                     bindValue="id_resultado_psicologico" [(ngModel)]="objFM.test_npf"
                                     [clearable]="false" notFoundText="no se ha encontrado ningún item"
-                                    class="fomr-control" (change)="ValidarNegocio00()" [disabled]="disabled_test_npf">
+                                    class="fomr-control" (ngModelChange)="ValidarNegocio00()">
+                                    <!-- [disabled]="disabled_test_npf" -->
                                 </ng-select>
                             </div>
                             <div class="col-1 text-center">(+)</div>
@@ -250,7 +247,8 @@
                                     bindValue="id_resultado_psicologico"
                                     [(ngModel)]="objFM.cuestionario_inventario_cambios" [clearable]="false"
                                     notFoundText="no se ha encontrado ningún item" class="fomr-control"
-                                    (change)="ValidarNegocio00()" [disabled]="disabled_cuestionario_inventario_cambios">
+                                    (ngModelChange)="ValidarNegocio00()">
+                                    <!-- [disabled]="disabled_cuestionario_inventario_cambios" -->
                                 </ng-select>
                             </div>
                             <div class="col-1 text-center">(+)</div>
@@ -297,7 +295,9 @@
                             <div class="col-3 col-form-label text-star">Observaciones</div>
 
                             <div class="col-9 text-center col-form-label">
-                                <textarea class="form-control" [(ngModel)]="objFM.observacion"></textarea>
+                                <textarea class="form-control" [(ngModel)]="objFM.observacion" [disabled]="!no_apto_con_observaciones" id="objFM.observacion"></textarea>
+
+
                             </div>
                         </div>
 
@@ -315,7 +315,7 @@
                         <div class="mb-3 row p-show p-d-flex mt-4">
 
 
-                            <div class="col-2 col-form-label text-end offset-2">HORA DE INGRESO</div>
+                            <div class="col-2 col-form-label text-end offset-2">HORA DE INICIO</div>
                             <div class="col-2 col-form-label text-star"><input type="time" class="form-control"
                                     [(ngModel)]="objFM.hora_inicio_evaluacion" (blur)="ValidarHoraIngreso()"></div>
                             <div class="col-2 col-form-label text-end">HORA DE SALIDA</div>
@@ -350,57 +350,77 @@
                                 <td></td>
                                 <td class="td-border">ERRORES</td>
                                 <td class="td-border">TE EN SEG</td>
-                                <td class="td-border">CENTECIMAS</td>
+                                <!-- <td class="td-border">CENTECIMAS</td> -->
                                 <td class="td-border">TP EN SEG</td>
-                                <td class="td-border">CENTECIMAS</td>
+                                <!-- <td class="td-border">CENTECIMAS</td> -->
                             </tr>
                             <tr>
 
 
 
                                 <td class="td-border">PALANCA</td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Palanca.errores" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPalanca()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Palanca.te_seg" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPalanca()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Palanca.te_centecimas" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPalanca()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Palanca.tp_seg" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPalanca()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Palanca.tp_centecimas" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPalanca()"></td>
+                                <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Palanca.errores" [textMask]="{mask: helper.solo_entero}"
+                                        (ngModelChange)="ValidarPalanca()"></td>
+                                <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Palanca.te_seg" [textMask]="{mask: helper.currencyMask_dos_decimales}"
+                                        (ngModelChange)="ValidarPalanca()"></td>
+                                <!-- <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Palanca.te_centecimas" [textMask]="{mask: helper.solo_entero}"
+                                        (ngModelChange)="ValidarPalanca()"></td> -->
+                                <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Palanca.tp_seg" [textMask]="{mask: helper.currencyMask_dos_decimales}"
+                                        (ngModelChange)="ValidarPalanca()"></td>
+                                <!-- <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Palanca.tp_centecimas" [textMask]="{mask: helper.solo_entero}"
+                                        (ngModelChange)="ValidarPalanca()"></td> -->
                             </tr>
                             <tr>
-                                <td colspan="6">&nbsp;</td>
+                                <td colspan="4">&nbsp;</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td class="td-border">TT EN SEG</td>
-                                <td class="td-border">CENTECIMAS</td>
-                                <td></td>
+                                <!-- <td class="td-border">CENTECIMAS</td> -->
+                                <!-- <td></td> -->
                                 <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td class="td-border">REACTIMETRO</td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Reactimetro.tt_seg" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarReactimetro()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Reactimetro.tt_centecimas" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarReactimetro()"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Reactimetro.tt_seg" [textMask]="{mask: helper.currencyMask_dos_decimales}"
+                                        (ngModelChange)="ValidarReactimetro()"></td>
+                                <!-- <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Reactimetro.tt_centecimas" [textMask]="{mask: helper.solo_entero}"
+                                        (ngModelChange)="ValidarReactimetro()"></td> -->
+                                        <td></td>
+                                        <td></td>
                             </tr>
                             <tr>
-                                <td colspan="6">&nbsp;</td>
+                                <td colspan="4">&nbsp;</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td class="td-border">ERRORES</td>
                                 <td class="td-border">ACIERTOS</td>
                                 <td class="td-border">TA EN SEG</td>
-                                <td class="td-border">CENTECIMAS</td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td class="td-border">PUNTEO</td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Punteo.errores" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPunteo()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Punteo.aciertos" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPunteo()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Punteo.ta_seg" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPunteo()"></td>
-                                <td class="td-border"><input type="text" class="form-control" [(ngModel)]="Punteo.ta_centecimas" [textMask]="{mask: helper.solo_entero}" (ngModelChange)="ValidarPunteo()"></td>
+                                <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Punteo.errores" [textMask]="{mask: helper.solo_entero}"
+                                        (ngModelChange)="ValidarPunteo()"></td>
+                                <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Punteo.aciertos" [textMask]="{mask: helper.solo_entero}"
+                                        (ngModelChange)="ValidarPunteo()"></td>
+                                <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Punteo.ta_seg" [textMask]="{mask: helper.currencyMask_dos_decimales}"
+                                        (ngModelChange)="ValidarPunteo()"></td>
+                                <!-- <td class="td-border"><input type="text" class="form-control"
+                                        [(ngModel)]="Punteo.ta_centecimas" [textMask]="{mask: helper.solo_entero}"
+                                        (ngModelChange)="ValidarPunteo()"></td> -->
                                 <td></td>
                             </tr>
                         </table>
@@ -424,6 +444,12 @@
                         </div>
                         <h1>I: DATOS GENERALES</h1>
                         <ng-container *ngIf="OBJ_FICHA_MEDICA!=null">
+                            <div class="mb-3 row">
+                                <div class="col-3 col-form-label text-star">APELLIDOS Y NOMBRES</div>
+                                <div class="col-9 col-form-label text-star">
+                                    <div class="form-control">{{OBJ_FICHA_MEDICA.apellido_paterno}} {{OBJ_FICHA_MEDICA.apellido_materno}}, {{OBJ_FICHA_MEDICA.nombres}}</div>
+                                </div>
+                            </div>
                             <div class="mb-3 row">
                                 <div class="col-3 col-form-label text-star">DNI</div>
                                 <div class="col-9 col-form-label text-star">
@@ -555,7 +581,7 @@
                                             <div class="opcion">- Presentación</div>
                                         </td>
                                         <td *ngFor="let item of control.resultpresentacion">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="presentacion"
                                                     [value]="item.id_resultado_presentacion"
                                                     [(ngModel)]="objH.id_resultado_presentacion"
@@ -568,7 +594,7 @@
                                     </tr>
                                     <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_presentacion">
                                         <td colspan="4">
-                                            dfgdfgdf sdf sd
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -576,7 +602,7 @@
                                             <div class="opcion">- Postura</div>
                                         </td>
                                         <td *ngFor="let item of control.resultpostura">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="postura" [value]="item.id_resultado_postura"
                                                     [(ngModel)]="objH.id_resultado_postura"
                                                     (change)="ValidarEstandar()">{{item.descripcion}}
@@ -596,7 +622,7 @@
                                             <div class="opcion">- Actitud</div>
                                         </td>
                                         <td *ngFor="let item of control.resultactitud">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="actitud" [value]="item.id_resultado_actitud"
                                                     [(ngModel)]="objH.id_resultado_actitud"
                                                     (change)="ValidarEstandar()">{{item.descripcion}}
@@ -618,7 +644,7 @@
                                             <div class="opcion">Tiempo</div>
                                         </td>
                                         <td *ngFor="let item of control.resultorientacion">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="otiempo"
                                                     [value]="item.id_resultado_orientacion"
                                                     [(ngModel)]="objH.id_resultado_orientacion_tiempo"
@@ -632,7 +658,6 @@
                                         id="objH.id_resultado_orientacion_tiempo">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -641,7 +666,7 @@
                                             <div class="opcion">Espacio</div>
                                         </td>
                                         <td *ngFor="let item of control.resultorientacion">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="oespacio"
                                                     [value]="item.id_resultado_orientacion"
                                                     [(ngModel)]="objH.id_resultado_orientacion_espacio"
@@ -655,7 +680,6 @@
                                         id="objH.id_resultado_orientacion_espacio">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -664,7 +688,7 @@
                                             <div class="opcion">Persona</div>
                                         </td>
                                         <td *ngFor="let item of control.resultorientacion">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="opersona"
                                                     [value]="item.id_resultado_orientacion"
                                                     [(ngModel)]="objH.id_resultado_orientacion_persona"
@@ -712,7 +736,7 @@
                                             <div class="opcion">A corto plazo</div>
                                         </td>
                                         <td *ngFor="let item of control.resultmemoria">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="mcortoplazo"
                                                     [value]="item.id_resultado_memoria"
                                                     [(ngModel)]="objH.id_resultado_memoria_corto"
@@ -725,7 +749,6 @@
                                     <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_memoria_corto">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -734,7 +757,7 @@
                                             <div class="opcion">A mediano plazo</div>
                                         </td>
                                         <td *ngFor="let item of control.resultmemoria">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="mmedianoplazo"
                                                     [value]="item.id_resultado_memoria"
                                                     [(ngModel)]="objH.id_resultado_memoria_mediano"
@@ -747,7 +770,6 @@
                                     <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_memoria_mediano">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -756,7 +778,7 @@
                                             <div class="opcion">A largo plazo</div>
                                         </td>
                                         <td *ngFor="let item of control.resultmemoria">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="mlargooplazo"
                                                     [value]="item.id_resultado_memoria"
                                                     [(ngModel)]="objH.id_resultado_memoria_largo"
@@ -769,7 +791,6 @@
                                     <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_memoria_largo">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -780,7 +801,7 @@
                                             <div class="opcion">Ritmo</div>
                                         </td>
                                         <td *ngFor="let item of control.resultlenguajeritmo">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="lritno"
                                                     [value]="item.id_resultado_lenguaje_ritmo"
                                                     [(ngModel)]="objH.id_resultado_lenguaje_ritmo"
@@ -801,7 +822,7 @@
                                             <div class="opcion">Tono</div>
                                         </td>
                                         <td *ngFor="let item of control.resultlenguajetono">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="ltono"
                                                     [value]="item.id_resultado_lenguaje_tono"
                                                     [(ngModel)]="objH.id_resultado_lenguaje_tono"
@@ -813,7 +834,6 @@
                                     <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_lenguaje_tono">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -822,7 +842,7 @@
                                             <div class="opcion">Articulación</div>
                                         </td>
                                         <td *ngFor="let item of control.resultlenguajearticulacion">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="larticulacion"
                                                     [value]="item.id_resultado_lenguaje_articulacion"
                                                     [(ngModel)]="objH.id_resultado_lenguaje_articulacion"
@@ -836,7 +856,6 @@
                                         id="objH.id_resultado_lenguaje_articulacion">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -847,7 +866,7 @@
                                             <div class="opcion">Curso</div>
                                         </td>
                                         <td *ngFor="let item of control.resultpensamientocurso">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="pcurso"
                                                     [value]="item.id_resultado_pensamiento_curso"
                                                     [(ngModel)]="objH.id_resultado_pensamiento_curso"
@@ -870,7 +889,6 @@
                                         id="objH.id_resultado_pensamiento_curso">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -878,23 +896,34 @@
                                         <td>
                                             <div class="opcion">Contenido</div>
                                         </td>
-                                        <td *ngFor="let item of control.resultpensamientocontenido">
-                                            <label class="content-input justify-content-between">
-                                                <input type="radio" name="pcontenido"
-                                                    [value]="item.id_resultado_pensamiento_contenido"
-                                                    [(ngModel)]="objH.id_resultado_pensamiento_contenido"
-                                                    (change)="PensamientoContenidoChange($event)">{{item.descripcion}}
-                                                <ng-container *ngIf="item.descripcion.toUpperCase()=='OTRO'">
-                                                    <input type="text" class="form-control position-relative"
-                                                        style="visibility: visible;"
-                                                        (change)="PensamientoContenidoOtroChange($event)"
-                                                        [(ngModel)]="objH.otro_pensamiento_contenido">
-                                                </ng-container>
+                                        <ng-container *ngFor="let item of control.resultpensamientocontenido">
+                                            
                                                 <ng-container *ngIf="item.descripcion.toUpperCase()!='OTRO'">
-                                                    <i></i>
+                                                    <td><label class="content-input justify-content-end">
+                                                        <input type="radio" name="pcontenido"
+                                                            [value]="item.id_resultado_pensamiento_contenido"
+                                                            [(ngModel)]="objH.id_resultado_pensamiento_contenido"
+                                                            (change)="PensamientoContenidoChange($event)">{{item.descripcion}}
+                                                       </label> 
+                                                       <i></i>
+                                                    </td>
                                                 </ng-container>
-                                            </label>
-                                        </td>
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()=='OTRO'">
+                                                    <td colspan="2">
+                                                        <label class="content-input justify-content-end">
+                                                            <input type="radio" name="pcontenido"
+                                                                [value]="item.id_resultado_pensamiento_contenido"
+                                                                [(ngModel)]="objH.id_resultado_pensamiento_contenido"
+                                                                (change)="PensamientoContenidoChange($event)">{{item.descripcion}}
+                                                                <input type="text" class="form-control position-relative"
+                                                                    style="visibility: visible;"
+                                                                    (change)="PensamientoContenidoOtroChange($event)"
+                                                                    [(ngModel)]="objH.otro_pensamiento_contenido">
+                                                           </label> 
+                                                    </td>
+                                                </ng-container>
+                                            
+                                        </ng-container>
                                         <td>
                                         </td>
                                     </tr>
@@ -902,16 +931,43 @@
                                         id="objH.id_resultado_pensamiento_contenido">
                                         <td></td>
                                         <td colspan="3">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="opcion">- Afecto</div>
                                         </td>
+                                        <ng-container *ngFor="let item of control.resultafecto">
+                                            <ng-container *ngIf="item.descripcion.toUpperCase()!='OTRO'">
+                                                <td>
+                                                    <label class="content-input justify-content-end">
+                                                        <input type="radio" name="afectado"
+                                                            [value]="item.id_resultado_afecto"
+                                                            [(ngModel)]="objH.id_resultado_afecto"
+                                                            (change)="AfectoChange($event)">{{item.descripcion}}
+                                                        <i></i>
+                                                    </label>
+                                                </td>
+                                            </ng-container>
+                                            <ng-container *ngIf="item.descripcion.toUpperCase()=='OTRO'">
+                                                <td colspan="3">
+                                                    <label class="content-input justify-content-end">
+                                                        <input type="radio" name="afectado"
+                                                            [value]="item.id_resultado_afecto"
+                                                            [(ngModel)]="objH.id_resultado_afecto"
+                                                            (change)="AfectoChange($event)">{{item.descripcion}}
+                                                        <input type="text" class="form-control position-relative"
+                                                            style="visibility: visible;"
+                                                            [(ngModel)]="objH.otro_resultado_afecto"
+                                                            (change)="AfectoOtroChange($event)">
+                                                    </label>
+                                                </td>
+                                            </ng-container>
 
-                                        <td *ngFor="let item of control.resultafecto">
-                                            <label class="content-input justify-content-between">
+                                        </ng-container>
+
+                                        <!-- <td *ngFor="let item of control.resultafecto">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="afectado" [value]="item.id_resultado_afecto"
                                                     [(ngModel)]="objH.id_resultado_afecto"
                                                     (change)="AfectoChange($event)">{{item.descripcion}}
@@ -925,42 +981,65 @@
                                                     <i></i>
                                                 </ng-container>
                                             </label>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
+                                        </td> -->
                                     </tr>
                                     <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_afecto">
                                         <td colspan="4">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="opcion">- Sensopercepción</div>
                                         </td>
-                                        <td *ngFor="let item of control.resultsensopercepcion">
-                                            <label class="content-input justify-content-between">
-                                                <input type="radio" name="senso"
-                                                    [value]="item.id_resultado_senso_percepcion"
-                                                    [(ngModel)]="objH.id_resultado_senso_percepcion"
-                                                    (change)="SensoChange($event)">{{item.descripcion}}
-                                                <ng-container *ngIf="item.descripcion.toUpperCase().trim()=='ALTERADA'">
-                                                    <input type="text" class="form-control position-relative"
-                                                        style="visibility: visible;"
-                                                        [(ngModel)]="objH.alterada_senso_percepcion"
-                                                        (change)="SensoOtroChange($event)">
-                                                </ng-container>
-                                                <ng-container *ngIf="item.descripcion.toUpperCase().trim()!='ALTERADA'">
-                                                    <i></i>
-                                                </ng-container>
-                                            </label>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
+                                        <ng-container *ngFor="let item of control.resultsensopercepcion">
+                                            <ng-container *ngIf="item.descripcion.toUpperCase().trim()!='ALTERADA'">
+                                                <td>
+                                                    <label class="content-input justify-content-end">
+                                                        <input type="radio" name="senso"
+                                                            [value]="item.id_resultado_senso_percepcion"
+                                                            [(ngModel)]="objH.id_resultado_senso_percepcion"
+                                                            (change)="SensoChange($event)">{{item.descripcion}}
+                                                        <i></i>
+                                                    </label>
+                                                </td>
+
+                                            </ng-container>
+                                            <ng-container *ngIf="item.descripcion.toUpperCase().trim()=='ALTERADA'">
+                                                <td colspan="3">
+                                                    <label class="content-input justify-content-end">
+                                                        <input type="radio" name="senso"
+                                                            [value]="item.id_resultado_senso_percepcion"
+                                                            [(ngModel)]="objH.id_resultado_senso_percepcion"
+                                                            (change)="SensoChange($event)">{{item.descripcion}}
+                                                        <input type="text" class="form-control position-relative"
+                                                            style="visibility: visible;"
+                                                            [(ngModel)]="objH.alterada_senso_percepcion"
+                                                            (change)="SensoOtroChange($event)">
+                                                    </label>
+                                                </td>
+                                            </ng-container>
+                                            <!-- <td>
+                                                <label class="content-input justify-content-end">
+                                                    <input type="radio" name="senso"
+                                                        [value]="item.id_resultado_senso_percepcion"
+                                                        [(ngModel)]="objH.id_resultado_senso_percepcion"
+                                                        (change)="SensoChange($event)">{{item.descripcion}}
+                                                    <ng-container *ngIf="item.descripcion.toUpperCase().trim()=='ALTERADA'">
+                                                        <input type="text" class="form-control position-relative"
+                                                            style="visibility: visible;"
+                                                            [(ngModel)]="objH.alterada_senso_percepcion"
+                                                            (change)="SensoOtroChange($event)">
+                                                    </ng-container>
+                                                    <ng-container *ngIf="item.descripcion.toUpperCase().trim()!='ALTERADA'">
+                                                        <i></i>
+                                                    </ng-container>
+                                                </label>
+                                            </td> -->
+                                        </ng-container>
+
                                     </tr>
                                     <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_senso_percepcion">
                                         <td colspan="4">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
@@ -973,7 +1052,7 @@
                                             <div class="opcion">- Apetito y conducta alimentaria</div>
                                         </td>
                                         <td *ngFor="let item of control.resultapetitoconductaalimentaria">
-                                            <label class="content-input justify-content-between">
+                                            <label class="content-input justify-content-end">
                                                 <input type="radio" name="apetito"
                                                     [value]="item.id_resultado_apetito_conducta_alimentaria"
                                                     [(ngModel)]="objH.id_resultado_apetito_conducta_alimentaria"
@@ -985,15 +1064,39 @@
                                     <tr class="col-12 p-hidde text-info d-none"
                                         id="objH.id_resultado_apetito_conducta_alimentaria">
                                         <td colspan="4">
-                                            dfgdfgdf sdf sd
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">
                                             <div class="opcion">- Ciclo sueño-vigilia</div>
                                         </td>
-                                        <td *ngFor="let item of control.resultciclosueniovigilia">
-                                            <label class="content-input justify-content-between">
+                                      
+                                            <ng-container *ngFor="let item of control.resultciclosueniovigilia">
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()!='ALTERADO'">
+                                                    <td>
+                                                        <label class="content-input justify-content-end">
+                                                            <input type="radio" name="ciclo"
+                                                                [value]="item.id_resultado_ciclo_suenio_vigilia"
+                                                                [(ngModel)]="objH.id_resultado_ciclo_suenio_vigilia"
+                                                                (change)="CicloChange($event)">{{item.descripcion}}
+                                                            <i></i>
+
+                                                        </label>
+                                                    </td>
+                                                </ng-container>
+                                                <ng-container *ngIf="item.descripcion.toUpperCase()=='ALTERADO'">
+                                                    <td colspan="3">
+                                                        <label class="content-input justify-content-end">
+                                                            <input type="radio" name="ciclo" [value]="item.id_resultado_ciclo_suenio_vigilia"
+                                                                [(ngModel)]="objH.id_resultado_ciclo_suenio_vigilia"
+                                                                (change)="CicloChange($event)">{{item.descripcion}}
+                                                            <input type="text" class="form-control position-relative" style="visibility: visible;"
+                                                                (change)="CicloOtroChange($event)" [(ngModel)]="objH.alterado_suenio_vigilia">
+                                                        </label>
+                                                    </td>
+                                                </ng-container>
+                                            </ng-container>
+            <!-- <label class="content-input justify-content-end">
                                                 <input type="radio" name="ciclo"
                                                     [value]="item.id_resultado_ciclo_suenio_vigilia"
                                                     [(ngModel)]="objH.id_resultado_ciclo_suenio_vigilia"
@@ -1006,73 +1109,71 @@
                                                 <ng-container *ngIf="item.descripcion.toUpperCase()!='ALTERADO'">
                                                     <i></i>
                                                 </ng-container>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr class="col-12 p-hidde text-info d-none"
-                                        id="objH.id_resultado_ciclo_suenio_vigilia">
-                                        <td colspan="4">
-                                            dfgdfgdf sdf sd
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <h1>IX: CONCLUSIONES</h1>
-                        <div class="mb-3 row">
-                            <div class="col-5 col-form-label text-star">
-                                <div class="opcion">Área Cognitiva</div>
-                            </div>
-                            <div class="col-5 text-star">
-                                <input type="text" class="form-control" [(ngModel)]="objH.conclusiones_area_cognitiva">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <div class="col-5 col-form-label text-star">
-                                <div class="opcion">Área Emocional</div>
-                            </div>
-                            <div class="col-5 text-star">
-                                <input type="text" class="form-control" [(ngModel)]="objH.conclusiones_area_emocional">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <div class="col-5 col-form-label text-star">
-                                <h1>X: RECOMENDACIONES</h1>
-                            </div>
-                            <div class="col-5 text-star">
-                                <!-- <input type="text" class="form-control" [(ngModel)]="objH.recomendacion"> -->
+                                            </label> -->
 
-                                <select class="form-control" [(ngModel)]="objH.recomendacion">
-                                    <option value="APTO">APTO</option>
-                                    <option value="NO APTO">NO APTO</option>
-                                </select>
+            </tr>
+            <tr class="col-12 p-hidde text-info d-none" id="objH.id_resultado_ciclo_suenio_vigilia">
+                <td colspan="4">
+                    dfgdfgdf sdf sd
+                </td>
+            </tr>
+            </table>
+</div>
+</div>
+<h1>IX: CONCLUSIONES</h1>
+<div class="mb-3 row">
+    <div class="col-5 col-form-label text-star">
+        <div class="opcion">Área Cognitiva</div>
+    </div>
+    <div class="col-5 text-star">
+        <input type="text" class="form-control" [(ngModel)]="objH.conclusiones_area_cognitiva">
+    </div>
+</div>
+<div class="mb-3 row">
+    <div class="col-5 col-form-label text-star">
+        <div class="opcion">Área Emocional</div>
+    </div>
+    <div class="col-5 text-star">
+        <input type="text" class="form-control" [(ngModel)]="objH.conclusiones_area_emocional">
+    </div>
+</div>
+<div class="mb-3 row">
+    <div class="col-5 col-form-label text-star">
+        <h1>X: RECOMENDACIONES</h1>
+    </div>
+    <div class="col-5 text-star">
+        <!-- <input type="text" class="form-control" [(ngModel)]="objH.recomendacion"> -->
 
-                            </div>
-                        </div>
-                        <div class="row p-hidde">
-                            <div class="col-12 text-center">
-                                <ng-container *hasClaim="'btn_guardar_psico'">
-                                    <button class="btn btn-primary" (click)="GuardarHistorialPsicologico()"><i
-                                            class="bi bi-save2-fill"></i> Guardar</button>
-                                </ng-container>
+        <select class="form-control" [(ngModel)]="objH.recomendacion">
+            <option value="APTO">APTO</option>
+            <option value="NO APTO">NO APTO</option>
+        </select>
 
-                                <ng-container
-                                    *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
-                                    <button class="btn btn-secondary ms-1" (click)="Imprimir01()"><i
-                                            class="bi bi-printer-fill"></i> Imprimir</button>
-                                </ng-container>
-                            </div>
-                        </div>
-                        <hr class="p-hidde">
-                        <div class="mb-3 row g-3 firma">
-                            <div class="col-5 offset-7 text-center col-form-label">
-                                <hr>
-                                FIRMA Y SELLO DEL PSICOLOGO(A)
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </ng-container>
-        </tab>
-    </tabset>
+    </div>
+</div>
+<div class="row p-hidde">
+    <div class="col-12 text-center">
+        <ng-container *hasClaim="'btn_guardar_psico'">
+            <button class="btn btn-primary" (click)="GuardarHistorialPsicologico()"><i class="bi bi-save2-fill"></i>
+                Guardar</button>
+        </ng-container>
+
+        <ng-container *ngIf="objFM.hora_inicio_evaluacion!=null && objFM.hora_inicio_evaluacion!=''">
+            <button class="btn btn-secondary ms-1" (click)="Imprimir01()"><i class="bi bi-printer-fill"></i>
+                Imprimir</button>
+        </ng-container>
+    </div>
+</div>
+<hr class="p-hidde">
+<div class="mb-3 row g-3 firma">
+    <div class="col-5 offset-7 text-center col-form-label">
+        <hr>
+        FIRMA Y SELLO DEL PSICOLOGO(A)
+    </div>
+</div>
+</div>
+</section>
+</ng-container>
+</tab>
+</tabset>
 </div>

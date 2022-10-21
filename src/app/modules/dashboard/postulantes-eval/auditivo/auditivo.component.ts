@@ -80,7 +80,7 @@ export class AuditivoComponent implements OnInit {
 
     }
     this.data_={
-      labels: ["0","500","1000","2000","3000","4000","5000"],
+      labels: ["125","250","500","1000","2000","4000","6000","8000"],
       datasets: [
         {
           label: 'OD',
@@ -109,9 +109,11 @@ export class AuditivoComponent implements OnInit {
       data: this.data_, 
       options: {
         scales: {
+
           y: {
               suggestedMin: -10,
-              suggestedMax: 80,
+              suggestedMax: 120,
+              ticks:{stepSize:10},
               reverse: true,
               grid: {
                 color: '#000000'
@@ -285,7 +287,7 @@ export class AuditivoComponent implements OnInit {
       // return false;
     }
     else{
-      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:15")==false){
+      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:15",this.OBJ_HORA.fecha_inicio_evaluacion_evaud)==false){
         this.helper.Mensaje("info","Mensaje del sistema","El tiempo de duración en el <b>Área de Otorrino</b> debe ser <b>mínimo de 15 minutos</b>",()=>{
         });
         return false;

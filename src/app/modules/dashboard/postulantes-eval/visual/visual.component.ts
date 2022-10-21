@@ -245,7 +245,7 @@ export class VisualComponent implements OnInit {
       // return false;
     }
     else{
-      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:15")==false){
+      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:15",this.OBJ_HORA.fecha_inicio_evaluacion_evis)==false){
         this.helper.Mensaje("info","Mensaje del sistema","El tiempo de duración en el <b>Área de Oftalmología</b> debe ser <b>mínimo de 15 minutos</b>",()=>{
           //document.getElementById("objFM.hora_termino_evaluacion")!.focus();
         });

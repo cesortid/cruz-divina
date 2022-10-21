@@ -236,7 +236,7 @@ export class LaboratorioComponent implements OnInit {
       return false;
     }
     else{
-      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:05")==false){
+      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:05",this.OBJ_HORA.fecha_inicio_evaluacion_an_lab)==false){
         this.helper.Mensaje("info","Mensaje del sistema","El tiempo de duración en el <b>Área de Laboratorio</b> debe ser <b>mínimo de 5 minutos</b>",()=>{
           //document.getElementById("objFM.hora_termino_evaluacion")!.focus();
         });
@@ -350,8 +350,9 @@ export class LaboratorioComponent implements OnInit {
 
   }
   ValidarHoraSalida(){
+  
     if(this.objFM.hora_inicio_evaluacion!=null){
-      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:05")){
+      if(this.helper.ValidarRangoTiempo(this.objFM.hora_inicio_evaluacion,this.objFM.hora_termino_evaluacion,"00:05",this.OBJ_FICHA_MEDICA.fecha_inicio_evaluacion_an_lab)){
       }
       else{
         this.helper.Mensaje("info","Mensaje del sistema","El tiempo de duración en el <b>Área de Laboratorio</b> debe ser <b>mínimo de 5 minutos</b>",()=>{
